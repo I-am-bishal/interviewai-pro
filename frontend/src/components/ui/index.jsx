@@ -23,9 +23,9 @@ const BADGE_VARIANTS = {
   blue: 'bg-info/15 text-info',
   green: 'bg-success/15 text-success',
   amber: 'bg-warning/15 text-warning',
-  pink: 'bg-pink-400/15 text-pink-400',
+  pink: 'bg-cyan-400/15 text-cyan-400',
   purple: 'bg-accent/15 text-accent-2',
-  gray: 'bg-white/8 text-white/60',
+  gray: 'bg-slate-100 text-slate-600',
   red: 'bg-danger/15 text-danger',
 };
 
@@ -38,13 +38,13 @@ export const Badge = ({ children, color = 'gray', className = '' }) => (
 // ── Input ──────────────────────────────────────────────────────────────────
 export const Input = React.forwardRef(({ label, error, icon, className = '', ...props }, ref) => (
   <div className="w-full">
-    {label && <label className="block text-xs text-white/40 mb-1.5 font-medium">{label}</label>}
+    {label && <label className="block text-xs text-slate-500 mb-1.5 font-medium">{label}</label>}
     <div className="relative">
       {icon && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30">{icon}</span>}
       <input
         ref={ref}
         className={`
-          w-full bg-bg-3 border rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/25
+          w-full bg-white border rounded-lg px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400
           outline-none transition-all
           ${error ? 'border-danger focus:border-danger focus:ring-1 focus:ring-danger/30' : 'border-border focus:border-accent focus:ring-1 focus:ring-accent/25'}
           ${icon ? 'pl-9' : ''}
@@ -65,7 +65,7 @@ export const ProgressBar = ({ value = 0, color = 'accent', className = '' }) => 
       initial={{ width: 0 }}
       animate={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className={`h-full rounded-full ${color === 'accent' ? 'bg-gradient-to-r from-accent to-pink-400' : `bg-${color}`}`}
+      className={`h-full rounded-full ${color === 'accent' ? 'bg-gradient-to-r from-accent to-cyan-400' : `bg-${color}`}`}
     />
   </div>
 );
@@ -92,7 +92,7 @@ const LoadingSpinner = ({ fullscreen = false, size = 24 }) => {
 
 // ── Section Title ──────────────────────────────────────────────────────────
 export const SectionTitle = ({ children, className = '' }) => (
-  <div className={`text-[11px] font-semibold tracking-widest uppercase text-white/40 mb-3 ${className}`}>
+  <div className={`text-[11px] font-semibold tracking-widest uppercase text-slate-500 mb-3 ${className}`}>
     {children}
   </div>
 );
@@ -106,7 +106,7 @@ export const Divider = ({ className = '' }) => (
 export const Toggle = ({ checked, onChange }) => (
   <button
     onClick={() => onChange(!checked)}
-    className={`w-11 h-6 rounded-full relative transition-colors ${checked ? 'bg-accent' : 'bg-bg-4'}`}
+    className={`w-11 h-6 rounded-full relative transition-colors ${checked ? 'bg-accent' : 'bg-slate-200'}`}
   >
     <motion.div
       animate={{ x: checked ? 20 : 2 }}

@@ -45,7 +45,7 @@ const InterviewSelect = () => {
     >
       <div className="mb-7">
         <h1 className="font-heading text-2xl font-bold mb-1">Choose Interview Mode</h1>
-        <p className="text-white/40 text-sm">
+        <p className="text-slate-400 text-sm">
           Select a category and our AI will generate tailored questions for your session.
         </p>
       </div>
@@ -67,7 +67,7 @@ const InterviewSelect = () => {
                 <div className="text-4xl flex-shrink-0">{mode.emoji}</div>
                 <div className="flex-1 min-w-0">
                   <div className="font-heading font-bold text-[15px] mb-1">{mode.label}</div>
-                  <div className="text-[13px] text-white/50 mb-2.5 leading-relaxed">{mode.desc}</div>
+                  <div className="text-[13px] text-slate-500 mb-2.5 leading-relaxed">{mode.desc}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {mode.tags.map((t) => (
                       <Badge key={t} color={mode.color}>{t}</Badge>
@@ -83,7 +83,7 @@ const InterviewSelect = () => {
                 </div>
                 <ChevronRight
                   size={18}
-                  className="text-white/20 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
+                  className="text-slate-300 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
                 />
               </div>
             </Card>
@@ -102,7 +102,7 @@ const InterviewSelect = () => {
           <div className="text-4xl">💻</div>
           <div className="flex-1">
             <div className="font-heading font-bold text-[15px] mb-1">Live Coding Challenge</div>
-            <div className="text-[13px] text-white/50 mb-2">
+            <div className="text-[13px] text-slate-500 mb-2">
               Solve real DSA problems in our code editor with AI evaluation and hidden test cases.
             </div>
             <div className="flex gap-1.5 flex-wrap">
@@ -114,7 +114,7 @@ const InterviewSelect = () => {
           </div>
           <ChevronRight
             size={18}
-            className="text-white/20 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
+            className="text-slate-300 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
           />
         </div>
       </Card>

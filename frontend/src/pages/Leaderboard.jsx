@@ -51,14 +51,14 @@ const Leaderboard = () => {
     if (rank === 1) return { emoji: '🥇', cls: 'text-yellow-400 font-black' };
     if (rank === 2) return { emoji: '🥈', cls: 'text-gray-300 font-black' };
     if (rank === 3) return { emoji: '🥉', cls: 'text-orange-400 font-black' };
-    return { emoji: null, cls: 'text-white/30 font-bold' };
+    return { emoji: null, cls: 'text-slate-400 font-bold' };
   };
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="font-heading text-2xl font-bold mb-1">Leaderboard</h1>
-        <p className="text-white/40 text-sm">Compete with engineers worldwide and track your rank</p>
+        <p className="text-slate-400 text-sm">Compete with engineers worldwide and track your rank</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -71,7 +71,7 @@ const Leaderboard = () => {
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  period === p ? 'bg-accent text-white' : 'bg-bg-2 border border-border text-white/50 hover:text-white'
+                  period === p ? 'bg-accent text-white' : 'bg-bg-2 border border-border text-slate-500 hover:text-slate-900'
                 }`}
               >
                 {p}
@@ -109,7 +109,7 @@ const Leaderboard = () => {
 
                       {/* Avatar */}
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-slate-900 text-xs font-bold flex-shrink-0"
                         style={{ background: AVATARS_BG[idx % AVATARS_BG.length] }}
                       >
                         {initials}
@@ -131,7 +131,7 @@ const Leaderboard = () => {
                         <div className="font-heading font-bold text-accent text-sm">
                           {(leader.xp || 0).toLocaleString()}
                         </div>
-                        <div className="text-[10px] text-white/30">XP</div>
+                        <div className="text-[10px] text-slate-400">XP</div>
                       </div>
                     </motion.div>
                   );
@@ -150,7 +150,7 @@ const Leaderboard = () => {
             <div className="font-heading text-5xl font-extrabold text-accent mb-1">
               #{myRank || '—'}
             </div>
-            <div className="text-white/40 text-xs mb-3">
+            <div className="text-slate-400 text-xs mb-3">
               of {leaders.length.toLocaleString()}+ users
             </div>
             <Badge color="purple" className="!text-xs">
@@ -169,7 +169,7 @@ const Leaderboard = () => {
                 ['Avg Score',    '82%'],
               ].map(([label, val]) => (
                 <div key={label} className="flex justify-between text-[13px]">
-                  <span className="text-white/40">{label}</span>
+                  <span className="text-slate-400">{label}</span>
                   <span className="font-medium">{val}</span>
                 </div>
               ))}
@@ -185,7 +185,7 @@ const Leaderboard = () => {
                   <div className="text-lg flex-shrink-0">{icon}</div>
                   <div>
                     <div className="text-[13px] font-medium">{title}</div>
-                    <div className="text-[11px] text-white/40">{desc}</div>
+                    <div className="text-[11px] text-slate-400">{desc}</div>
                   </div>
                 </div>
               ))}

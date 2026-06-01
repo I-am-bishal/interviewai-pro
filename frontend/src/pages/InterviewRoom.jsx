@@ -94,7 +94,7 @@ const InterviewRoom = () => {
     return (
       <div className="h-screen flex items-center justify-center flex-col gap-4">
         <LoadingSpinner />
-        <p className="text-white/40 text-sm">Starting your {meta.label}...</p>
+        <p className="text-slate-400 text-sm">Starting your {meta.label}...</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ const InterviewRoom = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="font-mono text-sm text-white/50 bg-bg-3 px-3 py-1.5 rounded-lg border border-border">
+            <div className="font-mono text-sm text-slate-500 bg-bg-3 px-3 py-1.5 rounded-lg border border-border">
               {currentQuestionIndex + 1} / {totalQ}
             </div>
             <Button variant="danger" size="sm" onClick={() => { completeSession({}); navigate('/dashboard'); }}>
@@ -133,7 +133,7 @@ const InterviewRoom = () => {
           {/* AI Avatar + Question */}
           <div className="flex items-start gap-4 mb-6">
             <div className="relative flex-shrink-0">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-pink-400 flex items-center justify-center text-2xl">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-cyan-400 flex items-center justify-center text-2xl">
                 🤖
               </div>
               {isAiTyping && (
@@ -146,7 +146,7 @@ const InterviewRoom = () => {
               </div>
               <div className="bg-bg-3 border border-border rounded-2xl p-5">
                 {isAiTyping ? (
-                  <div className="flex items-center gap-2 text-white/50">
+                  <div className="flex items-center gap-2 text-slate-500">
                     <span className="text-sm">AI is thinking</span>
                     <span className="flex gap-1">
                       {[0,1,2].map(i => <span key={i} className="w-1.5 h-1.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: `${i*0.1}s` }} />)}
@@ -171,7 +171,7 @@ const InterviewRoom = () => {
                 <Lightbulb size={16} className="text-warning flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="text-xs font-semibold text-warning mb-1">AI Hint</div>
-                  <div className="text-sm text-white/60">
+                  <div className="text-sm text-slate-600">
                     {mode === 'dsa' && 'Think about edge cases first. Consider the naive solution, then optimize using a hash map or two-pointer technique.'}
                     {mode === 'hr' && 'Use the STAR method: Situation → Task → Action → Result. Be specific with one real example.'}
                     {mode === 'system-design' && 'Start with requirements, then APIs, data model, then high-level components and trade-offs.'}
@@ -185,7 +185,7 @@ const InterviewRoom = () => {
           {/* Answer Area */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <div className="text-xs text-white/40 font-medium">Your Answer</div>
+              <div className="text-xs text-slate-400 font-medium">Your Answer</div>
               <div className="flex items-center gap-2">
                 <VoiceVisualizer isRecording={isRecording} bars={8} />
                 {isSupported && (
@@ -194,7 +194,7 @@ const InterviewRoom = () => {
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
                       isRecording
                         ? 'bg-accent/20 border-accent text-accent-2'
-                        : 'bg-bg-3 border-border text-white/50 hover:text-white'
+                        : 'bg-bg-3 border-border text-slate-500 hover:text-slate-900'
                     }`}
                   >
                     {isRecording ? <><Mic size={12} /> Recording</> : <><MicOff size={12} /> Voice</>}
@@ -209,7 +209,7 @@ const InterviewRoom = () => {
               onChange={(e) => setUserAnswer(e.target.value)}
               placeholder="Type your answer here, or click Voice to speak your response..."
               rows={6}
-              className="w-full bg-bg-3 border border-border rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none focus:border-accent focus:ring-1 focus:ring-accent/25 resize-none transition-all"
+              className="w-full bg-bg-3 border border-border rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-white/25 outline-none focus:border-accent focus:ring-1 focus:ring-accent/25 resize-none transition-all"
             />
 
             <div className="flex items-center justify-between">
@@ -245,8 +245,8 @@ const InterviewRoom = () => {
               ['Avg Response', '1m 24s'],
             ].map(([label, val]) => (
               <div key={label} className="flex justify-between text-[13px]">
-                <span className="text-white/40">{label}</span>
-                <span className="font-medium text-white/80">{val}</span>
+                <span className="text-slate-400">{label}</span>
+                <span className="font-medium text-slate-800">{val}</span>
               </div>
             ))}
           </div>
@@ -258,8 +258,8 @@ const InterviewRoom = () => {
             {[['Clarity', 82], ['Speaking Pace', 74], ['Confidence', 78], ['Depth', 65]].map(([label, val]) => (
               <div key={label}>
                 <div className="flex justify-between text-[12px] mb-1">
-                  <span className="text-white/40">{label}</span>
-                  <span className="text-white/60">{val}%</span>
+                  <span className="text-slate-400">{label}</span>
+                  <span className="text-slate-600">{val}%</span>
                 </div>
                 <ProgressBar value={val} />
               </div>
@@ -269,8 +269,8 @@ const InterviewRoom = () => {
 
         <div>
           <SectionTitle>Live Transcript</SectionTitle>
-          <div className="bg-bg-3 border border-border rounded-xl p-3 min-h-[80px] text-[12.5px] text-white/50 font-mono leading-relaxed">
-            {transcript || <span className="text-white/20">Voice transcript will appear here...</span>}
+          <div className="bg-bg-3 border border-border rounded-xl p-3 min-h-[80px] text-[12.5px] text-slate-500 font-mono leading-relaxed">
+            {transcript || <span className="text-slate-300">Voice transcript will appear here...</span>}
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ const Feedback = () => {
           <span className="text-3xl">🎯</span>
           <div>
             <h1 className="font-heading text-xl font-bold">Interview Complete!</h1>
-            <p className="text-white/40 text-sm">Here's your AI-generated feedback</p>
+            <p className="text-slate-400 text-sm">Here's your AI-generated feedback</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -72,7 +72,7 @@ const Feedback = () => {
           ].map(([label, val = 0]) => (
             <div key={label}>
               <div className="flex justify-between text-[13px] mb-1">
-                <span className="text-white/60">{label}</span>
+                <span className="text-slate-600">{label}</span>
                 <span className="font-semibold text-accent">{val}%</span>
               </div>
               <ProgressBar value={val} />
@@ -89,7 +89,7 @@ const Feedback = () => {
             {(fb?.strengths || ['Good participation', 'Showed effort']).map((s, i) => (
               <div key={i} className="flex items-start gap-2 text-[13.5px]">
                 <CheckCircle2 size={14} className="text-success flex-shrink-0 mt-0.5" />
-                <span className="text-white/70">{s}</span>
+                <span className="text-slate-700">{s}</span>
               </div>
             ))}
           </div>
@@ -100,7 +100,7 @@ const Feedback = () => {
             {(fb?.weaknesses || ['Keep practicing!']).map((w, i) => (
               <div key={i} className="flex items-start gap-2 text-[13.5px]">
                 <AlertCircle size={14} className="text-warning flex-shrink-0 mt-0.5" />
-                <span className="text-white/70">{w}</span>
+                <span className="text-slate-700">{w}</span>
               </div>
             ))}
           </div>
@@ -117,7 +117,7 @@ const Feedback = () => {
                 <Badge color="purple" className="flex-shrink-0 mt-0.5">{period}</Badge>
                 <div>
                   <div className="font-medium text-[13.5px] mb-0.5">{title}</div>
-                  <div className="text-[12.5px] text-white/50">{description}</div>
+                  <div className="text-[12.5px] text-slate-500">{description}</div>
                 </div>
               </div>
             ))}
@@ -129,7 +129,7 @@ const Feedback = () => {
       {fb?.summary && (
         <Card className="mb-6 border-accent/30">
           <SectionTitle>Overall Assessment</SectionTitle>
-          <p className="text-[13.5px] text-white/70 leading-relaxed">{fb.summary}</p>
+          <p className="text-[13.5px] text-slate-700 leading-relaxed">{fb.summary}</p>
         </Card>
       )}
 

@@ -65,21 +65,21 @@ const Settings = () => {
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-2xl mx-auto">
       <div className="mb-6">
         <h1 className="font-heading text-2xl font-bold mb-1">Settings</h1>
-        <p className="text-white/40 text-sm">Manage your account, preferences and API keys</p>
+        <p className="text-slate-400 text-sm">Manage your account, preferences and API keys</p>
       </div>
 
       {/* Profile */}
       <Section title="Profile">
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-pink-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-cyan-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
             {initials}
           </div>
           <div>
             <div className="font-semibold">{user?.name}</div>
-            <div className="text-sm text-white/40">{user?.email}</div>
+            <div className="text-sm text-slate-400">{user?.email}</div>
             <div className="mt-1 flex gap-2">
               <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ${
-                user?.plan === 'pro' ? 'bg-accent/15 text-accent-2' : 'bg-white/8 text-white/50'
+                user?.plan === 'pro' ? 'bg-accent/15 text-accent-2' : 'bg-slate-100 text-slate-500'
               }`}>
                 {user?.plan === 'pro' ? '⚡ Pro Plan' : '🆓 Free Plan'}
               </span>
@@ -111,9 +111,9 @@ const Settings = () => {
               {...register('targetRole')}
             />
             <div>
-              <label className="block text-xs text-white/40 mb-1.5 font-medium">Experience Level</label>
+              <label className="block text-xs text-slate-400 mb-1.5 font-medium">Experience Level</label>
               <select
-                className="w-full bg-bg-3 border border-border rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-accent transition-all"
+                className="w-full bg-bg-3 border border-border rounded-lg px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-accent transition-all"
                 {...register('experienceLevel')}
               >
                 <option value="entry">Entry Level (&lt;2 yrs)</option>
@@ -170,10 +170,10 @@ const Settings = () => {
           ].map(({ key, label, desc, icon: Icon }) => (
             <div key={key} className="flex items-center justify-between py-3.5 border-b border-border last:border-0">
               <div className="flex items-center gap-3">
-                <Icon size={16} className="text-white/30" />
+                <Icon size={16} className="text-slate-400" />
                 <div>
                   <div className="text-sm font-medium">{label}</div>
-                  <div className="text-xs text-white/40">{desc}</div>
+                  <div className="text-xs text-slate-400">{desc}</div>
                 </div>
               </div>
               <Toggle
@@ -198,7 +198,7 @@ const Settings = () => {
             placeholder="sk-proj-..."
             defaultValue=""
           />
-          <div className="text-xs text-white/30">
+          <div className="text-xs text-slate-400">
             Your key is encrypted at rest. Used only for AI question generation and feedback. Never shared.
           </div>
           <Button size="sm" variant="ghost" onClick={() => toast.success('Key validated ✅')}>
@@ -214,9 +214,9 @@ const Settings = () => {
           <div className="flex items-center justify-between py-3.5 border-b border-border">
             <div>
               <div className="text-sm font-medium flex items-center gap-2">
-                <Download size={14} className="text-white/40" /> Export All Data
+                <Download size={14} className="text-slate-400" /> Export All Data
               </div>
-              <div className="text-xs text-white/40">Download all interviews, scores, and feedback as JSON</div>
+              <div className="text-xs text-slate-400">Download all interviews, scores, and feedback as JSON</div>
             </div>
             <Button
               variant="ghost" size="sm"
@@ -230,7 +230,7 @@ const Settings = () => {
               <div className="text-sm font-medium text-danger flex items-center gap-2">
                 <Trash2 size={14} /> Delete Account
               </div>
-              <div className="text-xs text-white/40">Permanently delete your account and all associated data</div>
+              <div className="text-xs text-slate-400">Permanently delete your account and all associated data</div>
             </div>
             <Button
               variant="danger" size="sm"

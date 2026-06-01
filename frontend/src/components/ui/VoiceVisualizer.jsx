@@ -9,7 +9,7 @@ const VoiceVisualizer = ({ isRecording = false, bars = 10, className = '' }) => 
     {Array.from({ length: bars }).map((_, i) => (
       <div
         key={i}
-        className={`w-1 rounded-sm transition-all ${isRecording ? 'bg-accent' : 'bg-white/20'}`}
+        className={`w-1 rounded-sm transition-all ${isRecording ? 'bg-accent' : 'bg-slate-500'}`}
         style={isRecording ? {
           height: '6px',
           animation: `wave 1.2s ease-in-out infinite`,

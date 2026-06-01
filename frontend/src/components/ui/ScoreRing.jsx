@@ -31,7 +31,7 @@ const ScoreRing = ({ score = 0, label = '', size = 100, color = '#7c6dfa' }) => 
         <div className="font-heading font-extrabold leading-none" style={{ fontSize: size * 0.22, color }}>
           {score}
         </div>
-        {label && <div className="text-white/40 leading-tight" style={{ fontSize: size * 0.1 }}>{label}</div>}
+        {label && <div className="text-slate-400 leading-tight" style={{ fontSize: size * 0.1 }}>{label}</div>}
       </div>
     </div>
   );

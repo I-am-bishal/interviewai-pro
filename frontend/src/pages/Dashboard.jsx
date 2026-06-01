@@ -56,7 +56,7 @@ const Dashboard = () => {
           <h1 className="font-heading text-2xl font-bold">
             Welcome back, {user?.name?.split(' ')[0] || 'there'} 👋
           </h1>
-          <p className="text-white/40 text-sm mt-0.5">Ready for today's interview practice?</p>
+          <p className="text-slate-400 text-sm mt-0.5">Ready for today's interview practice?</p>
         </div>
         <Button onClick={() => navigate('/interview')} iconRight={<ArrowRight size={15} />}>
           New Interview
@@ -68,8 +68,8 @@ const Dashboard = () => {
         {STATS.map(({ label, value, change, icon: Icon, up }) => (
           <Card key={label} className="!p-4">
             <div className="flex items-start justify-between mb-2">
-              <div className="text-[11px] font-semibold tracking-wider uppercase text-white/40">{label}</div>
-              <Icon size={15} className="text-white/20" />
+              <div className="text-[11px] font-semibold tracking-wider uppercase text-slate-400">{label}</div>
+              <Icon size={15} className="text-slate-300" />
             </div>
             <div className="font-heading text-2xl font-extrabold mb-1">{value}</div>
             <div className={`text-xs font-medium ${up ? 'text-success' : 'text-danger'}`}>{change}</div>
@@ -92,7 +92,7 @@ const Dashboard = () => {
                 <Card hover onClick={() => startInterview(mode.id)} className="!p-5 group">
                   <div className="text-3xl mb-3">{mode.emoji}</div>
                   <div className="font-heading font-bold text-[15px] mb-1.5">{mode.label}</div>
-                  <div className="text-[12.5px] text-white/50 mb-3 leading-relaxed">{mode.desc}</div>
+                  <div className="text-[12.5px] text-slate-500 mb-3 leading-relaxed">{mode.desc}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {mode.tags.map((t) => (
                       <Badge key={t} color={mode.color}>{t}</Badge>
@@ -118,7 +118,7 @@ const Dashboard = () => {
                 <Badge color="amber">Medium</Badge>
               </div>
               <div className="font-heading font-bold mb-1">Design a Distributed Cache</div>
-              <div className="text-[12.5px] text-white/50 mb-3">System Design · 30 min · 150 XP</div>
+              <div className="text-[12.5px] text-slate-500 mb-3">System Design · 30 min · 150 XP</div>
               <Button size="sm" className="w-full" onClick={() => startInterview('system-design')}>
                 Start Challenge →
               </Button>
@@ -136,7 +136,7 @@ const Dashboard = () => {
               ].map(({ type, topic, score, color }) => (
                 <div key={topic} className="flex items-center gap-3">
                   <Badge color={color} className="flex-shrink-0">{type}</Badge>
-                  <span className="flex-1 text-[13px] text-white/70 truncate">{topic}</span>
+                  <span className="flex-1 text-[13px] text-slate-700 truncate">{topic}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-heading font-bold text-accent text-sm">{score}%</span>
                     <ProgressBar value={score} className="w-12" />

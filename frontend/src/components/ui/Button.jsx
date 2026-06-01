@@ -4,9 +4,9 @@ import { Loader2 } from 'lucide-react';
 
 const VARIANTS = {
   primary: 'bg-accent hover:bg-accent-2 text-white border-transparent shadow-lg shadow-accent/20 hover:shadow-accent/40',
-  ghost: 'bg-transparent text-white/60 border-border hover:bg-bg-3 hover:text-white',
-  danger: 'bg-transparent text-danger border-danger hover:bg-danger hover:text-white',
-  success: 'bg-success/15 text-success border-success/30 hover:bg-success hover:text-white',
+  ghost: 'bg-transparent text-slate-600 border-border hover:bg-bg-3 hover:text-slate-900',
+  danger: 'bg-transparent text-danger border-danger hover:bg-danger hover:text-slate-900',
+  success: 'bg-success/15 text-success border-success/30 hover:bg-success hover:text-slate-900',
 };
 
 const SIZES = {

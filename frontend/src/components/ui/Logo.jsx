@@ -16,8 +16,8 @@ export const LogoIcon = ({ size = 32, className = '' }) => (
     <defs>
       {/* Dynamic gradient matching our brand colors (accent to pink) */}
       <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#7c6dfa" />
-        <stop offset="100%" stopColor="#ec4899" />
+        <stop offset="0%" stopColor="#6366f1" />
+        <stop offset="100%" stopColor="#06b6d4" />
       </linearGradient>
       {/* Drop shadow for depth */}
       <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -94,7 +94,7 @@ export const Logo = ({ size = 32, showText = true, className = '', textClassName
     <LogoIcon size={size} />
     {showText && (
       <div className="flex flex-col">
-        <span className={`font-heading font-extrabold text-sm text-white tracking-tight leading-tight ${textClassName}`}>
+        <span className={`font-heading font-extrabold text-sm text-slate-900 tracking-tight leading-tight ${textClassName}`}>
           InterviewAI Pro
         </span>
         <span className="text-[9px] font-bold tracking-wider text-accent uppercase opacity-90 leading-none mt-0.5">

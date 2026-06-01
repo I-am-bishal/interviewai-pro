@@ -6,11 +6,11 @@ import { Logo } from '../components/ui';
 
 /* ─── Data ────────────────────────────────────────────────────────────── */
 const FEATURES = [
-  { icon: Mic,       title: 'Voice AI Interviewer',    desc: 'Real voice interaction with instant transcription and confidence analysis.', color: 'from-violet-500 to-purple-600' },
-  { icon: Brain,     title: 'Adaptive Question Engine', desc: 'GPT-4o generates questions tailored to your resume and experience level.', color: 'from-blue-500 to-cyan-500' },
+  { icon: Mic,       title: 'Voice AI Interviewer',    desc: 'Real voice interaction with instant transcription and confidence analysis.', color: 'from-indigo-500 to-purple-600' },
+  { icon: Brain,     title: 'Adaptive Question Engine', desc: 'GPT-4o generates questions tailored to your resume and experience level.', color: 'from-indigo-600 to-cyan-500' },
   { icon: Code2,     title: 'Live Code Editor',         desc: 'Monaco-powered editor with multi-language support and hidden test cases.', color: 'from-emerald-500 to-teal-500' },
   { icon: FileText,  title: 'Resume AI Analysis',       desc: 'Deep ATS scoring, skill extraction, and gap analysis from your resume.', color: 'from-orange-500 to-amber-500' },
-  { icon: BarChart3, title: 'Performance Analytics',    desc: 'Track progress with detailed charts and AI improvement roadmaps.', color: 'from-pink-500 to-rose-500' },
+  { icon: BarChart3, title: 'Performance Analytics',    desc: 'Track progress with detailed charts and AI improvement roadmaps.', color: 'from-cyan-500 to-rose-500' },
   { icon: Trophy,    title: 'Leaderboard & Streaks',    desc: 'Compete with peers, maintain streaks, and unlock achievements.', color: 'from-yellow-500 to-orange-500' },
 ];
 
@@ -34,7 +34,7 @@ const Particle = ({ style }) => (
   <motion.div
     className="absolute rounded-full pointer-events-none"
     style={style}
-    animate={{ y: [0, -30, 0], opacity: [0.15, 0.5, 0.15], scale: [1, 1.2, 1] }}
+    animate={{ y: [0, -30, 0], opacity: [0.15, 0.4, 0.15], scale: [1, 1.2, 1] }}
     transition={{ duration: style.duration, repeat: Infinity, delay: style.delay, ease: 'easeInOut' }}
   />
 );
@@ -48,12 +48,12 @@ const FAQItem = ({ q, a, i }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: i * 0.06 }}
-      className="bg-white/[0.03] border border-white/[0.08] rounded-2xl overflow-hidden backdrop-blur-sm"
+      className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
     >
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-6 py-5 text-left gap-4 group">
-        <span className="font-medium text-[15px] group-hover:text-accent transition-colors">{q}</span>
+        <span className="font-semibold text-[15px] text-slate-800 group-hover:text-accent transition-colors">{q}</span>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown size={18} className="text-white/40 flex-shrink-0" />
+          <ChevronDown size={18} className="text-slate-400 flex-shrink-0" />
         </motion.div>
       </button>
       <AnimatePresence>
@@ -64,7 +64,7 @@ const FAQItem = ({ q, a, i }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <div className="px-6 pb-5 text-[13.5px] text-white/50 leading-relaxed border-t border-white/[0.06] pt-4">{a}</div>
+            <div className="px-6 pb-5 text-[13.5px] text-slate-500 leading-relaxed border-t border-slate-100 pt-4 bg-slate-50/50">{a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -76,64 +76,39 @@ const FAQItem = ({ q, a, i }) => {
 const Landing = () => {
   const heroRef = useRef(null);
   const { scrollY } = useScroll();
-  const videoOpacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const videoScale  = useTransform(scrollY, [0, 600], [1, 1.1]);
-  const heroY       = useTransform(scrollY, [0, 400], [0, -60]);
+  const heroY       = useTransform(scrollY, [0, 400], [0, -40]);
 
-  /* Generate fixed particles */
-  const particles = Array.from({ length: 28 }, (_, i) => ({
-    width:    `${4 + (i % 5) * 3}px`,
-    height:   `${4 + (i % 5) * 3}px`,
+  /* Generate fixed particles for the purple background area */
+  const particles = Array.from({ length: 18 }, (_, i) => ({
+    width:    `${4 + (i % 4) * 3}px`,
+    height:   `${4 + (i % 4) * 3}px`,
     left:     `${(i * 37) % 100}%`,
-    top:      `${(i * 53) % 100}%`,
-    background: i % 3 === 0 ? 'rgba(124,109,250,0.6)' : i % 3 === 1 ? 'rgba(236,72,153,0.5)' : 'rgba(99,179,237,0.4)',
-    duration: 4 + (i % 6),
-    delay:    i * 0.3,
+    top:      `${(i * 47) % 80}%`, // keep it in the top hero portion
+    background: i % 2 === 0 ? 'rgba(255,255,255,0.3)' : 'rgba(6,182,212,0.4)',
+    duration: 5 + (i % 5),
+    delay:    i * 0.4,
   }));
 
   return (
-    <div className="min-h-screen bg-[#060610] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-850 overflow-x-hidden">
 
-      {/* ── Background Video Layer ─────────────────────────────── */}
-      <motion.div
-        style={{ opacity: videoOpacity, scale: videoScale }}
-        className="fixed inset-0 z-0 pointer-events-none"
-      >
-        {/* Dark overlay on top of video */}
-        <div className="absolute inset-0 bg-[#060610]/75 z-10" />
-        {/* Gradient vignette edges */}
-        <div className="absolute inset-0 z-20 bg-radial-fade" style={{
-          background: 'radial-gradient(ellipse at center, transparent 40%, #060610 100%)'
-        }} />
-        <video
-          autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_25fps.mp4"
-          style={{ filter: 'saturate(1.2) hue-rotate(200deg)' }}
-        />
-      </motion.div>
+      {/* ── Slanted Purple Hero Background (Practipago-style) ── */}
+      <div 
+        className="absolute inset-x-0 top-0 h-[92vh] bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 -z-10 shadow-lg"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 88%)' }}
+      />
 
-      {/* ── Ambient Glow Orbs ──────────────────────────────────── */}
+      {/* ── Ambient Glow Orbs for Hero ── */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-40 -left-40 w-[700px] h-[700px] bg-accent/20 rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.2, 0.45, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-pink-500/15 rounded-full blur-[100px]"
-        />
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -30, 0], opacity: [0.1, 0.3, 0.1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-          className="absolute top-1/2 left-1/3 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px]"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-300 rounded-full blur-[120px]"
         />
       </div>
 
-      {/* ── Floating Particles ─────────────────────────────────── */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      {/* ── Floating Particles in Hero Banner ── */}
+      <div className="absolute inset-0 h-[90vh] z-0 pointer-events-none overflow-hidden">
         {particles.map((p, i) => <Particle key={i} style={p} />)}
       </div>
 
@@ -144,22 +119,22 @@ const Landing = () => {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="sticky top-0 z-50 flex items-center justify-between px-8 py-5 border-b border-white/[0.06] bg-black/30 backdrop-blur-xl"
+        className="relative z-10 flex items-center justify-between px-8 py-5 border-b border-white/10 bg-white/5 backdrop-blur-md"
       >
-        <Logo size={32} subtext="AI Interview Coach" />
-        <div className="hidden md:flex items-center gap-8 text-sm text-white/50">
+        <Logo size={32} subtext="AI Interview Coach" textClassName="text-white" />
+        <div className="hidden md:flex items-center gap-8 text-sm text-white/70">
           {['Features', 'Pricing', 'FAQ'].map((item) => (
             <a key={item} href={`#${item.toLowerCase()}`}
               className="relative hover:text-white transition-colors duration-200 group">
               {item}
-              <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-300" />
+              <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-300 group-hover:w-full transition-all duration-300" />
             </a>
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <Link to="/login" className="text-sm text-white/60 hover:text-white transition-colors px-3 py-2">Sign in</Link>
+          <Link to="/login" className="text-sm text-white/70 hover:text-white transition-colors px-3 py-2">Sign in</Link>
           <Link to="/register"
-            className="flex items-center gap-2 bg-gradient-to-r from-accent to-pink-500 hover:from-accent-2 hover:to-pink-400 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5">
+            className="flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-slate-900 text-sm font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-cyan-400/10 hover:shadow-cyan-400/25 hover:-translate-y-0.5">
             Get Started <ArrowRight size={14} />
           </Link>
         </div>
@@ -171,43 +146,41 @@ const Landing = () => {
       <motion.section
         ref={heroRef}
         style={{ y: heroY }}
-        className="relative z-10 min-h-[92vh] flex flex-col items-center justify-center text-center px-6 pt-10 pb-24"
+        className="relative z-10 min-h-[82vh] flex flex-col items-center justify-center text-center px-6 pt-10 pb-24 text-white"
       >
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-accent/40 bg-accent/10 backdrop-blur-md text-sm text-accent-2 mb-10"
+          className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-sm text-cyan-300 mb-8"
         >
           <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}>
-            <Sparkles size={14} className="text-yellow-400" />
+            <Sparkles size={14} className="text-cyan-300" />
           </motion.span>
           AI-Powered Interview Preparation Platform
         </motion.div>
 
         {/* Headline */}
-        <div className="max-w-5xl mx-auto mb-8">
+        <div className="max-w-5xl mx-auto mb-6">
           {['Ace Every Interview', 'with AI Coaching'].map((line, li) => (
             <div key={li} className="overflow-hidden">
               <motion.div
-                initial={{ y: 80, opacity: 0 }}
+                initial={{ y: 60, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.3 + li * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <h1 className="font-heading text-5xl md:text-7xl font-black leading-[1.05] tracking-tight">
                   {li === 0 ? line : (
                     <>with{' '}
-                      <span className="relative inline-block">
-                        <span className="bg-gradient-to-r from-accent via-violet-400 to-pink-400 bg-clip-text text-transparent">
-                          AI Coaching
-                        </span>
+                      <span className="relative inline-block text-cyan-300">
+                        <span>AI Coaching</span>
                         {/* Underline glow */}
                         <motion.span
                           initial={{ scaleX: 0 }}
                           animate={{ scaleX: 1 }}
                           transition={{ duration: 0.6, delay: 1.1 }}
-                          className="absolute -bottom-1 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-accent to-pink-400 blur-sm origin-left"
+                          className="absolute -bottom-1 left-0 right-0 h-1 rounded-full bg-cyan-400 origin-left"
                         />
                       </span>
                     </>
@@ -220,10 +193,10 @@ const Landing = () => {
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.5 }}
-          className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Practice HR, DSA, System Design &amp; Behavioral interviews with a real-time AI interviewer.
           Get instant feedback, scores, and a personalised improvement roadmap.
@@ -231,21 +204,21 @@ const Landing = () => {
 
         {/* CTA buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.5 }}
-          className="flex items-center justify-center gap-4 flex-wrap mb-20"
+          className="flex items-center justify-center gap-4 flex-wrap mb-16"
         >
           <Link to="/register"
-            className="group flex items-center gap-2.5 bg-gradient-to-r from-accent to-pink-500 hover:from-accent-2 hover:to-pink-400 text-white font-semibold px-8 py-4 rounded-2xl text-[16px] transition-all hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-1">
+            className="group flex items-center gap-2.5 bg-cyan-400 hover:bg-cyan-350 text-slate-900 font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1">
             Start Practicing Free
             <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
               <ArrowRight size={18} />
             </motion.span>
           </Link>
           <Link to="/login"
-            className="flex items-center gap-2 bg-white/[0.05] border border-white/[0.12] hover:bg-white/[0.1] hover:border-white/[0.25] text-white/80 hover:text-white font-medium px-8 py-4 rounded-2xl text-[16px] transition-all backdrop-blur-sm">
-            <Play size={15} className="text-accent" /> Watch Demo
+            className="flex items-center gap-2 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl text-[16px] transition-all backdrop-blur-sm">
+            <Play size={15} className="text-cyan-300 fill-cyan-300" /> Watch Demo
           </Link>
         </motion.div>
 
@@ -259,13 +232,13 @@ const Landing = () => {
           {STATS.map(([val, label], i) => (
             <motion.div
               key={label}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 + i * 0.1 }}
               className="text-center group"
             >
-              <div className="font-heading text-3xl font-extrabold text-white group-hover:text-accent transition-colors duration-300">{val}</div>
-              <div className="text-xs text-white/30 mt-1 tracking-wide">{label}</div>
+              <div className="font-heading text-3xl font-extrabold text-white group-hover:text-cyan-300 transition-colors duration-300">{val}</div>
+              <div className="text-xs text-white/60 mt-1 tracking-wide">{label}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -275,12 +248,12 @@ const Landing = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-1 text-white/20"
+            className="flex flex-col items-center gap-1 text-white/40"
           >
             <span className="text-[10px] tracking-widest uppercase">Scroll</span>
             <ChevronDown size={16} />
@@ -291,44 +264,44 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           FEATURES
       ══════════════════════════════════════════════════════════ */}
-      <section id="features" className="relative z-10 py-6 px-6">
+      <section id="features" className="relative z-10 py-16 px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/50 mb-4 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             What We Offer
           </div>
-          <h2 className="font-heading text-4xl font-extrabold mb-3">Everything You Need to Win</h2>
-          <p className="text-white/40 max-w-xl mx-auto">One platform, six powerful tools — built for modern engineering interviews.</p>
+          <h2 className="font-heading text-4xl font-extrabold text-slate-900 mb-3">Everything You Need to Win</h2>
+          <p className="text-slate-500 max-w-xl mx-auto">One platform, six powerful tools — built for modern engineering interviews.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {FEATURES.map(({ icon: Icon, title, desc, color }, i) => (
             <motion.div
               key={title}
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="relative group rounded-2xl p-6 bg-white/[0.03] border border-white/[0.07] backdrop-blur-sm overflow-hidden cursor-default transition-all duration-300 hover:border-white/[0.15] hover:bg-white/[0.06]"
+              whileHover={{ y: -6, scale: 1.01 }}
+              className="relative group rounded-2xl p-6 bg-white border border-slate-200/60 shadow-sm overflow-hidden cursor-default transition-all duration-300 hover:border-indigo-200 hover:shadow-md hover:bg-slate-50/30"
             >
               {/* Card glow on hover */}
-              <div className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 blur-xl`} />
+              <div className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 blur-xl`} />
 
-              <div className={`relative w-12 h-12 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mb-5 shadow-lg`}>
+              <div className={`relative w-12 h-12 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mb-5 shadow-sm`}>
                 <Icon size={20} className="text-white" />
               </div>
-              <div className="relative font-heading font-bold text-[15px] mb-2 group-hover:text-white transition-colors">{title}</div>
-              <div className="relative text-[13px] text-white/45 leading-relaxed">{desc}</div>
+              <div className="relative font-heading font-bold text-[16px] text-slate-800 mb-2 group-hover:text-indigo-600 transition-colors">{title}</div>
+              <div className="relative text-[13.5px] text-slate-500 leading-relaxed">{desc}</div>
 
               {/* Shimmer sweep */}
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
-                style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%)' }}
+                style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(99,102,241,0.03) 50%, transparent 60%)' }}
                 animate={{ backgroundPositionX: ['200%', '-200%'] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
               />
@@ -340,63 +313,63 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           PRICING
       ══════════════════════════════════════════════════════════ */}
-      <section id="pricing" className="relative z-10 px-6 py-24">
+      <section id="pricing" className="relative z-10 px-6 py-20 bg-slate-50/50 border-y border-slate-100">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/50 mb-4 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             Pricing
           </div>
-          <h2 className="font-heading text-4xl font-extrabold mb-3">Simple, Transparent Pricing</h2>
-          <p className="text-white/40">Start free, upgrade when you're ready</p>
+          <h2 className="font-heading text-4xl font-extrabold text-slate-900 mb-3">Simple, Transparent Pricing</h2>
+          <p className="text-slate-500">Start free, upgrade when you're ready</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {PRICING.map(({ plan, price, period, features, cta, highlight }, i) => (
             <motion.div
               key={plan}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -4 }}
-              className={`relative rounded-2xl p-7 border transition-all duration-300 ${highlight
-                ? 'border-accent/60 bg-accent/[0.06] shadow-2xl shadow-accent/10'
-                : 'border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15] hover:bg-white/[0.04]'
+              className={`relative rounded-2xl p-7 border transition-all duration-300 bg-white ${highlight
+                ? 'border-indigo-400 bg-white shadow-xl shadow-indigo-500/5'
+                : 'border-slate-200 hover:border-slate-350 hover:shadow-md'
               }`}
             >
               {highlight && (
                 <>
-                  <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-accent/30 to-pink-500/20 blur-xl -z-10" />
-                  <div className="text-[10px] font-bold tracking-widest text-accent uppercase mb-4 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/20 to-cyan-400/10 blur-xl -z-10" />
+                  <div className="text-[10px] font-bold tracking-widest text-indigo-600 uppercase mb-4 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
                     Most Popular
                   </div>
                 </>
               )}
-              <div className="font-heading font-bold text-xl mb-2">{plan}</div>
+              <div className="font-heading font-bold text-xl text-slate-800 mb-2">{plan}</div>
               <div className="flex items-end gap-1 mb-6">
-                <span className="font-heading text-5xl font-extrabold">{price}</span>
-                <span className="text-white/40 text-sm pb-1.5">{period}</span>
+                <span className="font-heading text-5xl font-extrabold text-slate-900">{price}</span>
+                <span className="text-slate-400 text-sm pb-1.5">{period}</span>
               </div>
               <div className="space-y-3 mb-8">
                 {features.map((f) => (
                   <div key={f} className="flex items-center gap-2.5 text-[13px]">
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-accent/20' : 'bg-white/[0.08]'}`}>
-                      <Check size={10} className={highlight ? 'text-accent' : 'text-white/50'} />
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-slate-50'}`}>
+                      <Check size={10} className={highlight ? 'text-indigo-650 font-bold' : 'text-slate-400'} />
                     </div>
-                    <span className="text-white/65">{f}</span>
+                    <span className="text-slate-600 font-medium">{f}</span>
                   </div>
                 ))}
               </div>
               <Link
                 to="/register"
-                className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-all ${highlight
-                  ? 'bg-gradient-to-r from-accent to-pink-500 hover:from-accent-2 hover:to-pink-400 text-white hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5'
-                  : 'bg-white/[0.06] border border-white/[0.1] hover:bg-white/[0.1] hover:border-white/[0.2] text-white/80 hover:text-white'
+                className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
+                  ? 'bg-cyan-450 hover:bg-cyan-400 bg-cyan-400 text-slate-900 font-bold hover:shadow-md'
+                  : 'bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700'
                 }`}
               >
                 {cta}
@@ -416,53 +389,39 @@ const Landing = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs text-white/50 mb-4 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             FAQ
           </div>
-          <h2 className="font-heading text-4xl font-extrabold">Frequently Asked Questions</h2>
+          <h2 className="font-heading text-4xl font-extrabold text-slate-900">Frequently Asked Questions</h2>
         </motion.div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {FAQS.map(({ q, a }, i) => <FAQItem key={i} q={q} a={a} i={i} />)}
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          CTA BANNER
+          CTA BANNER (Rounded Purple Card style)
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative z-10 px-6 py-24 overflow-hidden">
-        {/* Animated gradient background */}
-        <motion.div
-          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 opacity-15"
-          style={{
-            background: 'linear-gradient(270deg, #7c6dfa, #ec4899, #06b6d4, #7c6dfa)',
-            backgroundSize: '300% 300%',
-          }}
-        />
-        <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-[1px] border-y border-white/[0.08]" />
+      <section className="relative z-10 px-6 py-20 max-w-5xl mx-auto mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-800 text-white shadow-xl shadow-indigo-600/10">
+        {/* Decorative circle shapes inside CTA box */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[60px] pointer-events-none" />
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative text-center max-w-2xl mx-auto"
+          className="relative text-center max-w-2xl mx-auto z-10"
         >
-          <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="inline-flex items-center gap-2 text-4xl mb-6"
-          >
-            🚀
-          </motion.div>
+          <div className="inline-flex items-center gap-2 text-4xl mb-4">🚀</div>
           <h2 className="font-heading text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
             Ready to land your<br />
-            <span className="bg-gradient-to-r from-accent via-violet-400 to-pink-400 bg-clip-text text-transparent">dream job?</span>
+            <span className="text-cyan-300">dream job?</span>
           </h2>
-          <p className="text-white/50 mb-10 text-lg">Join 50,000+ engineers who've levelled up with InterviewAI Pro</p>
+          <p className="text-indigo-100 opacity-90 mb-8 text-lg">Join 50,000+ engineers who've levelled up with InterviewAI Pro</p>
           <Link
             to="/register"
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-accent to-pink-500 hover:from-accent-2 hover:to-pink-400 text-white font-bold px-10 py-5 rounded-2xl text-[17px] transition-all hover:shadow-2xl hover:shadow-accent/40 hover:-translate-y-1"
+            className="inline-flex items-center gap-3 bg-cyan-400 hover:bg-cyan-300 text-slate-900 font-bold px-10 py-5 rounded-2xl text-[17px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1"
           >
             Start Free Interview
             <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>
@@ -475,14 +434,14 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════════════════════ */}
-      <footer className="relative z-10 px-8 py-10 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4 bg-black/30 backdrop-blur-xl">
-        <Logo size={28} subtext="Empowered Preparation" />
-        <div className="flex gap-8 text-xs text-white/30">
+      <footer className="relative z-10 px-8 py-10 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4 bg-white">
+        <Logo size={28} subtext="Empowered Preparation" textClassName="text-slate-800" />
+        <div className="flex gap-8 text-xs text-slate-500">
           {['Privacy', 'Terms', 'Contact'].map((item) => (
-            <a key={item} href="#" className="hover:text-white transition-colors">{item}</a>
+            <a key={item} href="#" className="hover:text-indigo-600 font-medium transition-colors">{item}</a>
           ))}
         </div>
-        <div className="text-xs text-white/20">© 2025 InterviewAI Pro. All rights reserved.</div>
+        <div className="text-xs text-slate-400 font-medium">© 2025 InterviewAI Pro. All rights reserved.</div>
       </footer>
     </div>
   );

@@ -67,7 +67,7 @@ const ResumeAnalyzer = () => {
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="font-heading text-2xl font-bold mb-1">Resume AI Analyzer</h1>
-        <p className="text-white/40 text-sm">Upload your resume for deep AI analysis, ATS scoring, and tailored interview prep.</p>
+        <p className="text-slate-400 text-sm">Upload your resume for deep AI analysis, ATS scoring, and tailored interview prep.</p>
       </div>
 
       {/* Upload Zone */}
@@ -89,7 +89,7 @@ const ResumeAnalyzer = () => {
           <div className="font-heading font-bold text-lg mb-2">
             {uploading ? 'Analysing your resume...' : 'Drop your resume here'}
           </div>
-          <div className="text-white/40 text-sm mb-5">Supports PDF, DOCX — Max 5 MB</div>
+          <div className="text-slate-400 text-sm mb-5">Supports PDF, DOCX — Max 5 MB</div>
           <Button loading={uploading} size="lg">
             {uploading ? 'Processing...' : 'Choose File'}
           </Button>
@@ -140,7 +140,7 @@ const ResumeAnalyzer = () => {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${
                     activeTab === tab
                       ? 'bg-accent text-white shadow-sm'
-                      : 'text-white/50 hover:text-white'
+                      : 'text-slate-500 hover:text-slate-900'
                   }`}
                 >
                   {tab === 'analysis' ? '📊 Analysis' : tab === 'skills' ? '🛠 Skills' : '❓ Questions'}
@@ -165,7 +165,7 @@ const ResumeAnalyzer = () => {
                     ))}
                   </div>
                   {resume.analysis?.summary && (
-                    <p className="mt-4 text-[13.5px] text-white/60 leading-relaxed border-t border-border pt-4">
+                    <p className="mt-4 text-[13.5px] text-slate-600 leading-relaxed border-t border-border pt-4">
                       {resume.analysis.summary}
                     </p>
                   )}
@@ -178,12 +178,12 @@ const ResumeAnalyzer = () => {
                     {(resume.analysis?.recommendations || []).map((rec, i) => (
                       <div key={i} className="flex gap-3 py-2.5 border-b border-border last:border-0">
                         <AlertCircle size={15} className="text-warning flex-shrink-0 mt-0.5" />
-                        <span className="text-[13.5px] text-white/70">{rec}</span>
+                        <span className="text-[13.5px] text-slate-700">{rec}</span>
                       </div>
                     ))}
                     {resume.analysis?.missingKeywords?.length > 0 && (
                       <div className="pt-2">
-                        <div className="text-xs text-white/40 mb-2">Missing Keywords</div>
+                        <div className="text-xs text-slate-400 mb-2">Missing Keywords</div>
                         <div className="flex flex-wrap gap-1.5">
                           {resume.analysis.missingKeywords.map((kw) => (
                             <Badge key={kw} color="red">{kw}</Badge>
@@ -208,7 +208,7 @@ const ResumeAnalyzer = () => {
                     ].map(([label, val = 0]) => (
                       <div key={label}>
                         <div className="flex justify-between text-[13px] mb-1">
-                          <span className="text-white/60">{label}</span>
+                          <span className="text-slate-600">{label}</span>
                           <span className="font-semibold text-accent">{val}%</span>
                         </div>
                         <ProgressBar value={val} />
@@ -238,7 +238,7 @@ const ResumeAnalyzer = () => {
                       </div>
                     ))}
                     {!resume.skills?.length && (
-                      <p className="text-white/40 text-sm">No skills extracted. Ensure your resume has a skills section.</p>
+                      <p className="text-slate-400 text-sm">No skills extracted. Ensure your resume has a skills section.</p>
                     )}
                   </div>
 
@@ -252,7 +252,7 @@ const ResumeAnalyzer = () => {
                             <div className="font-medium text-sm">{exp.role}</div>
                             <div className="text-xs text-accent mb-1">{exp.company} · {exp.duration}</div>
                             {exp.description && (
-                              <div className="text-[12.5px] text-white/50">{exp.description}</div>
+                              <div className="text-[12.5px] text-slate-500">{exp.description}</div>
                             )}
                           </div>
                         ))}
@@ -270,7 +270,7 @@ const ResumeAnalyzer = () => {
                             <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center text-sm flex-shrink-0">🎓</div>
                             <div>
                               <div className="font-medium text-sm">{edu.degree}</div>
-                              <div className="text-xs text-white/50">{edu.institution} · {edu.year}</div>
+                              <div className="text-xs text-slate-500">{edu.institution} · {edu.year}</div>
                             </div>
                           </div>
                         ))}
@@ -286,7 +286,7 @@ const ResumeAnalyzer = () => {
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <Card>
                   <SectionTitle>AI-Generated Interview Questions</SectionTitle>
-                  <p className="text-[13px] text-white/40 mb-4">
+                  <p className="text-[13px] text-slate-400 mb-4">
                     Based on your resume content, expect these questions in your next interview:
                   </p>
                   <div className="space-y-3">
@@ -296,18 +296,18 @@ const ResumeAnalyzer = () => {
                           {i + 1}
                         </div>
                         <div className="flex-1">
-                          <p className="text-[13.5px] text-white/80 leading-relaxed">{q}</p>
+                          <p className="text-[13.5px] text-slate-800 leading-relaxed">{q}</p>
                         </div>
                         <button
                           onClick={() => navigate('/interview/room', { state: { mode: 'hr', focusQuestion: q } })}
-                          className="text-white/20 hover:text-accent transition-colors flex-shrink-0"
+                          className="text-slate-300 hover:text-accent transition-colors flex-shrink-0"
                         >
                           <ChevronRight size={16} />
                         </button>
                       </div>
                     ))}
                     {!resume.generatedQuestions?.length && (
-                      <p className="text-white/40 text-sm text-center py-4">No questions generated yet.</p>
+                      <p className="text-slate-400 text-sm text-center py-4">No questions generated yet.</p>
                     )}
                   </div>
 

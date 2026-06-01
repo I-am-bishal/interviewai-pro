@@ -41,7 +41,7 @@ const AppLayout = () => {
       <div className="p-5 border-b border-border flex items-center gap-2">
         <Logo size={34} subtext="Dashboard Hub" />
         {mobile && (
-          <button onClick={() => setSidebarOpen(false)} className="ml-auto text-white/40 hover:text-white">
+          <button onClick={() => setSidebarOpen(false)} className="ml-auto text-slate-400 hover:text-slate-900">
             <X size={18} />
           </button>
         )}
@@ -58,7 +58,7 @@ const AppLayout = () => {
               flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13.5px] font-medium transition-all
               ${isActive
                 ? 'bg-accent/15 text-accent-2'
-                : 'text-white/50 hover:text-white hover:bg-bg-3'}
+                : 'text-slate-500 hover:text-slate-900 hover:bg-bg-3'}
             `}
           >
             <Icon size={17} />
@@ -73,16 +73,16 @@ const AppLayout = () => {
       {/* User */}
       <div className="p-3 border-t border-border">
         <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-bg-3 cursor-pointer group">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-pink-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-cyan-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-[13px] font-medium text-white truncate">{user?.name || 'User'}</div>
+            <div className="text-[13px] font-medium text-slate-900 truncate">{user?.name || 'User'}</div>
             <div className="text-[11px] text-accent font-medium flex items-center gap-1">
               <Zap size={10} /> {user?.currentStreak || 0} day streak
             </div>
           </div>
-          <button onClick={handleLogout} className="text-white/30 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity">
+          <button onClick={handleLogout} className="text-slate-400 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity">
             <LogOut size={15} />
           </button>
         </div>
@@ -119,7 +119,7 @@ const AppLayout = () => {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar — mobile only */}
         <div className="md:hidden flex items-center gap-3 px-4 h-14 bg-bg-2 border-b border-border flex-shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="text-white/60 hover:text-white">
+          <button onClick={() => setSidebarOpen(true)} className="text-slate-600 hover:text-slate-900">
             <Menu size={22} />
           </button>
           <Logo size={26} subtext="" />

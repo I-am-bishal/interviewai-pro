@@ -11,7 +11,7 @@
   }
 
   body {
-    @apply bg-bg text-white font-sans antialiased selection:bg-accent/30 selection:text-white;
+    @apply bg-bg text-slate-900 font-sans antialiased selection:bg-accent/30 selection:text-white;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -19,7 +19,7 @@
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { @apply bg-bg; }
   ::-webkit-scrollbar-thumb { @apply bg-bg-4 rounded-full border-2 border-bg; }
-  ::-webkit-scrollbar-thumb:hover { @apply bg-border; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-border-2; }
 }
 
 @layer components {
@@ -39,16 +39,16 @@
 
   /* Glassmorphism */
   .glass {
-    @apply bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
+    @apply bg-white/75 backdrop-blur-xl border border-slate-200/60 shadow-[0_8px_32px_0_rgba(15,23,42,0.06)];
   }
 
   .glass-card {
-    @apply bg-white/[0.015] backdrop-blur-lg border border-white/[0.04] transition-all duration-300 hover:border-white/[0.08] hover:bg-white/[0.03];
+    @apply bg-white/60 backdrop-blur-lg border border-slate-200/40 transition-all duration-300 hover:border-slate-200/80 hover:bg-white/80 shadow-sm hover:shadow-md;
   }
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-accent via-indigo-400 to-accent-2 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-accent via-cyan-400 to-accent-2 bg-clip-text text-transparent;
   }
 
   .gradient-border {

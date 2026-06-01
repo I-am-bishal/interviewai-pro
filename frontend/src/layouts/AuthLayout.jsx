@@ -13,7 +13,7 @@ const AuthLayout = () => (
 
       <div>
         <div className="text-3xl font-heading font-bold leading-snug mb-4">
-          Land your <span className="bg-gradient-to-r from-accent to-pink-400 bg-clip-text text-transparent">dream role</span> with AI-powered practice
+          Land your <span className="bg-gradient-to-r from-accent to-cyan-400 bg-clip-text text-transparent">dream role</span> with AI-powered practice
         </div>
         <div className="space-y-3">
           {[
@@ -21,14 +21,14 @@ const AuthLayout = () => (
             ['🧠', 'Adaptive questions based on your resume'],
             ['📊', 'Detailed performance analytics & roadmap'],
           ].map(([icon, text]) => (
-            <div key={text} className="flex items-center gap-3 text-sm text-white/60">
+            <div key={text} className="flex items-center gap-3 text-sm text-slate-600">
               <span>{icon}</span><span>{text}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="text-xs text-white/30">
+      <div className="text-xs text-slate-400">
         Trusted by 50,000+ engineers preparing for FAANG & top tech companies
       </div>
     </div>

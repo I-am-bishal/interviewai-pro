@@ -11,18 +11,18 @@ export default {
       },
       colors: {
         bg: {
-          DEFAULT: '#0a0a0f',
-          2: '#111118',
-          3: '#1a1a24',
-          4: '#22222f',
+          DEFAULT: '#f8fafc',
+          2: '#ffffff',
+          3: '#f1f5f9',
+          4: '#e2e8f0',
         },
         border: {
-          DEFAULT: '#2a2a3a',
-          2: '#383850',
+          DEFAULT: '#e2e8f0',
+          2: '#cbd5e1',
         },
         accent: {
-          DEFAULT: '#7c6dfa',
-          2: '#9d8fff',
+          DEFAULT: '#6366f1',
+          2: '#4f46e5',
         },
         success: '#22c984',
         warning: '#f5a623',
