@@ -44,7 +44,7 @@ export const Input = React.forwardRef(({ label, error, icon, className = '', ...
       <input
         ref={ref}
         className={`
-          w-full bg-white border rounded-lg px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400
+          w-full bg-bg-2 border rounded-lg px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400
           outline-none transition-all
           ${error ? 'border-danger focus:border-danger focus:ring-1 focus:ring-danger/30' : 'border-border focus:border-accent focus:ring-1 focus:ring-accent/25'}
           ${icon ? 'pl-9' : ''}
