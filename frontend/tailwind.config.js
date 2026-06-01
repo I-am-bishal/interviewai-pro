@@ -11,14 +11,24 @@ export default {
       },
       colors: {
         bg: {
-          DEFAULT: '#f8fafc',
-          2: '#ffffff',
-          3: '#f1f5f9',
-          4: '#e2e8f0',
+          DEFAULT: 'var(--bg-default)',
+          2: 'var(--bg-2)',
+          3: 'var(--bg-3)',
+          4: 'var(--bg-4)',
         },
         border: {
-          DEFAULT: '#e2e8f0',
-          2: '#cbd5e1',
+          DEFAULT: 'var(--border-default)',
+          2: 'var(--border-2)',
+        },
+        slate: {
+          900: 'var(--slate-900)',
+          800: 'var(--slate-800)',
+          700: 'var(--slate-700)',
+          650: 'var(--slate-650)',
+          600: 'var(--slate-600)',
+          500: 'var(--slate-500)',
+          400: 'var(--slate-400)',
+          300: 'var(--slate-300)',
         },
         accent: {
           DEFAULT: '#6366f1',

@@ -4,17 +4,19 @@ import { User, Mail, Lock, Briefcase, Key, Bell, Mic, Moon, ChevronRight, Downlo
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
+import { useThemeStore } from '../store/themeStore';
 import { userApi } from '../api/index.js';
 import { Card, Input, SectionTitle, Toggle, Divider } from '../components/ui/index.jsx';
 import Button from '../components/ui/Button';
 
 const Settings = () => {
   const { user, updateUser } = useAuthStore();
+  const { isDark, setTheme } = useThemeStore();
   const [saving, setSaving]   = useState(false);
   const [prefs, setPrefs]     = useState({
     notifications: true,
     voiceMode:     true,
-    darkMode:      true,
+    darkMode:      isDark,
     autoAdvance:   false,
     emailDigest:   true,
   });
@@ -164,7 +166,7 @@ const Settings = () => {
           {[
             { key: 'notifications', label: 'Push Notifications',    desc: 'Daily practice reminders',           icon: Bell },
             { key: 'voiceMode',     label: 'Voice Interview Mode',   desc: 'Enable microphone for answers',      icon: Mic },
-            { key: 'darkMode',      label: 'Dark Mode',              desc: 'Dark theme (always on for now)',      icon: Moon },
+            { key: 'darkMode',      label: 'Dark Mode',              desc: 'Toggle dark or light color theme',   icon: Moon },
             { key: 'autoAdvance',   label: 'Auto-advance Questions', desc: 'Move to next question automatically', icon: ChevronRight },
             { key: 'emailDigest',   label: 'Weekly Email Digest',    desc: 'Performance summary every Monday',   icon: Mail },
           ].map(({ key, label, desc, icon: Icon }) => (
@@ -177,9 +179,13 @@ const Settings = () => {
                 </div>
               </div>
               <Toggle
-                checked={prefs[key]}
+                checked={key === 'darkMode' ? isDark : prefs[key]}
                 onChange={(val) => {
-                  setPrefs(p => ({ ...p, [key]: val }));
+                  if (key === 'darkMode') {
+                    setTheme(val);
+                  } else {
+                    setPrefs(p => ({ ...p, [key]: val }));
+                  }
                   toast.success(`${label} ${val ? 'enabled' : 'disabled'}`);
                 }}
               />

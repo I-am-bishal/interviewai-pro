@@ -3,6 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-default: #f8fafc;
+    --bg-2: #ffffff;
+    --bg-3: #f1f5f9;
+    --bg-4: #e2e8f0;
+    --border-default: #e2e8f0;
+    --border-2: #cbd5e1;
+    --slate-900: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-650: #475569;
+    --slate-600: #475569;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-300: #cbd5e1;
+  }
+
+  html.dark {
+    --bg-default: #090d16;
+    --bg-2: #0f172a;
+    --bg-3: #1e293b;
+    --bg-4: #334155;
+    --border-default: #1e293b;
+    --border-2: #334155;
+    --slate-900: #f8fafc;
+    --slate-800: #f1f5f9;
+    --slate-700: #cbd5e1;
+    --slate-650: #cbd5e1;
+    --slate-600: #94a3b8;
+    --slate-500: #a1a1aa;
+    --slate-400: #71717a;
+    --slate-300: #1e293b;
+  }
+
   *, *::before, *::after { box-sizing: border-box; }
 
   html {
@@ -39,11 +73,11 @@
 
   /* Glassmorphism */
   .glass {
-    @apply bg-white/75 backdrop-blur-xl border border-slate-200/60 shadow-[0_8px_32px_0_rgba(15,23,42,0.06)];
+    @apply bg-white/75 dark:bg-slate-900/65 backdrop-blur-xl border border-slate-200/60 dark:border-slate-800/65 shadow-[0_8px_32px_0_rgba(15,23,42,0.06)];
   }
 
   .glass-card {
-    @apply bg-white/60 backdrop-blur-lg border border-slate-200/40 transition-all duration-300 hover:border-slate-200/80 hover:bg-white/80 shadow-sm hover:shadow-md;
+    @apply bg-white/60 dark:bg-slate-900/50 backdrop-blur-lg border border-slate-200/40 dark:border-slate-800/40 transition-all duration-300 hover:border-slate-200/80 dark:hover:border-slate-800/80 hover:bg-white/80 dark:hover:bg-slate-900/85 shadow-sm hover:shadow-md;
   }
 
   /* Gradient text */

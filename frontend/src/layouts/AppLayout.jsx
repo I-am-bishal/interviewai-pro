@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard, MessageSquare, Code2, FileText,
   BarChart3, Trophy, Settings, LogOut, Zap, Menu, X,
+  Moon, Sun
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useThemeStore } from '../store/themeStore';
 import toast from 'react-hot-toast';
 import LoadingSpinner, { Logo } from '../components/ui';
 
@@ -21,6 +23,7 @@ const NAV_ITEMS = [
 
 const AppLayout = () => {
   const { user, logout } = useAuthStore();
+  const { isDark, toggleTheme } = useThemeStore();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -69,6 +72,22 @@ const AppLayout = () => {
           </NavLink>
         ))}
       </nav>
+
+      {/* Theme Toggle */}
+      <div className="px-3 pt-2 pb-1 border-t border-border">
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium text-slate-500 hover:text-slate-900 hover:bg-bg-3 transition-all"
+        >
+          <span className="flex items-center gap-2.5">
+            {isDark ? <Sun size={15} className="text-amber-500" /> : <Moon size={15} className="text-slate-400" />}
+            <span className="text-slate-800">Theme Mode</span>
+          </span>
+          <span className="text-[9px] bg-bg-4 text-slate-600 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+            {isDark ? 'Dark' : 'Light'}
+          </span>
+        </button>
+      </div>
 
       {/* User */}
       <div className="p-3 border-t border-border">
