@@ -90,25 +90,31 @@ const Landing = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-850 overflow-x-hidden">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-850 overflow-x-hidden relative z-0">
 
-      {/* ── Slanted Purple Hero Background (Practipago-style) ── */}
+      {/* ── Slanted Purple Hero Background (Practipago-style) with gradient flow ── */}
       <div 
-        className="absolute inset-x-0 top-0 h-[92vh] bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 -z-10 shadow-lg"
-        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 88%)' }}
+        className="absolute inset-x-0 top-0 h-[96vh] bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 z-0 shadow-lg animate-gradient-flow"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 74%, 0 90%)' }}
       />
 
       {/* ── Ambient Glow Orbs for Hero ── */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.15, 0.3, 0.15] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-300 rounded-full blur-[120px]"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.35, 0.15] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-300 rounded-full blur-[130px]"
+        />
+        {/* Soft flowing light blob in bottom corner */}
+        <motion.div
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          className="absolute bottom-40 right-10 w-[450px] h-[450px] bg-indigo-200/40 rounded-full blur-[100px]"
         />
       </div>
 
       {/* ── Floating Particles in Hero Banner ── */}
-      <div className="absolute inset-0 h-[90vh] z-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 h-[92vh] z-0 pointer-events-none overflow-hidden">
         {particles.map((p, i) => <Particle key={i} style={p} />)}
       </div>
 
@@ -134,121 +140,124 @@ const Landing = () => {
         <div className="flex items-center gap-3">
           <Link to="/login" className="text-sm text-white/70 hover:text-white transition-colors px-3 py-2">Sign in</Link>
           <Link to="/register"
-            className="flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-slate-900 text-sm font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-cyan-400/10 hover:shadow-cyan-400/25 hover:-translate-y-0.5">
+            className="flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-slate-900 text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-cyan-400/10 hover:shadow-cyan-400/25 hover:-translate-y-0.5">
             Get Started <ArrowRight size={14} />
           </Link>
         </div>
       </motion.nav>
 
       {/* ══════════════════════════════════════════════════════════
-          HERO
+          HERO (Split view layout with AI generated figure)
       ══════════════════════════════════════════════════════════ */}
       <motion.section
         ref={heroRef}
         style={{ y: heroY }}
-        className="relative z-10 min-h-[82vh] flex flex-col items-center justify-center text-center px-6 pt-10 pb-24 text-white"
+        className="relative z-10 min-h-[86vh] max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 pt-10 pb-24 text-white gap-12"
       >
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-sm text-cyan-300 mb-8"
-        >
-          <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}>
-            <Sparkles size={14} className="text-cyan-300" />
-          </motion.span>
-          AI-Powered Interview Preparation Platform
-        </motion.div>
+        {/* Left Side: Copy */}
+        <div className="flex-[1.1] text-left flex flex-col items-start">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-sm text-cyan-300 mb-8"
+          >
+            <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }}>
+              <Sparkles size={14} className="text-cyan-300" />
+            </motion.span>
+            AI-Powered Interview Preparation Platform
+          </motion.div>
 
-        {/* Headline */}
-        <div className="max-w-5xl mx-auto mb-6">
-          {['Ace Every Interview', 'with AI Coaching'].map((line, li) => (
-            <div key={li} className="overflow-hidden">
-              <motion.div
-                initial={{ y: 60, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.3 + li * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-              >
-                <h1 className="font-heading text-5xl md:text-7xl font-black leading-[1.05] tracking-tight">
-                  {li === 0 ? line : (
-                    <>with{' '}
-                      <span className="relative inline-block text-cyan-300">
-                        <span>AI Coaching</span>
-                        {/* Underline glow */}
-                        <motion.span
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ duration: 0.6, delay: 1.1 }}
-                          className="absolute -bottom-1 left-0 right-0 h-1 rounded-full bg-cyan-400 origin-left"
-                        />
-                      </span>
-                    </>
-                  )}
-                </h1>
-              </motion.div>
-            </div>
-          ))}
+          {/* Headline */}
+          <h1 className="font-heading text-4xl md:text-[56px] font-black leading-[1.1] tracking-tight mb-6">
+            Ace Every Interview <br />
+            with <span className="text-cyan-300 relative inline-block">AI Coaching
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.6, delay: 1.1 }}
+                className="absolute -bottom-1.5 left-0 right-0 h-1.5 rounded-full bg-cyan-450 bg-cyan-400 origin-left"
+              />
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-[17px] text-white/80 max-w-xl mb-10 leading-relaxed">
+            Practice HR, DSA, System Design &amp; Behavioral interviews with a real-time AI interviewer.
+            Get instant feedback, scores, and a personalised improvement roadmap.
+          </p>
+
+          {/* CTA buttons */}
+          <div className="flex items-center gap-4 flex-wrap mb-14">
+            <Link to="/register"
+              className="group flex items-center gap-2.5 bg-cyan-400 hover:bg-cyan-350 text-slate-900 font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1">
+              Start Practicing Free
+              <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+                <ArrowRight size={18} />
+              </motion.span>
+            </Link>
+            <Link to="/login"
+              className="flex items-center gap-2 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl text-[16px] transition-all backdrop-blur-sm">
+              <Play size={15} className="text-cyan-300 fill-cyan-300" /> Watch Demo
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-8 md:gap-14">
+            {STATS.map(([val, label]) => (
+              <div key={label} className="group">
+                <div className="font-heading text-2xl md:text-3xl font-extrabold text-white group-hover:text-cyan-300 transition-colors duration-300">{val}</div>
+                <div className="text-xs text-white/60 mt-1 tracking-wide">{label}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
-          className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed"
-        >
-          Practice HR, DSA, System Design &amp; Behavioral interviews with a real-time AI interviewer.
-          Get instant feedback, scores, and a personalised improvement roadmap.
-        </motion.p>
-
-        {/* CTA buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.5 }}
-          className="flex items-center justify-center gap-4 flex-wrap mb-16"
-        >
-          <Link to="/register"
-            className="group flex items-center gap-2.5 bg-cyan-400 hover:bg-cyan-350 text-slate-900 font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1">
-            Start Practicing Free
-            <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
-              <ArrowRight size={18} />
-            </motion.span>
-          </Link>
-          <Link to="/login"
-            className="flex items-center gap-2 bg-white/10 border border-white/20 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl text-[16px] transition-all backdrop-blur-sm">
-            <Play size={15} className="text-cyan-300 fill-cyan-300" /> Watch Demo
-          </Link>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-          className="flex flex-wrap justify-center gap-10 md:gap-16"
-        >
-          {STATS.map(([val, label], i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 + i * 0.1 }}
-              className="text-center group"
+        {/* Right Side: AI Generated Figure */}
+        <div className="flex-1 relative flex items-center justify-center">
+          {/* Animated glow bubble */}
+          <div className="absolute w-80 h-80 bg-cyan-400/20 rounded-full blur-[80px] -z-10 animate-pulse" />
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="relative"
+          >
+            <img 
+              src="/src/assets/hero_ai_coach.png" 
+              alt="AI Coach Illustration" 
+              className="w-[420px] md:w-[460px] h-auto object-contain drop-shadow-[0_20px_50px_rgba(6,182,212,0.2)] animate-float-slow"
+            />
+            
+            {/* Smooth Floating badges around the figure */}
+            <motion.div 
+              animate={{ y: [-8, 8, -8] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -top-4 -left-4 bg-white/15 backdrop-blur-md border border-white/15 px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2"
             >
-              <div className="font-heading text-3xl font-extrabold text-white group-hover:text-cyan-300 transition-colors duration-300">{val}</div>
-              <div className="text-xs text-white/60 mt-1 tracking-wide">{label}</div>
+              <span className="text-cyan-300">🎙️</span>
+              <span className="text-xs font-bold text-white tracking-wide">Voice AI Active</span>
             </motion.div>
-          ))}
-        </motion.div>
+            
+            <motion.div 
+              animate={{ y: [8, -8, 8] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute -bottom-4 -right-4 bg-white/15 backdrop-blur-md border border-white/15 px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2"
+            >
+              <span className="text-green-300">📈</span>
+              <span className="text-xs font-bold text-white tracking-wide">ATS Scored</span>
+            </motion.div>
+          </motion.div>
+        </div>
 
         {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 6, 0] }}
@@ -278,7 +287,8 @@ const Landing = () => {
           <p className="text-slate-500 max-w-xl mx-auto">One platform, six powerful tools — built for modern engineering interviews.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* Feature Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-20">
           {FEATURES.map(({ icon: Icon, title, desc, color }, i) => (
             <motion.div
               key={title}
@@ -307,6 +317,47 @@ const Landing = () => {
               />
             </motion.div>
           ))}
+        </div>
+
+        {/* ── Split Features Showcase with Mockup Figure ── */}
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-center justify-between gap-12 mt-10 px-4">
+          <div className="flex-1 text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
+              Live Mocking
+            </div>
+            <h3 className="font-heading text-3xl font-extrabold text-slate-900 mb-4 leading-tight">Adaptive DSA and Technical Mock Sessions</h3>
+            <p className="text-slate-500 leading-relaxed text-[15.5px] mb-6">
+              Our Monaco-powered coding editor provides a realistic workspace containing adaptive question suggestions, auto-run compilers, and hidden test-cases evaluated in real-time by GPT-4o.
+            </p>
+            <div className="space-y-3.5">
+              {[
+                'Full Monaco editor supporting JS, Python, Java, and C++',
+                'Custom AI analysis scoring on code quality and complexity',
+                'Instantly test algorithms with custom inputs and outputs'
+              ].map(item => (
+                <div key={item} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                    <Check size={12} className="text-indigo-600 font-bold" />
+                  </div>
+                  <span className="text-[14px] text-slate-650 font-semibold">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex-1 relative flex items-center justify-center">
+            <div className="absolute w-72 h-72 bg-indigo-400/10 rounded-full blur-[80px] -z-10" />
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="relative p-2 bg-white border border-slate-200 rounded-3xl shadow-xl shadow-slate-250/10"
+            >
+              <img 
+                src="/src/assets/features_analytics.png" 
+                alt="AI Analytics & Code Editor Mockup" 
+                className="w-[450px] h-auto object-contain rounded-2xl animate-float-reverse"
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -359,16 +410,16 @@ const Landing = () => {
                 {features.map((f) => (
                   <div key={f} className="flex items-center gap-2.5 text-[13px]">
                     <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-slate-50'}`}>
-                      <Check size={10} className={highlight ? 'text-indigo-650 font-bold' : 'text-slate-400'} />
+                      <Check size={10} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
                     </div>
-                    <span className="text-slate-600 font-medium">{f}</span>
+                    <span className="text-slate-650 font-medium">{f}</span>
                   </div>
                 ))}
               </div>
               <Link
                 to="/register"
                 className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
-                  ? 'bg-cyan-450 hover:bg-cyan-400 bg-cyan-400 text-slate-900 font-bold hover:shadow-md'
+                  ? 'bg-cyan-405 hover:bg-cyan-350 bg-cyan-400 text-slate-900 font-bold hover:shadow-md'
                   : 'bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700'
                 }`}
               >
@@ -400,35 +451,50 @@ const Landing = () => {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          CTA BANNER (Rounded Purple Card style)
+          CTA BANNER (Split layout with rocket figure)
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative z-10 px-6 py-20 max-w-5xl mx-auto mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-800 text-white shadow-xl shadow-indigo-600/10">
+      <section className="relative z-10 px-8 py-16 max-w-5xl mx-auto mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-800 text-white shadow-xl shadow-indigo-600/10">
         {/* Decorative circle shapes inside CTA box */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-500/10 rounded-full blur-[60px] pointer-events-none" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative text-center max-w-2xl mx-auto z-10"
-        >
-          <div className="inline-flex items-center gap-2 text-4xl mb-4">🚀</div>
-          <h2 className="font-heading text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-            Ready to land your<br />
-            <span className="text-cyan-300">dream job?</span>
-          </h2>
-          <p className="text-indigo-100 opacity-90 mb-8 text-lg">Join 50,000+ engineers who've levelled up with InterviewAI Pro</p>
-          <Link
-            to="/register"
-            className="inline-flex items-center gap-3 bg-cyan-400 hover:bg-cyan-300 text-slate-900 font-bold px-10 py-5 rounded-2xl text-[17px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1"
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, x: -35 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-[1.2] text-left"
           >
-            Start Free Interview
-            <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>
-              <ArrowRight size={20} />
-            </motion.span>
-          </Link>
-        </motion.div>
+            <div className="inline-flex items-center gap-2 text-4xl mb-4">🚀</div>
+            <h2 className="font-heading text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+              Ready to land your<br />
+              <span className="text-cyan-300">dream job?</span>
+            </h2>
+            <p className="text-indigo-100 opacity-90 mb-8 text-lg">Join 50,000+ engineers who've levelled up with InterviewAI Pro</p>
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-3 bg-cyan-400 hover:bg-cyan-300 text-slate-900 font-bold px-10 py-5 rounded-2xl text-[17px] transition-all shadow-xl shadow-cyan-400/20 hover:shadow-cyan-400/35 hover:-translate-y-1"
+            >
+              Start Free Interview
+              <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>
+                <ArrowRight size={20} />
+              </motion.span>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 35 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 flex justify-center"
+          >
+            <img 
+              src="/src/assets/cta_success.png" 
+              alt="Career Rocket Success" 
+              className="w-[280px] md:w-[320px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(6,182,212,0.2)] animate-float-slow"
+            />
+          </motion.div>
+        </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════
