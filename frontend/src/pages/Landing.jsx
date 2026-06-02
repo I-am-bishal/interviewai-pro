@@ -318,7 +318,7 @@ const FAQItem = ({ q, a, i }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: i * 0.05 }}
-      className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+      className="bg-bg-2 border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
     >
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-6 py-5 text-left gap-4 group">
         <span className="font-heading font-bold text-[16px] text-slate-800 group-hover:text-indigo-650 transition-colors">{q}</span>
@@ -334,7 +334,7 @@ const FAQItem = ({ q, a, i }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <div className="px-6 pb-5 text-[14px] text-slate-500 leading-relaxed border-t border-slate-100 pt-4 bg-slate-50/50">{a}</div>
+            <div className="px-6 pb-5 text-[14px] text-slate-500 leading-relaxed border-t border-border pt-4 bg-bg-3/50">{a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -349,7 +349,7 @@ const Landing = () => {
   const heroY       = useTransform(scrollY, [0, 400], [0, -30]);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 overflow-x-hidden relative z-0 font-sans">
+    <div className="min-h-screen bg-bg text-slate-800 overflow-x-hidden relative z-0 font-sans">
       
       {/* ══════════════════════════════════════════════════════════
           SLICK DARK-MODE HERO (Gradient Mesh + Live Audio visualizer)
@@ -472,14 +472,14 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           FEATURES SECTION
       ══════════════════════════════════════════════════════════ */}
-      <section id="features" className="relative z-10 py-24 px-6 bg-white">
+      <section id="features" className="relative z-10 py-24 px-6 bg-bg-2">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             Capabilities
           </div>
           <h2 className="font-heading text-4xl font-extrabold text-slate-900 mb-3">Designed for Premium Practice</h2>
@@ -496,7 +496,7 @@ const Landing = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.5 }}
               whileHover={{ y: -6, scale: 1.01 }}
-              className="relative group rounded-2xl p-7 bg-white border border-slate-100 shadow-sm cursor-default transition-all duration-300 hover:border-indigo-200 hover:shadow-md hover:bg-slate-50/20"
+              className="relative group rounded-2xl p-7 bg-bg-2 border border-border shadow-sm cursor-default transition-all duration-300 hover:border-indigo-200 hover:shadow-md hover:bg-bg-3/50"
             >
               {/* Card subtle border color sweep on hover */}
               <div className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 blur-xl`} />
@@ -513,7 +513,7 @@ const Landing = () => {
         {/* Split Feature Showcase - Mock Editor Illustration */}
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16 mt-16 px-4">
           <div className="flex-1 text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
               Live Mocking
             </div>
             <h3 className="font-heading text-3xl font-extrabold text-slate-900 mb-4 leading-tight">Monaco-Powered Technical Coding rounds</h3>
@@ -547,14 +547,14 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           PRICING SECTION (Clean layout with hover glowing)
       ══════════════════════════════════════════════════════════ */}
-      <section id="pricing" className="relative z-10 px-6 py-24 bg-slate-50 border-y border-slate-100">
+      <section id="pricing" className="relative z-10 px-6 py-24 bg-bg border-y border-border">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             Pricing
           </div>
           <h2 className="font-heading text-4xl font-extrabold text-slate-900 mb-3">Transparent Plans</h2>
@@ -570,9 +570,9 @@ const Landing = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               whileHover={{ y: -4 }}
-              className={`relative rounded-2xl p-8 border bg-white transition-all duration-300 ${highlight
+              className={`relative rounded-2xl p-8 border bg-bg-2 transition-all duration-300 ${highlight
                 ? 'border-indigo-500 shadow-xl shadow-indigo-500/5'
-                : 'border-slate-200 hover:border-slate-350 hover:shadow-md'
+                : 'border-border hover:border-border-2 hover:shadow-md'
               }`}
             >
               {highlight && (
@@ -592,7 +592,7 @@ const Landing = () => {
               <div className="space-y-3.5 mb-8 border-t border-slate-100 pt-6">
                 {features.map((f) => (
                   <div key={f} className="flex items-center gap-3 text-[13.5px]">
-                    <div className={`w-4.5 h-4.5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-slate-50'}`}>
+                    <div className={`w-4.5 h-4.5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
                       <Check size={11} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
                     </div>
                     <span className="text-slate-650 font-medium">{f}</span>
@@ -603,7 +603,7 @@ const Landing = () => {
                 to="/register"
                 className={`block w-full text-center py-3.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
                   ? 'bg-indigo-500 hover:bg-indigo-600 text-white font-bold hover:shadow-md'
-                  : 'bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700'
+                  : 'bg-bg-3 border border-border hover:bg-bg-4 text-slate-700'
                 }`}
               >
                 {cta}
@@ -623,7 +623,7 @@ const Landing = () => {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
             FAQ
           </div>
           <h2 className="font-heading text-4xl font-extrabold text-slate-900">Frequently Answered Questions</h2>
@@ -680,7 +680,7 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════════════════════ */}
-      <footer className="relative z-10 px-8 py-12 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 bg-white">
+      <footer className="relative z-10 px-8 py-12 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6 bg-bg-2">
         <Logo size={28} subtext="Empowered Preparation" textClassName="text-slate-800" />
         <div className="flex gap-8 text-xs text-slate-500">
           {['Privacy Policy', 'Terms of Service', 'Contact Support'].map((item) => (
