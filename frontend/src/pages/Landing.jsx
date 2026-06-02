@@ -57,16 +57,16 @@ const STATS = [
  */
 const VoiceVisualizerMockup = () => {
   return (
-    <div className="w-full max-w-[460px] bg-slate-950/80 border border-slate-800/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md relative overflow-hidden font-sans text-left">
+    <div className="w-full max-w-[460px] bg-slate-950/80 border border-zinc-800/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md relative overflow-hidden font-sans text-left">
       {/* Top window bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/60 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-zinc-800/60 mb-4">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
           <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
         </div>
-        <div className="text-[10px] text-slate-500 font-mono tracking-widest uppercase">Live Session: Behavior Model</div>
-        <div className="w-2.5 h-2.5 rounded bg-slate-800/50" />
+        <div className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase">Live Session: Behavior Model</div>
+        <div className="w-2.5 h-2.5 rounded bg-zinc-800/50" />
       </div>
 
       {/* Main Grid: Interviewer Speech bubble and Voice Wave */}
@@ -78,25 +78,25 @@ const VoiceVisualizerMockup = () => {
               AI
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-200">Interviewer AI (Sophia)</div>
+              <div className="text-xs font-bold text-zinc-200">Interviewer AI (Sophia)</div>
               <div className="text-[10px] text-cyan-400 font-bold flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 Speaking...
               </div>
             </div>
           </div>
-          <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center border border-slate-800">
-            <Volume2 size={13} className="text-slate-400" />
+          <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center border border-zinc-800">
+            <Volume2 size={13} className="text-zinc-400" />
           </div>
         </div>
 
         {/* AI Question Speech bubble */}
-        <div className="bg-slate-900/95 border border-slate-800/60 p-4 rounded-2xl text-[13px] text-slate-300 leading-relaxed shadow-inner">
+        <div className="bg-zinc-900/95 border border-zinc-800/60 p-4 rounded-2xl text-[13px] text-zinc-300 leading-relaxed shadow-inner">
           "Tell me about a time when you had to make a critical design decision under tight deadlines. How did you weigh the trade-offs?"
         </div>
 
         {/* Animated Voice Wave Visualizer */}
-        <div className="flex items-center justify-center gap-1.5 py-6 bg-slate-900/40 rounded-xl border border-slate-900/60">
+        <div className="flex items-center justify-center gap-1.5 py-6 bg-zinc-900/40 rounded-xl border border-zinc-900/60">
           {[12, 28, 48, 36, 16, 24, 40, 18, 8, 20, 32, 14].map((h, i) => (
             <motion.div
               key={i}
@@ -121,29 +121,29 @@ const VoiceVisualizerMockup = () => {
 
         {/* Floating User Response Preview */}
         <div className="flex items-start gap-3 bg-white/[0.01] border border-white/[0.03] p-3 rounded-xl">
-          <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs font-semibold text-slate-350 border border-slate-700/50">
+          <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-300 border border-zinc-700/50">
             You
           </div>
           <div className="flex-1">
-            <div className="text-[10px] font-bold text-slate-500">Your Answer (Transcribing...)</div>
-            <div className="text-[12px] text-slate-350 italic mt-0.5">
+            <div className="text-[10px] font-bold text-zinc-500">Your Answer (Transcribing...)</div>
+            <div className="text-[12px] text-zinc-400 italic mt-0.5">
               "We had to choose between a fully relational schema and a document store for our analytics pipeline..."
             </div>
           </div>
         </div>
 
         {/* Real-time feedback analytics metrics */}
-        <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-900">
-          <div className="bg-slate-900/60 border border-slate-850 p-2 rounded-xl text-center">
-            <div className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">Pacing</div>
+        <div className="grid grid-cols-3 gap-2 pt-1 border-t border-zinc-900">
+          <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
+            <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Pacing</div>
             <div className="text-[12px] font-bold text-emerald-400 mt-0.5">120 wpm</div>
           </div>
-          <div className="bg-slate-900/60 border border-slate-850 p-2 rounded-xl text-center">
-            <div className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">Confidence</div>
+          <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
+            <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Confidence</div>
             <div className="text-[12px] font-bold text-cyan-400 mt-0.5">High (88%)</div>
           </div>
-          <div className="bg-slate-900/60 border border-slate-850 p-2 rounded-xl text-center">
-            <div className="text-[9px] text-slate-500 uppercase tracking-wider font-bold">Clarity</div>
+          <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
+            <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Clarity</div>
             <div className="text-[12px] font-bold text-indigo-400 mt-0.5">Excellent</div>
           </div>
         </div>
@@ -157,63 +157,63 @@ const VoiceVisualizerMockup = () => {
  */
 const CodeEditorMockup = () => {
   return (
-    <div className="w-full max-w-[500px] bg-slate-950 border border-slate-800 rounded-2xl shadow-xl overflow-hidden text-left font-mono">
+    <div className="w-full max-w-[500px] bg-slate-950 border border-zinc-800 rounded-2xl shadow-xl overflow-hidden text-left font-mono">
       {/* Header tab bar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-950">
+      <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-950">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5 mr-2">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500/85" />
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500/85" />
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/85" />
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-950 border border-slate-850 rounded-t-lg text-[11px] text-indigo-300 font-semibold border-b-transparent">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-950 border border-zinc-800/80 rounded-t-lg text-[11px] text-indigo-300 font-semibold border-b-transparent">
             <Code2 size={12} className="text-indigo-400" />
             solution.js
           </div>
         </div>
-        <div className="text-[10px] text-slate-500 font-sans font-semibold uppercase tracking-wider flex items-center gap-1.5">
+        <div className="text-[10px] text-zinc-500 font-sans font-semibold uppercase tracking-wider flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
           Live Coding
         </div>
       </div>
 
       {/* Editor Content Area */}
-      <div className="p-5 text-[12px] leading-relaxed text-slate-300 space-y-1 bg-slate-950">
-        <div><span className="text-slate-700 mr-4 select-none">1</span><span className="text-purple-400 font-bold">function</span> <span className="text-blue-400">longestSubstring</span>(s) &#123;</div>
-        <div><span className="text-slate-700 mr-4 select-none">2</span>  <span className="text-purple-400 font-bold">let</span> maxLen = <span className="text-amber-400">0</span>, start = <span className="text-amber-400">0</span>;</div>
-        <div><span className="text-slate-700 mr-4 select-none">3</span>  <span className="text-purple-400 font-bold">const</span> seen = <span className="text-purple-400 font-bold">new</span> <span className="text-yellow-400">Map</span>();</div>
-        <div><span className="text-slate-700 mr-4 select-none">4</span>  <span className="text-purple-400 font-bold">for</span> (<span className="text-purple-400 font-bold">let</span> end = <span className="text-amber-400">0</span>; end &lt; s.length; end++) &#123;</div>
-        <div><span className="text-slate-700 mr-4 select-none">5</span>    <span className="text-purple-400 font-bold">if</span> (seen.<span className="text-blue-400">has</span>(s[end])) &#123;</div>
-        <div><span className="text-slate-700 mr-4 select-none">6</span>      start = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(seen.<span className="text-blue-400">get</span>(s[end]) + <span className="text-amber-400">1</span>, start);</div>
-        <div><span className="text-slate-700 mr-4 select-none">7</span>    &#125;</div>
-        <div><span className="text-slate-700 mr-4 select-none">8</span>    seen.<span className="text-blue-400">set</span>(s[end], end);</div>
-        <div><span className="text-slate-700 mr-4 select-none">9</span>    maxLen = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(maxLen, end - start + <span className="text-amber-400">1</span>);</div>
-        <div><span className="text-slate-700 mr-4 select-none">10</span>  &#125;</div>
-        <div><span className="text-slate-700 mr-4 select-none">11</span>  <span className="text-purple-400 font-bold">return</span> maxLen;</div>
-        <div><span className="text-slate-700 mr-4 select-none">12</span>&#125;</div>
+      <div className="p-5 text-[12px] leading-relaxed text-zinc-300 space-y-1 bg-slate-950">
+        <div><span className="text-zinc-700 mr-4 select-none">1</span><span className="text-purple-400 font-bold">function</span> <span className="text-blue-400">longestSubstring</span>(s) &#123;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">2</span>  <span className="text-purple-400 font-bold">let</span> maxLen = <span className="text-amber-400">0</span>, start = <span className="text-amber-400">0</span>;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">3</span>  <span className="text-purple-400 font-bold">const</span> seen = <span className="text-purple-400 font-bold">new</span> <span className="text-yellow-400">Map</span>();</div>
+        <div><span className="text-zinc-700 mr-4 select-none">4</span>  <span className="text-purple-400 font-bold">for</span> (<span className="text-purple-400 font-bold">let</span> end = <span className="text-amber-400">0</span>; end &lt; s.length; end++) &#123;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">5</span>    <span className="text-purple-400 font-bold">if</span> (seen.<span className="text-blue-400">has</span>(s[end])) &#123;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">6</span>      start = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(seen.<span className="text-blue-400">get</span>(s[end]) + <span className="text-amber-400">1</span>, start);</div>
+        <div><span className="text-zinc-700 mr-4 select-none">7</span>    &#125;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">8</span>    seen.<span className="text-blue-400">set</span>(s[end], end);</div>
+        <div><span className="text-zinc-700 mr-4 select-none">9</span>    maxLen = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(maxLen, end - start + <span className="text-amber-400">1</span>);</div>
+        <div><span className="text-zinc-700 mr-4 select-none">10</span>  &#125;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">11</span>  <span className="text-purple-400 font-bold">return</span> maxLen;</div>
+        <div><span className="text-zinc-700 mr-4 select-none">12</span>&#125;</div>
       </div>
 
       {/* Compiler output bar */}
-      <div className="bg-slate-900 p-4 border-t border-slate-950 font-mono text-[11px]">
-        <div className="text-slate-500 mb-1.5 flex items-center justify-between font-sans">
+      <div className="bg-zinc-900 p-4 border-t border-zinc-950 font-mono text-[11px]">
+        <div className="text-zinc-500 mb-1.5 flex items-center justify-between font-sans">
           <span>Compiler Terminal</span>
           <span className="text-emerald-400 font-bold">✓ 8/8 Tests Passed</span>
         </div>
-        <div className="text-emerald-400 bg-slate-950 p-2.5 rounded border border-slate-800 flex items-center justify-between">
+        <div className="text-emerald-400 bg-slate-950 p-2.5 rounded border border-zinc-800 flex items-center justify-between">
           <span>Test Case 3: s = "abcabcbb" (Expected: 3)</span>
           <span className="font-sans text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20">PASSED</span>
         </div>
       </div>
 
       {/* AI Scorecard panel floating over the bottom */}
-      <div className="bg-slate-900 border-t border-slate-800 p-4 font-sans text-slate-200 flex items-center justify-between gap-3">
+      <div className="bg-zinc-900 border-t border-zinc-800 p-4 font-sans text-zinc-200 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-sm">
             O(N)
           </div>
           <div>
-            <div className="text-xs font-bold text-slate-200">Algorithmic Efficiency</div>
-            <div className="text-[10px] text-slate-400 font-mono">Time Complexity Score: 98%</div>
+            <div className="text-xs font-bold text-zinc-200">Algorithmic Efficiency</div>
+            <div className="text-[10px] text-zinc-400 font-mono">Time Complexity Score: 98%</div>
           </div>
         </div>
         <div className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1">
@@ -254,11 +254,11 @@ const MilestoneGraph = () => {
         <motion.div
           animate={{ y: [-3, 3, -3] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          className="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
+          className="bg-zinc-900/90 border border-zinc-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
         >
           <span className="text-base">🎯</span>
           <div className="text-left">
-            <div className="text-[9px] text-slate-500 uppercase tracking-wider font-extrabold">Step 1</div>
+            <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-extrabold">Step 1</div>
             <div className="text-xs font-bold text-white">Join Platform</div>
           </div>
         </motion.div>
@@ -269,11 +269,11 @@ const MilestoneGraph = () => {
           <motion.div
             animate={{ y: [3, -3, 3] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            className="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
+            className="bg-zinc-900/90 border border-zinc-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
           >
             <span className="text-base">🎙️</span>
             <div className="text-left">
-              <div className="text-[9px] text-slate-500 uppercase tracking-wider font-extrabold">Step 2</div>
+              <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-extrabold">Step 2</div>
               <div className="Voice Practice text-xs font-bold text-white">AI Verbal Mock</div>
             </div>
           </motion.div>
@@ -282,11 +282,11 @@ const MilestoneGraph = () => {
           <motion.div
             animate={{ y: [-4, 4, -4] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
+            className="bg-zinc-900/90 border border-zinc-800 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2"
           >
             <span className="text-base">💻</span>
             <div className="text-left">
-              <div className="text-[9px] text-slate-500 uppercase tracking-wider font-extrabold">Step 3</div>
+              <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-extrabold">Step 3</div>
               <div className="text-xs font-bold text-white">Live Coding</div>
             </div>
           </motion.div>
@@ -428,7 +428,7 @@ const Landing = () => {
             </h1>
 
             {/* Body text */}
-            <p className="text-[17px] text-slate-350 max-w-xl mb-10 leading-relaxed">
+            <p className="text-[17px] text-zinc-300 max-w-xl mb-10 leading-relaxed">
               Practice HR, DSA, System Design, and Behavioral interviews with an adaptive real-time AI interviewer.
               Receive compiler verification, confidence analysis, and structured improvement plans.
             </p>
@@ -453,7 +453,7 @@ const Landing = () => {
               {STATS.map(([val, label]) => (
                 <div key={label} className="group">
                   <div className="font-heading text-2xl font-black text-white group-hover:text-cyan-300 transition-colors duration-300">{val}</div>
-                  <div className="text-[11px] text-slate-400 mt-1 tracking-wide font-medium">{label}</div>
+                  <div className="text-[11px] text-zinc-400 mt-1 tracking-wide font-medium">{label}</div>
                 </div>
               ))}
             </div>
@@ -653,7 +653,7 @@ const Landing = () => {
               Ready to land your<br />
               <span className="text-cyan-300 bg-gradient-to-r from-cyan-300 to-indigo-300 bg-clip-text text-transparent">dream career?</span>
             </h2>
-            <p className="text-slate-400 mb-10 text-lg leading-relaxed">Join thousands of developers using InterviewAI Pro to build mock competency and master code reviews.</p>
+            <p className="text-zinc-400 mb-10 text-lg leading-relaxed">Join thousands of developers using InterviewAI Pro to build mock competency and master code reviews.</p>
             
             <Link
               to="/register"
