@@ -52,10 +52,45 @@ const STATS = [
 
 /* ─── Mockups & Interactive Visuals ────────────────────────────────────── */
 
+const MOCK_CONVERSATION = [
+  {
+    q: "\"Tell me about a time when you had to make a critical design decision under tight deadlines. How did you weigh the trade-offs?\"",
+    a: "\"We had to choose between a fully relational schema and a document store for our analytics pipeline...\"",
+    pacing: "120 wpm",
+    confidence: "High (88%)",
+    clarity: "Excellent"
+  },
+  {
+    q: "\"How do you handle situations where a team member consistently misses deadlines or underperforms?\"",
+    a: "\"I usually schedule a private 1-on-1 to understand if they have any blockers or personal issues affecting their work...\"",
+    pacing: "115 wpm",
+    confidence: "High (92%)",
+    clarity: "Very Clear"
+  },
+  {
+    q: "\"Can you describe a complex system architecture you designed from scratch? What were the main bottlenecks?\"",
+    a: "\"I designed an event-driven microservices architecture using Kafka. The primary bottleneck we anticipated was database write contention...\"",
+    pacing: "128 wpm",
+    confidence: "Medium (78%)",
+    clarity: "Good"
+  }
+];
+
 /**
  * 1. Right Hero Column - Interactive Live Interview Session Mockup
  */
 const VoiceVisualizerMockup = () => {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIdx((prev) => (prev + 1) % MOCK_CONVERSATION.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const current = MOCK_CONVERSATION[idx];
+
   return (
     <div className="w-full max-w-[460px] bg-slate-950/80 border border-zinc-800/80 rounded-2xl p-5 shadow-2xl backdrop-blur-md relative overflow-hidden font-sans text-left">
       {/* Top window bar */}
@@ -91,8 +126,18 @@ const VoiceVisualizerMockup = () => {
         </div>
 
         {/* AI Question Speech bubble */}
-        <div className="bg-zinc-900/95 border border-zinc-800/60 p-4 rounded-2xl text-[13px] text-zinc-300 leading-relaxed shadow-inner">
-          "Tell me about a time when you had to make a critical design decision under tight deadlines. How did you weigh the trade-offs?"
+        <div className="bg-zinc-900/95 border border-zinc-800/60 p-4 rounded-2xl text-[13px] text-zinc-300 leading-relaxed shadow-inner min-h-[90px] flex items-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`q-${idx}`}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              {current.q}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Animated Voice Wave Visualizer */}
@@ -120,15 +165,24 @@ const VoiceVisualizerMockup = () => {
         </div>
 
         {/* Floating User Response Preview */}
-        <div className="flex items-start gap-3 bg-white/[0.01] border border-white/[0.03] p-3 rounded-xl">
-          <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-300 border border-zinc-700/50">
+        <div className="flex items-start gap-3 bg-white/[0.01] border border-white/[0.03] p-3 rounded-xl min-h-[80px]">
+          <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-300 border border-zinc-700/50 flex-shrink-0">
             You
           </div>
           <div className="flex-1">
             <div className="text-[10px] font-bold text-zinc-500">Your Answer (Transcribing...)</div>
-            <div className="text-[12px] text-zinc-400 italic mt-0.5">
-              "We had to choose between a fully relational schema and a document store for our analytics pipeline..."
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`a-${idx}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-[12px] text-zinc-400 italic mt-0.5"
+              >
+                {current.a}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
@@ -136,15 +190,45 @@ const VoiceVisualizerMockup = () => {
         <div className="grid grid-cols-3 gap-2 pt-1 border-t border-zinc-900">
           <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
             <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Pacing</div>
-            <div className="text-[12px] font-bold text-emerald-400 mt-0.5">120 wpm</div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`pacing-${idx}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-[12px] font-bold text-emerald-400 mt-0.5"
+              >
+                {current.pacing}
+              </motion.div>
+            </AnimatePresence>
           </div>
           <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
             <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Confidence</div>
-            <div className="text-[12px] font-bold text-cyan-400 mt-0.5">High (88%)</div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`conf-${idx}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-[12px] font-bold text-cyan-400 mt-0.5"
+              >
+                {current.confidence}
+              </motion.div>
+            </AnimatePresence>
           </div>
           <div className="bg-zinc-900/60 border border-zinc-800/80 p-2 rounded-xl text-center">
             <div className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Clarity</div>
-            <div className="text-[12px] font-bold text-indigo-400 mt-0.5">Excellent</div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`clarity-${idx}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-[12px] font-bold text-indigo-400 mt-0.5"
+              >
+                {current.clarity}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
