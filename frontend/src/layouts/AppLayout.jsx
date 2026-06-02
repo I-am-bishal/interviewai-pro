@@ -91,7 +91,10 @@ const AppLayout = () => {
 
       {/* User */}
       <div className="p-3 border-t border-border">
-        <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-bg-3 cursor-pointer group">
+        <div 
+          onClick={() => navigate('/profile')}
+          className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-bg-3 cursor-pointer group"
+        >
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-cyan-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
             {initials}
           </div>
@@ -101,7 +104,10 @@ const AppLayout = () => {
               <Zap size={10} /> {user?.currentStreak || 0} day streak
             </div>
           </div>
-          <button onClick={handleLogout} className="text-slate-400 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleLogout(); }}
+            className="text-slate-400 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity"
+          >
             <LogOut size={15} />
           </button>
         </div>

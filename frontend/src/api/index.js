@@ -51,6 +51,10 @@ export const resumeApi = {
     const res = await api.get('/resume');
     return res.data.data.resume;
   },
+  getAll: async () => {
+    const res = await api.get('/resume/all');
+    return res.data.data.resumes;
+  },
 };
 
 // ── User ───────────────────────────────────────────────────────────────────
