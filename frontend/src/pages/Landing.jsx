@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { 
   ArrowRight, 
   Mic, 
@@ -48,6 +48,64 @@ const STATS = [
   ['94%', 'Success Rate'], 
   ['4.9★', 'User Rating'], 
   ['120+', 'Companies Covered']
+];
+
+/* ─── Animated Counter Hook ────────────────────────────────────────── */
+const useAnimatedCounter = (end, duration = 2000) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: false });
+  const animFrameRef = useRef(null);
+
+  useEffect(() => {
+    if (!inView) {
+      // Reset when scrolled out of view
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      setCount(0);
+      return;
+    }
+    const numericEnd = parseInt(end.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(numericEnd)) { setCount(end); return; }
+    const startTime = performance.now();
+    const tick = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * numericEnd));
+      if (progress < 1) {
+        animFrameRef.current = requestAnimationFrame(tick);
+      }
+    };
+    animFrameRef.current = requestAnimationFrame(tick);
+    return () => { if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current); };
+  }, [inView, end, duration]);
+
+  const suffix = end.replace(/[0-9]/g, '');
+  return { ref, display: typeof count === 'string' ? count : `${count}${suffix}` };
+};
+
+/* ─── Animated Stat Component ─────────────────────────────────────────── */
+const AnimatedStat = ({ val, label }) => {
+  const { ref, display } = useAnimatedCounter(val, 1800);
+  return (
+    <div ref={ref} className="group cursor-default">
+      <div className="font-heading text-2xl font-black text-white group-hover:text-cyan-300 transition-colors duration-300">
+        {display}
+      </div>
+      <div className="text-[11px] text-zinc-400 mt-1 tracking-wide font-medium">{label}</div>
+    </div>
+  );
+};
+
+/* ─── Floating Particles ──────────────────────────────────────────────── */
+const PARTICLES = [
+  { w: 4, h: 4, x: '10%', y: '20%', dur: '7s', delay: '0s', color: 'bg-indigo-400/30' },
+  { w: 3, h: 3, x: '80%', y: '30%', dur: '9s', delay: '1s', color: 'bg-cyan-400/25' },
+  { w: 5, h: 5, x: '25%', y: '60%', dur: '11s', delay: '2s', color: 'bg-purple-400/20' },
+  { w: 3, h: 3, x: '65%', y: '75%', dur: '8s', delay: '0.5s', color: 'bg-indigo-300/25' },
+  { w: 4, h: 4, x: '45%', y: '15%', dur: '10s', delay: '3s', color: 'bg-cyan-300/20' },
+  { w: 2, h: 2, x: '90%', y: '50%', dur: '6s', delay: '1.5s', color: 'bg-purple-300/30' },
+  { w: 3, h: 3, x: '5%',  y: '80%', dur: '12s', delay: '4s', color: 'bg-indigo-500/20' },
+  { w: 2, h: 2, x: '55%', y: '45%', dur: '7.5s', delay: '2.5s', color: 'bg-cyan-500/15' },
 ];
 
 /* ─── Mockups & Interactive Visuals ────────────────────────────────────── */
@@ -488,7 +546,7 @@ const FAQItem = ({ q, a, i }) => {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: false }}
       transition={{ delay: i * 0.05 }}
       className="bg-bg-2 border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
     >
@@ -514,11 +572,189 @@ const FAQItem = ({ q, a, i }) => {
   );
 };
 
+/* ─── Great Choice Popup ────────────────────────────────────────────────── */
+const CONFETTI_COLORS = [
+  'bg-indigo-400', 'bg-cyan-400', 'bg-purple-400', 'bg-pink-400',
+  'bg-amber-400', 'bg-emerald-400', 'bg-rose-400', 'bg-blue-400',
+];
+const CONFETTI_COUNT = 40;
+const EMOJIS = ['🚀', '🎯', '💡', '🏆', '⚡', '🔥', '💎', '🌟', '🎉', '✨'];
+
+const GreatChoicePopup = ({ onClose, onNavigate }) => {
+  const [confetti] = useState(() =>
+    Array.from({ length: CONFETTI_COUNT }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      delay: Math.random() * 0.6,
+      duration: 1.2 + Math.random() * 1.5,
+      size: 5 + Math.random() * 9,
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      rotate: Math.random() * 360,
+      drift: (Math.random() - 0.5) * 120,
+    }))
+  );
+  const [emojis] = useState(() =>
+    Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+      x: 10 + Math.random() * 80,
+      delay: Math.random() * 0.4,
+      duration: 1.5 + Math.random() * 1,
+    }))
+  );
+
+  useEffect(() => {
+    const t = setTimeout(onNavigate, 2800);
+    return () => clearTimeout(t);
+  }, [onNavigate]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="popup-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-[9999] flex items-center justify-center"
+        onClick={onClose}
+        style={{ backdropFilter: 'blur(12px)', background: 'rgba(9,13,22,0.85)' }}
+      >
+        {/* Confetti burst */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {confetti.map((c) => (
+            <motion.div
+              key={c.id}
+              initial={{ opacity: 1, y: '55vh', x: `${c.x}vw`, rotate: c.rotate, scale: 0 }}
+              animate={{
+                opacity: [1, 1, 0],
+                y: [`55vh`, `${10 + Math.random() * 30}vh`],
+                x: [`${c.x}vw`, `${c.x + c.drift / 10}vw`],
+                rotate: c.rotate + 720,
+                scale: [0, 1.2, 0.8],
+              }}
+              transition={{ duration: c.duration, delay: c.delay, ease: 'easeOut' }}
+              className={`absolute rounded-sm ${c.color}`}
+              style={{ width: c.size, height: c.size }}
+            />
+          ))}
+        </div>
+
+        {/* Floating emojis */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {emojis.map((e) => (
+            <motion.div
+              key={e.id}
+              initial={{ opacity: 0, y: '60vh', x: `${e.x}vw`, scale: 0 }}
+              animate={{ opacity: [0, 1, 1, 0], y: `${5 + Math.random() * 30}vh`, scale: [0, 1.5, 1.2] }}
+              transition={{ duration: e.duration, delay: e.delay, ease: 'easeOut' }}
+              className="absolute text-3xl select-none"
+            >
+              {e.emoji}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Main popup card */}
+        <motion.div
+          initial={{ scale: 0.3, opacity: 0, rotate: -8, y: 60 }}
+          animate={{ scale: 1, opacity: 1, rotate: 0, y: 0 }}
+          exit={{ scale: 0.5, opacity: 0, y: -40 }}
+          transition={{ type: 'spring', stiffness: 180, damping: 18, delay: 0.05 }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative flex flex-col items-center text-center px-12 py-10 rounded-3xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #0f0c29, #1a1050, #0f0c29)',
+            border: '1px solid rgba(99,102,241,0.5)',
+            boxShadow: '0 0 80px rgba(99,102,241,0.4), 0 0 200px rgba(6,182,212,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
+          }}
+        >
+          {/* Rotating glow rings */}
+          {[1, 2, 3].map((ring) => (
+            <motion.div
+              key={ring}
+              animate={{ rotate: ring % 2 === 0 ? [0, 360] : [360, 0], scale: [1, 1.04, 1] }}
+              transition={{ duration: 3 + ring, repeat: Infinity, ease: 'linear' }}
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                width: `${140 + ring * 60}px`,
+                height: `${140 + ring * 60}px`,
+                border: `1px solid rgba(99,102,241,${0.15 - ring * 0.03})`,
+                top: '50%', left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          ))}
+
+          {/* Sparkle orb */}
+          <motion.div
+            animate={{ scale: [1, 1.15, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center mb-5 text-4xl"
+            style={{
+              background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+              boxShadow: '0 0 40px rgba(99,102,241,0.6), 0 0 80px rgba(6,182,212,0.3)',
+            }}
+          >
+            🎉
+          </motion.div>
+
+          {/* Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.4 }}
+            className="relative z-10"
+          >
+            <div
+              className="font-heading text-5xl font-black mb-2"
+              style={{
+                background: 'linear-gradient(90deg, #c7d2fe, #67e8f9, #a78bfa, #c7d2fe)',
+                backgroundSize: '200% auto',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                animation: 'gradient-shift 2s linear infinite',
+              }}
+            >
+              GREAT CHOICE!
+            </div>
+            <p className="text-zinc-300 text-lg font-semibold mb-1">You're about to level up. 🚀</p>
+            <p className="text-zinc-500 text-sm">Taking you to registration...</p>
+          </motion.div>
+
+          {/* Progress bar */}
+          <motion.div
+            className="relative z-10 mt-8 w-full rounded-full overflow-hidden h-1.5"
+            style={{ background: 'rgba(255,255,255,0.08)' }}
+          >
+            <motion.div
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 2.5, delay: 0.3, ease: 'easeInOut' }}
+              className="h-full rounded-full"
+              style={{
+                background: 'linear-gradient(90deg, #6366f1, #06b6d4, #a855f7)',
+                boxShadow: '0 0 8px rgba(99,102,241,0.8)',
+              }}
+            />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 /* ─── Landing Page ─────────────────────────────────────────────────────── */
 const Landing = () => {
   const heroRef = useRef(null);
   const { scrollY } = useScroll();
   const heroY       = useTransform(scrollY, [0, 400], [0, -30]);
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+  const handlePopupNavigate = useCallback(() => {
+    setShowPopup(false);
+    navigate('/register');
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-bg text-slate-800 overflow-x-hidden relative z-0 font-sans">
@@ -533,7 +769,7 @@ const Landing = () => {
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.45, 0.25] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -top-60 -left-60 w-[700px] h-[700px] bg-indigo-650/40 bg-indigo-600/30 rounded-full blur-[130px]"
+            className="absolute -top-60 -left-60 w-[700px] h-[700px] bg-indigo-600/30 rounded-full blur-[130px]"
           />
           <motion.div
             animate={{ scale: [1.15, 1, 1.15], opacity: [0.2, 0.35, 0.2] }}
@@ -541,6 +777,19 @@ const Landing = () => {
             className="absolute top-40 -right-20 w-[600px] h-[600px] bg-cyan-500/25 rounded-full blur-[120px]"
           />
           <div className="absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px]" />
+
+          {/* Floating particles */}
+          {PARTICLES.map((p, i) => (
+            <div
+              key={i}
+              className={`particle ${p.color}`}
+              style={{
+                width: `${p.w}px`, height: `${p.h}px`,
+                left: p.x, top: p.y,
+                '--duration': p.dur, '--delay': p.delay,
+              }}
+            />
+          ))}
         </div>
 
         {/* ══════════════════════════════════════════════════════════
@@ -594,21 +843,31 @@ const Landing = () => {
             </motion.div>
 
             {/* Syne Heading */}
-            <h1 className="font-heading text-4xl md:text-[58px] font-black leading-[1.05] tracking-tight mb-6">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="font-heading text-4xl md:text-[58px] font-black leading-[1.05] tracking-tight mb-6"
+            >
               Ace Every Tech <br />
-              Interview with <span className="text-cyan-300 relative inline-block bg-gradient-to-r from-cyan-300 via-indigo-300 to-purple-400 bg-clip-text text-transparent">AI Practice</span>
-            </h1>
+              Interview with <span className="relative inline-block bg-gradient-to-r from-cyan-300 via-indigo-300 to-purple-400 bg-clip-text text-transparent animated-gradient-text">AI Practice</span>
+            </motion.h1>
 
             {/* Body text */}
-            <p className="text-[17px] text-zinc-300 max-w-xl mb-10 leading-relaxed">
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="text-[17px] text-zinc-300 max-w-xl mb-10 leading-relaxed"
+            >
               Practice HR, DSA, System Design, and Behavioral interviews with an adaptive real-time AI interviewer.
               Receive compiler verification, confidence analysis, and structured improvement plans.
-            </p>
+            </motion.p>
 
             {/* CTA action buttons */}
             <div className="flex items-center gap-4 flex-wrap mb-14">
               <Link to="/register"
-                className="group flex items-center gap-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5">
+                className="btn-shimmer group flex items-center gap-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5">
                 Start Practicing Free
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
                   <ArrowRight size={18} />
@@ -621,14 +880,16 @@ const Landing = () => {
             </div>
 
             {/* Glassmorphic Stats bar inside dark hero */}
-            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 bg-white/[0.02] border border-white/[0.05] p-6 rounded-2xl backdrop-blur-md shadow-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.8 }}
+              className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 bg-white/[0.02] border border-white/[0.05] p-6 rounded-2xl backdrop-blur-md shadow-2xl"
+            >
               {STATS.map(([val, label]) => (
-                <div key={label} className="group">
-                  <div className="font-heading text-2xl font-black text-white group-hover:text-cyan-300 transition-colors duration-300">{val}</div>
-                  <div className="text-[11px] text-zinc-400 mt-1 tracking-wide font-medium">{label}</div>
-                </div>
+                <AnimatedStat key={label} val={val} label={label} />
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column: Audio & Dashboard Mockup */}
@@ -644,11 +905,11 @@ const Landing = () => {
       {/* ══════════════════════════════════════════════════════════
           FEATURES SECTION
       ══════════════════════════════════════════════════════════ */}
-      <section id="features" className="relative z-10 py-24 px-6 bg-bg-2">
+      <section id="features" className="relative z-10 py-24 px-6 bg-bg-2 dot-grid">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
@@ -665,7 +926,7 @@ const Landing = () => {
               key={title}
               initial={{ opacity: 0, y: 20, scale: 0.98 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ delay: i * 0.06, duration: 0.5 }}
               whileHover={{ y: -6, scale: 1.01 }}
               className="relative group rounded-2xl p-7 bg-bg-2 border border-border shadow-sm cursor-default transition-all duration-300 hover:border-indigo-200 hover:shadow-md hover:bg-bg-3/50"
@@ -723,7 +984,7 @@ const Landing = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
@@ -733,55 +994,102 @@ const Landing = () => {
           <p className="text-slate-500">Pick a package that fits your preparation needs.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {PRICING.map(({ plan, price, period, features, cta, highlight }, i) => (
-            <motion.div
-              key={plan}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              className={`relative rounded-2xl p-8 border bg-bg-2 transition-all duration-300 ${highlight
-                ? 'border-indigo-500 shadow-xl shadow-indigo-500/5'
-                : 'border-border hover:border-border-2 hover:shadow-md'
-              }`}
-            >
-              {highlight && (
-                <>
-                  <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 blur-xl -z-10" />
-                  <div className="text-[10px] font-bold tracking-widest text-indigo-600 uppercase mb-4 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-650 bg-indigo-600 animate-pulse" />
-                    Recommended Plan
-                  </div>
-                </>
-              )}
-              <div className="font-heading font-bold text-xl text-slate-800 mb-2">{plan}</div>
-              <div className="flex items-end gap-1 mb-6">
-                <span className="font-heading text-5xl font-extrabold text-slate-900">{price}</span>
-                <span className="text-slate-400 text-sm pb-1.5">{period}</span>
-              </div>
-              <div className="space-y-3.5 mb-8 border-t border-slate-100 pt-6">
-                {features.map((f) => (
-                  <div key={f} className="flex items-center gap-3 text-[13.5px]">
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
-                      <Check size={11} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
-                    </div>
-                    <span className="text-slate-650 font-medium">{f}</span>
-                  </div>
-                ))}
-              </div>
-              <Link
-                to="/register"
-                className={`block w-full text-center py-3.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
-                  ? 'bg-indigo-500 hover:bg-indigo-600 text-white font-bold hover:shadow-md'
-                  : 'bg-bg-3 border border-border hover:bg-bg-4 text-slate-700'
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto overflow-hidden">
+          {PRICING.map(({ plan, price, period, features, cta, highlight }, i) => {
+            // Directional entrance: left from left, center from below, right from right
+            const directions = [
+              { x: -80, y: 0, scale: 0.95, rotate: -1.5 },   // Free - from left
+              { x: 0, y: 60, scale: 0.9, rotate: 0 },         // Pro - from below
+              { x: 80, y: 0, scale: 0.95, rotate: 1.5 },      // Enterprise - from right
+            ];
+            const dir = directions[i] || directions[1];
+
+            return (
+              <motion.div
+                key={plan}
+                initial={{ 
+                  opacity: 0, 
+                  x: dir.x, 
+                  y: dir.y, 
+                  scale: dir.scale, 
+                  rotate: dir.rotate 
+                }}
+                whileInView={{ 
+                  opacity: 1, 
+                  x: 0, 
+                  y: 0, 
+                  scale: 1, 
+                  rotate: 0 
+                }}
+                viewport={{ once: false, margin: "-50px" }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 18,
+                  mass: 0.8,
+                  delay: i === 1 ? 0.15 : i === 0 ? 0 : 0.1
+                }}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.03,
+                  transition: { type: "spring", stiffness: 300, damping: 20 }
+                }}
+                className={`relative rounded-2xl p-8 border bg-bg-2 will-change-transform hover-glow ${highlight
+                  ? 'border-transparent animated-border shadow-xl shadow-indigo-500/10'
+                  : 'border-border hover:border-border-2 hover:shadow-md'
                 }`}
               >
-                {cta}
-              </Link>
-            </motion.div>
-          ))}
+                {highlight && (
+                  <>
+                    <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 blur-xl -z-10" />
+                    <div className="text-[10px] font-bold tracking-widest text-indigo-600 uppercase mb-4 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
+                      Recommended Plan
+                    </div>
+                  </>
+                )}
+                <div className="font-heading font-bold text-xl text-slate-800 mb-2">{plan}</div>
+                <div className="flex items-end gap-1 mb-6">
+                  <span className="font-heading text-5xl font-extrabold text-slate-900">{price}</span>
+                  <span className="text-slate-400 text-sm pb-1.5">{period}</span>
+                </div>
+                <div className="space-y-3.5 mb-8 border-t border-slate-100 pt-6">
+                  {features.map((f, fi) => (
+                    <motion.div
+                      key={f}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: false }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 120, 
+                        damping: 14,
+                        delay: 0.3 + fi * 0.05 
+                      }}
+                      className="flex items-center gap-3 text-[13.5px]"
+                    >
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
+                        <Check size={11} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
+                      </div>
+                      <span className="text-slate-650 font-medium">{f}</span>
+                    </motion.div>
+                  ))}
+                </div>
+                <motion.button
+                  onClick={() => setShowPopup(true)}
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className={`block w-full text-center py-3.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
+                    ? 'btn-shimmer bg-indigo-500 hover:bg-indigo-600 text-white font-bold hover:shadow-md'
+                    : 'bg-bg-3 border border-border hover:bg-bg-4 text-slate-700'
+                  }`}
+                >
+                  {cta}
+                </motion.button>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
@@ -792,7 +1100,7 @@ const Landing = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           className="text-center mb-14"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-3 border border-border text-xs text-slate-500 mb-4 uppercase tracking-widest font-semibold">
@@ -817,7 +1125,7 @@ const Landing = () => {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="flex-[1.2] text-left"
           >
             <div className="inline-flex items-center gap-2 text-3xl mb-4">🚀</div>
@@ -827,21 +1135,24 @@ const Landing = () => {
             </h2>
             <p className="text-zinc-400 mb-10 text-lg leading-relaxed">Join thousands of developers using InterviewAI Pro to build mock competency and master code reviews.</p>
             
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-10 py-5 rounded-2xl text-[17px] transition-all shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5"
+            <motion.button
+              onClick={() => setShowPopup(true)}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              className="btn-shimmer inline-flex items-center gap-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-10 py-5 rounded-2xl text-[17px] shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40"
             >
               Start Free Practice
               <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>
                 <ArrowRight size={20} />
               </motion.span>
-            </Link>
+            </motion.button>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="flex-1 flex justify-center"
           >
             <MilestoneGraph />
@@ -861,6 +1172,13 @@ const Landing = () => {
         </div>
         <div className="text-xs text-slate-400 font-medium">© 2025 InterviewAI Pro. All rights reserved.</div>
       </footer>
+      {/* Great Choice Popup */}
+      {showPopup && (
+        <GreatChoicePopup
+          onClose={() => setShowPopup(false)}
+          onNavigate={handlePopupNavigate}
+        />
+      )}
     </div>
   );
 };
