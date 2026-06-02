@@ -239,7 +239,67 @@ const VoiceVisualizerMockup = () => {
 /**
  * 2. Features Section - Monaco Code Editor & Live Feedback Mockup
  */
+const MOCK_CODE_QUESTIONS = [
+  {
+    filename: "solution.js",
+    revealDelay: 2.8,
+    codeLines: [
+      { num: 1, content: <><span className="text-purple-400 font-bold">function</span> <span className="text-blue-400">longestSubstring</span>(s) &#123;</> },
+      { num: 2, content: <>  <span className="text-purple-400 font-bold">let</span> maxLen = <span className="text-amber-400">0</span>, start = <span className="text-amber-400">0</span>;</> },
+      { num: 3, content: <>  <span className="text-purple-400 font-bold">const</span> seen = <span className="text-purple-400 font-bold">new</span> <span className="text-yellow-400">Map</span>();</> },
+      { num: 4, content: <>  <span className="text-purple-400 font-bold">for</span> (<span className="text-purple-400 font-bold">let</span> end = <span className="text-amber-400">0</span>; end &lt; s.length; end++) &#123;</> },
+      { num: 5, content: <>    <span className="text-purple-400 font-bold">if</span> (seen.<span className="text-blue-400">has</span>(s[end])) &#123;</> },
+      { num: 6, content: <>      start = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(seen.<span className="text-blue-400">get</span>(s[end]) + <span className="text-amber-400">1</span>, start);</> },
+      { num: 7, content: <>    &#125;</> },
+      { num: 8, content: <>    seen.<span className="text-blue-400">set</span>(s[end], end);</> },
+      { num: 9, animate: true, duration: 1.2, delay: 0.2, content: <>&nbsp;&nbsp;&nbsp;&nbsp;maxLen = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(maxLen, end - start + <span className="text-amber-400">1</span>);</> },
+      { num: 10, animate: true, duration: 0.2, delay: 1.4, content: <>&nbsp;&nbsp;&#125;</> },
+      { num: 11, animate: true, duration: 0.8, delay: 1.6, content: <>&nbsp;&nbsp;<span className="text-purple-400 font-bold">return</span> maxLen;</> },
+      { num: 12, animate: true, duration: 0.2, delay: 2.4, content: <>&#125;</> }
+    ],
+    testsPassed: "✓ 8/8 Tests Passed",
+    testCase: "Test Case 3: s = \"abcabcbb\" (Expected: 3)",
+    complexity: "O(N)",
+    score: "98%"
+  },
+  {
+    filename: "twoSum.js",
+    revealDelay: 1.6,
+    codeLines: [
+      { num: 1, content: <><span className="text-purple-400 font-bold">function</span> <span className="text-blue-400">twoSum</span>(nums, target) &#123;</> },
+      { num: 2, content: <>  <span className="text-purple-400 font-bold">const</span> map = <span className="text-purple-400 font-bold">new</span> <span className="text-yellow-400">Map</span>();</> },
+      { num: 3, content: <>  <span className="text-purple-400 font-bold">for</span> (<span className="text-purple-400 font-bold">let</span> i = <span className="text-amber-400">0</span>; i &lt; nums.length; i++) &#123;</> },
+      { num: 4, content: <>    <span className="text-purple-400 font-bold">const</span> diff = target - nums[i];</> },
+      { num: 5, content: <>    <span className="text-purple-400 font-bold">if</span> (map.<span className="text-blue-400">has</span>(diff)) &#123;</> },
+      { num: 6, content: <>      <span className="text-purple-400 font-bold">return</span> [map.<span className="text-blue-400">get</span>(diff), i];</> },
+      { num: 7, content: <>    &#125;</> },
+      { num: 8, content: <>    map.<span className="text-blue-400">set</span>(nums[i], i);</> },
+      { num: 9, animate: true, duration: 0.2, delay: 0.2, content: <>&nbsp;&nbsp;&#125;</> },
+      { num: 10, animate: true, duration: 0.8, delay: 0.4, content: <>&nbsp;&nbsp;<span className="text-purple-400 font-bold">return</span> [];</> },
+      { num: 11, animate: true, duration: 0.2, delay: 1.2, content: <>&#125;</> }
+    ],
+    testsPassed: "✓ 15/15 Tests Passed",
+    testCase: "Test Case 1: nums = [2,7,11,15] (Expected: [0,1])",
+    complexity: "O(N)",
+    score: "99%"
+  }
+];
+
+/**
+ * 2. Features Section - Monaco Code Editor & Live Feedback Mockup
+ */
 const CodeEditorMockup = () => {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIdx((prev) => (prev + 1) % MOCK_CODE_QUESTIONS.length);
+    }, 8000); // 8 seconds per cycle
+    return () => clearInterval(timer);
+  }, []);
+
+  const current = MOCK_CODE_QUESTIONS[idx];
+
   return (
     <div className="w-full max-w-[500px] bg-slate-950 border border-zinc-800 rounded-2xl shadow-xl overflow-hidden text-left font-mono">
       {/* Header tab bar */}
@@ -252,7 +312,7 @@ const CodeEditorMockup = () => {
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-950 border border-zinc-800/80 rounded-t-lg text-[11px] text-indigo-300 font-semibold border-b-transparent">
             <Code2 size={12} className="text-indigo-400" />
-            solution.js
+            {current.filename}
           </div>
         </div>
         <div className="text-[10px] text-zinc-500 font-sans font-semibold uppercase tracking-wider flex items-center gap-1.5">
@@ -262,48 +322,76 @@ const CodeEditorMockup = () => {
       </div>
 
       {/* Editor Content Area */}
-      <div className="p-5 text-[12px] leading-relaxed text-zinc-300 space-y-1 bg-slate-950">
-        <div><span className="text-zinc-700 mr-4 select-none">1</span><span className="text-purple-400 font-bold">function</span> <span className="text-blue-400">longestSubstring</span>(s) &#123;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">2</span>  <span className="text-purple-400 font-bold">let</span> maxLen = <span className="text-amber-400">0</span>, start = <span className="text-amber-400">0</span>;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">3</span>  <span className="text-purple-400 font-bold">const</span> seen = <span className="text-purple-400 font-bold">new</span> <span className="text-yellow-400">Map</span>();</div>
-        <div><span className="text-zinc-700 mr-4 select-none">4</span>  <span className="text-purple-400 font-bold">for</span> (<span className="text-purple-400 font-bold">let</span> end = <span className="text-amber-400">0</span>; end &lt; s.length; end++) &#123;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">5</span>    <span className="text-purple-400 font-bold">if</span> (seen.<span className="text-blue-400">has</span>(s[end])) &#123;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">6</span>      start = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(seen.<span className="text-blue-400">get</span>(s[end]) + <span className="text-amber-400">1</span>, start);</div>
-        <div><span className="text-zinc-700 mr-4 select-none">7</span>    &#125;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">8</span>    seen.<span className="text-blue-400">set</span>(s[end], end);</div>
-        <div><span className="text-zinc-700 mr-4 select-none">9</span>    maxLen = <span className="text-yellow-400">Math</span>.<span className="text-blue-400">max</span>(maxLen, end - start + <span className="text-amber-400">1</span>);</div>
-        <div><span className="text-zinc-700 mr-4 select-none">10</span>  &#125;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">11</span>  <span className="text-purple-400 font-bold">return</span> maxLen;</div>
-        <div><span className="text-zinc-700 mr-4 select-none">12</span>&#125;</div>
+      <div className="p-5 text-[12px] leading-relaxed text-zinc-300 space-y-1 bg-slate-950 min-h-[260px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`code-${idx}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {current.codeLines.map((line, i) => (
+              <div key={i} className={line.animate ? "whitespace-nowrap" : ""}>
+                <span className="text-zinc-700 mr-4 select-none w-4 inline-block text-right">{line.num}</span>
+                {line.animate ? (
+                  <motion.span 
+                    initial={{ clipPath: 'inset(0 100% 0 0)' }} 
+                    animate={{ clipPath: 'inset(0 0% 0 0)' }} 
+                    transition={{ duration: line.duration, delay: line.delay, ease: "linear" }} 
+                    className="inline-block"
+                  >
+                    {line.content}
+                  </motion.span>
+                ) : (
+                  line.content
+                )}
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Compiler output bar */}
-      <div className="bg-zinc-900 p-4 border-t border-zinc-950 font-mono text-[11px]">
-        <div className="text-zinc-500 mb-1.5 flex items-center justify-between font-sans">
-          <span>Compiler Terminal</span>
-          <span className="text-emerald-400 font-bold">✓ 8/8 Tests Passed</span>
-        </div>
-        <div className="text-emerald-400 bg-slate-950 p-2.5 rounded border border-zinc-800 flex items-center justify-between">
-          <span>Test Case 3: s = "abcabcbb" (Expected: 3)</span>
-          <span className="font-sans text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20">PASSED</span>
-        </div>
-      </div>
+      <div className="relative min-h-[156px] bg-zinc-900 border-t border-zinc-950 overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`results-${idx}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: current.revealDelay }}
+            className="absolute inset-0 flex flex-col justify-between"
+          >
+            {/* Compiler output bar */}
+            <div className="p-4 font-mono text-[11px] border-b border-zinc-800">
+              <div className="text-zinc-500 mb-1.5 flex items-center justify-between font-sans">
+                <span>Compiler Terminal</span>
+                <span className="text-emerald-400 font-bold">{current.testsPassed}</span>
+              </div>
+              <div className="text-emerald-400 bg-slate-950 p-2.5 rounded border border-zinc-800 flex items-center justify-between">
+                <span>{current.testCase}</span>
+                <span className="font-sans text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20">PASSED</span>
+              </div>
+            </div>
 
-      {/* AI Scorecard panel floating over the bottom */}
-      <div className="bg-zinc-900 border-t border-zinc-800 p-4 font-sans text-zinc-200 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-sm">
-            O(N)
-          </div>
-          <div>
-            <div className="text-xs font-bold text-zinc-200">Algorithmic Efficiency</div>
-            <div className="text-[10px] text-zinc-400 font-mono">Time Complexity Score: 98%</div>
-          </div>
-        </div>
-        <div className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1">
-          <CheckCircle2 size={13} />
-          Optimal Solution
-        </div>
+            {/* AI Scorecard panel */}
+            <div className="p-4 font-sans text-zinc-200 flex items-center justify-between gap-3 bg-zinc-900">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-sm">
+                  {current.complexity}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-zinc-200">Algorithmic Efficiency</div>
+                  <div className="text-[10px] text-zinc-400 font-mono">Time Complexity Score: {current.score}</div>
+                </div>
+              </div>
+              <div className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1">
+                <CheckCircle2 size={13} />
+                Optimal Solution
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -676,7 +764,7 @@ const Landing = () => {
               <div className="space-y-3.5 mb-8 border-t border-slate-100 pt-6">
                 {features.map((f) => (
                   <div key={f} className="flex items-center gap-3 text-[13.5px]">
-                    <div className={`w-4.5 h-4.5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
                       <Check size={11} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
                     </div>
                     <span className="text-slate-650 font-medium">{f}</span>
