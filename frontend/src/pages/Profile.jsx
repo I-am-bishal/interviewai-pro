@@ -4,7 +4,7 @@ import {
   User, Mail, Briefcase, Zap, Code2, FileText,
   MessageSquare, ChevronRight, Edit2, Check, X,
   Calendar, ShieldCheck, Lock, ExternalLink, BarChart3,
-  Award, Clock, CheckCircle2, AlertCircle, Eye
+  Award, Clock, CheckCircle2, AlertCircle, Eye, Activity
 } from 'lucide-react';
 import { Card, Badge, ProgressBar, SectionTitle, Skeleton } from '../components/ui/index.jsx';
 import Button from '../components/ui/Button';
