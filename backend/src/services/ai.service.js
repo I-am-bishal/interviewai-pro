@@ -8,52 +8,169 @@ const prompts = require('../prompts');
 
 // Predefined fallback questions for local testing and offline modes
 const FALLBACK_QUESTIONS = {
-  dsa: [
-    "Explain how a hash map works internally and how collision resolution is handled.",
-    "What is the difference between Depth First Search (DFS) and Breadth First Search (BFS)? When would you use one over the other?",
-    "Describe the algorithm and time complexity for finding the shortest path in a weighted graph (Dijkstra's algorithm).",
-    "Explain the concept of Dynamic Programming and how it differs from memoization and divide-and-conquer.",
-    "How would you detect a cycle in a directed graph? Explain the steps and complexity."
-  ],
-  hr: [
-    "Tell me about yourself and why you are interested in this role.",
-    "Why do you want to join our company specifically?",
-    "Where do you see yourself in 5 years? What are your career goals?",
-    "Describe a challenging project you worked on and how you handled difficulties.",
-    "How do you prioritize your work when dealing with multiple tight deadlines?"
-  ],
-  'system-design': [
-    "Design a URL shortening service like Bitly. How would you handle redirection and scalability?",
-    "Design a real-time chat application. What protocols and storage would you choose?",
-    "How would you design a rate limiter for an API gateway?",
-    "Design a news feed system like Twitter or Facebook. How would you handle high volume and feeds of popular users?",
-    "Design a distributed file storage system like Dropbox."
-  ],
-  behavioral: [
-    "Tell me about a time you had a conflict with a team member. How did you resolve it?",
-    "Describe a situation where you made a mistake on a project. What did you do to fix it and what did you learn?",
-    "Tell me about a time you had to work with ambiguous requirements. How did you proceed?",
-    "Describe a time when you took the initiative to improve a system or process.",
-    "Tell me about a time you had to deliver bad news to a stakeholder or manager."
-  ],
-  coding: [
-    "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
-    "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
-    "Given a string s, find the length of the longest substring without repeating characters.",
-    "Given an array of intervals, merge all overlapping intervals.",
-    "Design a data structure that follows the Least Recently Used (LRU) cache constraint."
-  ]
+  dsa: {
+    entry: [
+      "Explain the key differences between an Array and a Linked List. When would you prefer one over the other?",
+      "How does a Stack data structure work? Describe its two main operations and their time complexity.",
+      "What is the difference between a Binary Tree and a Binary Search Tree (BST)?",
+      "Describe how the bubble sort algorithm works and its average and worst-case time complexities.",
+      "Explain the concept of recursion. What is a base case and why is it necessary?"
+    ],
+    mid: [
+      "Explain how a hash map works internally and how collision resolution is handled.",
+      "What is the difference between Depth First Search (DFS) and Breadth First Search (BFS)? When would you use one over the other?",
+      "Describe the algorithm and time complexity for finding the shortest path in a weighted graph (Dijkstra's algorithm).",
+      "Explain the concept of Dynamic Programming and how it differs from memoization and divide-and-conquer.",
+      "How would you detect a cycle in a directed graph? Explain the steps and complexity."
+    ],
+    senior: [
+      "Explain the design and operation of a Red-Black Tree or AVL tree. Why is self-balancing important?",
+      "Describe the concept of an amortized time complexity analysis. Give an example (e.g., dynamic array resizing).",
+      "How does a Trie (Prefix Tree) work? Detail its insert and search complexities and a real-world use case.",
+      "Explain the Union-Find (Disjoint Set) data structure, path compression, and its time complexity with Kruskal's algorithm.",
+      "Compare and contrast the Floyd-Warshall and Bellman-Ford algorithms for shortest paths. How do they handle negative weight cycles?"
+    ],
+    lead: [
+      "Explain the design and implementation of a thread-safe, lock-free queue using Compare-And-Swap (CAS) instructions.",
+      "How would you design a distributed hash table (DHT) like Consistent Hashing? How does it handle node additions and removals?",
+      "Discuss the implementation of a B+ Tree. How is it optimized for database storage engines and disk I/O?",
+      "Explain the mathematical principles behind the A* search algorithm and how heuristic selection affects its completeness and optimality.",
+      "Describe the data structures and algorithms behind a high-frequency trading matching engine. How would you minimize latency?"
+    ]
+  },
+  hr: {
+    entry: [
+      "Tell me about yourself and why you are interested in entering the software engineering field.",
+      "Why do you want to join our company specifically as an entry-level developer?",
+      "Where do you see yourself in 3 years? What skills do you want to master first?",
+      "Describe a challenging coding project or assignment you worked on and how you handled difficulties.",
+      "How do you prioritize your learning when faced with many new technologies?"
+    ],
+    mid: [
+      "Tell me about yourself and why you are interested in this role.",
+      "Why do you want to join our company specifically?",
+      "Where do you see yourself in 5 years? What are your career goals?",
+      "Describe a challenging project you worked on and how you handled difficulties.",
+      "How do you prioritize your work when dealing with multiple tight deadlines?"
+    ],
+    senior: [
+      "Walk me through a major technical decision you made on a project. What were the trade-offs and the outcome?",
+      "How do you handle disagreement with a product manager or another senior developer on architectural decisions?",
+      "Describe a time when you mentored a junior engineer. How did you support their growth and assess their progress?",
+      "Why are you looking to leave your current role? What technical and cultural factors are most important to you next?",
+      "How do you ensure code quality, testing rigor, and maintainability across a fast-paced development team?"
+    ],
+    lead: [
+      "Describe your leadership style. How do you motivate teams, resolve conflicts, and foster a healthy engineering culture?",
+      "How do you align technical roadmap and engineering initiatives with business objectives and product goals?",
+      "Describe a time you had to champion a major migration or architectural refactor. How did you manage risk and secure stakeholder buy-in?",
+      "How do you build, scale, and structure engineering teams? What traits do you look for in senior hires?",
+      "Discuss a failure under your leadership. What went wrong, how did you handle communication, and what preventative actions were taken?"
+    ]
+  },
+  'system-design': {
+    entry: [
+      "What is the difference between SQL and NoSQL databases? When would you use which?",
+      "Explain the concept of client-server architecture and how a basic web request works.",
+      "What is a load balancer? Why is it useful in a web application?",
+      "Describe how caching works. What is the difference between local caching and distributed caching?",
+      "Explain the difference between vertical scaling and horizontal scaling."
+    ],
+    mid: [
+      "Design a URL shortening service like Bitly. How would you handle redirection and scalability?",
+      "Design a real-time chat application. What protocols and storage would you choose?",
+      "How would you design a rate limiter for an API gateway?",
+      "Design a news feed system like Twitter or Facebook. How would you handle high volume and feeds of popular users?",
+      "Design a distributed file storage system like Dropbox."
+    ],
+    senior: [
+      "Design a globally distributed video streaming platform like Netflix. Discuss video encoding, CDN strategy, and edge routing.",
+      "Design a ride-sharing service like Uber. How would you handle real-time geospatial indexing and driver dispatch matching at scale?",
+      "Design a distributed event streaming platform like Kafka. Detail partition allocation, replication, and consumer group offset management.",
+      "Design a distributed transactional database with ACID guarantees. How would you implement two-phase commit (2PC) and handle failures?",
+      "Design a metric monitoring and alerting system like Prometheus. Discuss pull vs. push models, storage efficiency, and alerting rules."
+    ],
+    lead: [
+      "Design a financial ledger system with 99.999% availability and strong consistency guarantees. Discuss double-entry bookkeeping, auditability, and partition tolerance.",
+      "Design a global multi-player matchmaking and game state sync engine. Discuss tick rates, latency compensation, and regional edge clusters.",
+      "Design an enterprise-level API gateway and service mesh. Discuss routing, service discovery, security (mTLS), observability, and configuration propagation.",
+      "Design a distributed search engine like Elasticsearch. Discuss indexing pipelines, inverted index sharding, query scoring, and cluster coordination.",
+      "Design a multi-tenant cloud compilation and sandboxed execution platform. Discuss resource isolation, security boundaries, and hot-start caching."
+    ]
+  },
+  behavioral: {
+    entry: [
+      "Tell me about a time you had to work on a team project. How did you divide the work and collaborate?",
+      "Describe a mistake you made while coding. How did you realize it and what did you do to resolve it?",
+      "Tell me about a time you had to learn a completely new tool or language in a short period. How did you approach it?",
+      "How do you handle receiving critical feedback on your code or work?",
+      "Describe a situation where you had to ask for help because you were stuck. What did you learn?"
+    ],
+    mid: [
+      "Tell me about a time you had a conflict with a team member. How did you resolve it?",
+      "Describe a situation where you made a mistake on a project. What did you do to fix it and what did you learn?",
+      "Tell me about a time you had to work with ambiguous requirements. How did you proceed?",
+      "Describe a time when you took the initiative to improve a system or process.",
+      "Tell me about a time you had to deliver bad news to a stakeholder or manager."
+    ],
+    senior: [
+      "Describe a time when you successfully persuaded stakeholders or senior leadership to adopt your technical proposal.",
+      "Tell me about a time a project was falling behind schedule. What actions did you take to manage expectations and steer it back?",
+      "Describe a situation where you had to choose between code speed/delivery time and technical debt. How did you decide?",
+      "Tell me about a time when you noticed a systemic issue or process bottleneck in your organization and how you led the effort to solve it.",
+      "Describe a conflict you had with a manager or principal engineer regarding a critical architectural direction. How was it resolved?"
+    ],
+    lead: [
+      "Describe a time when you had to manage an underperforming engineer. How did you handle the situation and what was the outcome?",
+      "Tell me about a time you had to coordinate a complex release or migration across multiple teams. How did you align incentives?",
+      "Describe a situation where a business priority shift rendered months of engineering work obsolete. How did you manage team morale?",
+      "Tell me about a time you had to make an unpopular decision that was necessary for the long-term success of the engineering group.",
+      "Walk me through how you establish and promote psychological safety, inclusion, and accountability in your engineering organization."
+    ]
+  },
+  coding: {
+    entry: [
+      "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      "Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+      "Implement a function that reverses a linked list in-place.",
+      "Given an array of integers, find the maximum subarray sum (Kadane's algorithm).",
+      "Write a function to check if a given string is a palindrome."
+    ],
+    mid: [
+      "Given a string s, find the length of the longest substring without repeating characters.",
+      "Given an array of intervals, merge all overlapping intervals.",
+      "Design a data structure that follows the Least Recently Used (LRU) cache constraint.",
+      "Find the lowest common ancestor of two nodes in a binary tree.",
+      "Implement an algorithm to find the length of the longest increasing subsequence in an array."
+    ],
+    senior: [
+      "Given an unsorted array of integers, find the length of the longest consecutive elements sequence in O(N) time.",
+      "Given a grid of characters and a list of words, find all words in the grid (Word Search II).",
+      "Serialize and deserialize a binary tree.",
+      "Given a string s and a dictionary of words, segment the string in all possible ways to form space-separated words (Word Break II).",
+      "Implement a basic calculator to evaluate a simple expression string containing parentheses and basic operators."
+    ],
+    lead: [
+      "Given a string s and a pattern p, implement regular expression matching with support for '.' and '*' (Regex Matching).",
+      "Given a list of query words, find the shortest path from a start word to an end word changing only one letter at a time (Word Ladder II).",
+      "Find the median of two sorted arrays of different sizes in O(log(min(M, N))) time.",
+      "Design and implement a system that efficiently processes a stream of integers and finds the running median in O(1) time.",
+      "Given an array of integers, return the maximum path sum in a binary tree (can start and end at any node)."
+    ]
+  }
 };
 
 /**
  * Generate interview questions for a given mode and user profile
  * @param {string} mode  - 'hr' | 'dsa' | 'system-design' | 'behavioral' | 'coding'
  * @param {object} user  - Mongoose user document
+ * @param {string} level - 'entry' | 'mid' | 'senior' | 'lead'
  * @returns {string[]}   - Array of question strings
  */
-const generateQuestions = async (mode, user) => {
+const generateQuestions = async (mode, user, level) => {
+  const selectedLevel = level || user?.experienceLevel || 'mid';
   try {
-    const systemPrompt = prompts.questionGenerator(mode, user);
+    const systemPrompt = prompts.questionGenerator(mode, user, selectedLevel);
 
     const raw = await chat([
       { role: 'system', content: systemPrompt },
@@ -64,8 +181,9 @@ const generateQuestions = async (mode, user) => {
     const cleaned = raw.replace(/```json|```/g, '').trim();
     return JSON.parse(cleaned);
   } catch (error) {
-    console.warn(`AI generateQuestions failed for mode "${mode}", using fallback questions. Error:`, error.message);
-    return FALLBACK_QUESTIONS[mode] || FALLBACK_QUESTIONS.hr;
+    console.warn(`AI generateQuestions failed for mode "${mode}" and level "${selectedLevel}", using fallback questions. Error:`, error.message);
+    const modeQuestions = FALLBACK_QUESTIONS[mode] || FALLBACK_QUESTIONS.hr;
+    return modeQuestions[selectedLevel] || modeQuestions.mid;
   }
 };
 

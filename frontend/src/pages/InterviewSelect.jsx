@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, Clock, Zap } from 'lucide-react';
 import { Card, Badge, SectionTitle } from '../components/ui/index.jsx';
+import { useAuthStore } from '../store/authStore';
 
 const MODES = [
   {
@@ -31,11 +32,20 @@ const MODES = [
   },
 ];
 
+const LEVELS = [
+  { id: 'entry', label: 'Beginner / Entry', emoji: '🌱', desc: '0-2 years. Core concepts & structures.' },
+  { id: 'mid', label: 'Intermediate / Mid', emoji: '⚡', desc: '2-5 years. Practical algorithms & applications.' },
+  { id: 'senior', label: 'Advanced / Senior', emoji: '🧠', desc: '5+ years. System complexity & trade-offs.' },
+  { id: 'lead', label: 'Expert / Lead', emoji: '👑', desc: 'Leads & Architects. Distributed systems & concurrency.' }
+];
+
 const InterviewSelect = () => {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const [selectedLevel, setSelectedLevel] = useState(user?.experienceLevel || 'mid');
 
   const start = (mode) =>
-    navigate('/interview/room', { state: { mode } });
+    navigate('/interview/room', { state: { mode, level: selectedLevel } });
 
   return (
     <motion.div
@@ -48,6 +58,47 @@ const InterviewSelect = () => {
         <p className="text-slate-400 text-sm">
           Select a category and our AI will generate tailored questions for your session.
         </p>
+      </div>
+
+      {/* Experience Level Selector Section */}
+      <div className="mb-8">
+        <SectionTitle>Select Target Difficulty</SectionTitle>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
+          {LEVELS.map((lvl) => {
+            const isSelected = selectedLevel === lvl.id;
+            return (
+              <motion.div
+                key={lvl.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setSelectedLevel(lvl.id)}
+                className={`relative p-3.5 rounded-2xl border transition-all cursor-pointer select-none overflow-hidden ${
+                  isSelected
+                    ? 'bg-accent/15 border-accent shadow-lg shadow-accent/5'
+                    : 'bg-bg-3 border-border hover:border-slate-400 hover:bg-bg-2'
+                }`}
+              >
+                {/* Active indicator dot/glow */}
+                {isSelected && (
+                  <div className="absolute top-0 right-0 w-8 h-8 bg-accent/25 rounded-bl-3xl flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                  </div>
+                )}
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    <span className="text-xl mb-1.5 block">{lvl.emoji}</span>
+                    <h3 className={`font-bold text-[12.5px] ${isSelected ? 'text-accent' : 'text-slate-800'}`}>
+                      {lvl.label}
+                    </h3>
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-1 leading-relaxed font-normal">
+                    {lvl.desc}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
       <div className="space-y-3 mb-6">

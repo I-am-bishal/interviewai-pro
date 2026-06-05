@@ -21,7 +21,7 @@ const MODE_META = {
 const InterviewRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { mode } = location.state || { mode: 'hr' };
+  const { mode, level } = location.state || { mode: 'hr', level: 'mid' };
   const meta = MODE_META[mode] || MODE_META.hr;
 
   const { currentInterview, currentQuestionIndex, isLoading, isAiTyping, startSession, submitAnswer, completeSession, setTranscript } = useInterviewStore();
@@ -41,7 +41,7 @@ const InterviewRoom = () => {
   // Start session on mount
   useEffect(() => {
     if (!currentInterview) {
-      startSession(mode).catch(() => {
+      startSession(mode, null, level).catch(() => {
         toast.error('Failed to start interview');
         navigate('/interview');
       });

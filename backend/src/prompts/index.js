@@ -7,23 +7,24 @@
 /**
  * Generates role-specific interview questions
  */
-const questionGenerator = (mode, user) => {
+const questionGenerator = (mode, user, level) => {
+  const expLevel = level || user?.experienceLevel || 'mid';
   const modeInstructions = {
     hr: `Generate 5 HR interview questions. Focus on: culture fit, motivation, career goals, 
-         work style, and situational judgment. Tailor difficulty to a ${user.experienceLevel} engineer 
-         targeting a ${user.targetRole || 'Software Engineer'} role.`,
+         work style, and situational judgment. Tailor difficulty to a ${expLevel} engineer 
+         targeting a ${user?.targetRole || 'Software Engineer'} role.`,
 
     dsa: `Generate 5 Data Structures & Algorithms interview questions appropriate for a 
-          ${user.experienceLevel}-level candidate. Cover: arrays, trees, graphs, dynamic programming, 
+          ${expLevel}-level candidate. Cover: arrays, trees, graphs, dynamic programming, 
           and system complexity. Questions should require verbal explanation of approach, not just code.`,
 
-    'system-design': `Generate 5 System Design interview questions for a ${user.experienceLevel} engineer.
+    'system-design': `Generate 5 System Design interview questions for a ${expLevel} engineer.
           Cover: distributed systems, scalability, APIs, databases, caching, and real-world architectures.
           Examples: URL shortener, real-time chat, recommendation engine.`,
 
     behavioral: `Generate 5 behavioral interview questions using the STAR method framework.
           Cover: teamwork, conflict resolution, leadership, failure/learning, and initiative.
-          Tailor to ${user.experienceLevel} experience level.`,
+          Tailor to ${expLevel} experience level.`,
 
     coding: `Generate 5 coding problem descriptions (no solutions). Include: problem statement, 
           input/output examples, and constraints. Mix of easy (2), medium (2), hard (1) difficulty.`,

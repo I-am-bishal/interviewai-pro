@@ -14,6 +14,7 @@ router.use(protect);
 router.get('/', listInterviews);
 router.post('/start', [
   body('mode').isIn(['hr', 'dsa', 'system-design', 'behavioral', 'coding']),
+  body('level').optional().isIn(['entry', 'mid', 'senior', 'lead']),
 ], validate, startInterview);
 
 router.get('/:id', getInterview);

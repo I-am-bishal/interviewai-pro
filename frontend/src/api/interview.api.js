@@ -1,8 +1,8 @@
 import api from './axios';
 
 export const interviewApi = {
-  start: async (mode, title) => {
-    const res = await api.post('/interviews/start', { mode, title });
+  start: async (mode, title, level) => {
+    const res = await api.post('/interviews/start', { mode, title, level });
     return res.data.data.interview;
   },
 

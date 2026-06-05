@@ -19,10 +19,10 @@ export const useInterviewStore = create((set, get) => ({
   elapsedSeconds: 0,
   timerInterval: null,
 
-  startSession: async (mode, title) => {
+  startSession: async (mode, title, level) => {
     set({ isLoading: true });
     try {
-      const interview = await interviewApi.start(mode, title);
+      const interview = await interviewApi.start(mode, title, level);
       set({ currentInterview: interview, currentQuestionIndex: 0, isLoading: false });
       get().startTimer();
       return interview;

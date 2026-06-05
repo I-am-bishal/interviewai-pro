@@ -8,10 +8,10 @@ const { success, created, notFound, badRequest } = require('../utils/response');
  * Creates a new interview session and generates the first batch of questions
  */
 const startInterview = async (req, res) => {
-  const { mode, title } = req.body;
+  const { mode, title, level } = req.body;
 
   // Generate initial questions via AI
-  const questions = await aiService.generateQuestions(mode, req.user);
+  const questions = await aiService.generateQuestions(mode, req.user, level);
 
   const interview = await Interview.create({
     user: req.user._id,
