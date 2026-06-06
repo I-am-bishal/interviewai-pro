@@ -19,6 +19,7 @@ const Analytics     = lazy(() => import('../pages/Analytics'));
 const Leaderboard   = lazy(() => import('../pages/Leaderboard'));
 const Settings      = lazy(() => import('../pages/Settings'));
 const Profile       = lazy(() => import('../pages/Profile'));
+const Preparation   = lazy(() => import('../pages/Preparation'));
 const NotFound      = lazy(() => import('../pages/NotFound'));
 
 /** Redirects unauthenticated users to /login */
@@ -54,6 +55,7 @@ const AppRoutes = () => (
         <Route path="/coding"             element={<CodingRound />} />
         <Route path="/resume"             element={<ResumeAnalyzer />} />
         <Route path="/analytics"          element={<Analytics />} />
+        <Route path="/prep"               element={<Preparation />} />
         <Route path="/leaderboard"        element={<Leaderboard />} />
         <Route path="/settings"           element={<Settings />} />
         <Route path="/profile"            element={<Profile />} />

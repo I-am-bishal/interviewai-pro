@@ -3,7 +3,8 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, MessageSquare, Code2, FileText,
-  BarChart3, Trophy, Settings, LogOut, Zap, Menu, X
+  BarChart3, Trophy, Settings, LogOut, Zap, Menu, X,
+  BookOpen
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
@@ -12,6 +13,7 @@ import LoadingSpinner, { Logo } from '../components/ui';
 const NAV_ITEMS = [
   { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { label: 'AI Interview', path: '/interview', icon: MessageSquare, badge: 'New' },
+  { label: 'Prep Hub', path: '/prep', icon: BookOpen },
   { label: 'Coding Round', path: '/coding', icon: Code2 },
   { label: 'Resume AI', path: '/resume', icon: FileText },
   { label: 'Analytics', path: '/analytics', icon: BarChart3 },
