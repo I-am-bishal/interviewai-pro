@@ -39,6 +39,29 @@ const LEVELS = [
   { id: 'lead', label: 'Expert / Lead', emoji: '👑', desc: 'Leads & Architects. Distributed systems & concurrency.' }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 280,
+      damping: 24
+    }
+  }
+};
+
 const InterviewSelect = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -49,19 +72,24 @@ const InterviewSelect = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-6 max-w-2xl mx-auto"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="p-6 max-w-2xl mx-auto relative min-h-full dot-grid overflow-hidden"
     >
-      <div className="mb-7">
+      {/* Background Ambient Glow Lights */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10" />
+      <div className="absolute bottom-10 right-10 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      <motion.div variants={itemVariants} className="mb-7 relative z-10">
         <h1 className="font-heading text-2xl font-bold mb-1">Choose Interview Mode</h1>
         <p className="text-slate-400 text-sm">
           Select a category and our AI will generate tailored questions for your session.
         </p>
-      </div>
+      </motion.div>
 
       {/* Experience Level Selector Section */}
-      <div className="mb-8">
+      <motion.div variants={itemVariants} className="mb-8 relative z-10">
         <SectionTitle>Select Target Difficulty</SectionTitle>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
           {LEVELS.map((lvl) => {
@@ -69,22 +97,30 @@ const InterviewSelect = () => {
             return (
               <motion.div
                 key={lvl.id}
+                variants={itemVariants}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedLevel(lvl.id)}
                 className={`relative p-3.5 rounded-2xl border transition-all cursor-pointer select-none overflow-hidden ${
                   isSelected
-                    ? 'bg-accent/15 border-accent shadow-lg shadow-accent/5'
+                    ? 'border-accent shadow-lg shadow-accent/5'
                     : 'bg-bg-3 border-border hover:border-slate-400 hover:bg-bg-2'
                 }`}
               >
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeDifficulty"
+                    className="absolute inset-0 bg-accent/15 -z-10"
+                    transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                  />
+                )}
                 {/* Active indicator dot/glow */}
                 {isSelected && (
                   <div className="absolute top-0 right-0 w-8 h-8 bg-accent/25 rounded-bl-3xl flex items-center justify-center">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                   </div>
                 )}
-                <div className="flex flex-col h-full justify-between">
+                <div className="flex flex-col h-full justify-between relative z-10">
                   <div>
                     <span className="text-xl mb-1.5 block">{lvl.emoji}</span>
                     <h3 className={`font-bold text-[12.5px] ${isSelected ? 'text-accent' : 'text-slate-800'}`}>
@@ -99,20 +135,18 @@ const InterviewSelect = () => {
             );
           })}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="space-y-3 mb-6">
-        {MODES.map((mode, i) => (
+      <div className="space-y-3 mb-6 relative z-10">
+        {MODES.map((mode) => (
           <motion.div
             key={mode.id}
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.07 }}
+            variants={itemVariants}
           >
             <Card
               hover
               onClick={() => start(mode.id)}
-              className="!p-5 group"
+              className="!p-5 group hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
             >
               <div className="flex items-center gap-4">
                 <div className="text-4xl flex-shrink-0">{mode.emoji}</div>
@@ -143,32 +177,34 @@ const InterviewSelect = () => {
       </div>
 
       {/* Coding Round shortcut */}
-      <SectionTitle>Also Available</SectionTitle>
-      <Card
-        hover
-        onClick={() => navigate('/coding')}
-        className="!p-5 group border-accent/20"
-      >
-        <div className="flex items-center gap-4">
-          <div className="text-4xl">💻</div>
-          <div className="flex-1">
-            <div className="font-heading font-bold text-[15px] mb-1">Live Coding Challenge</div>
-            <div className="text-[13px] text-slate-500 mb-2">
-              Solve real DSA problems in our code editor with AI evaluation and hidden test cases.
+      <motion.div variants={itemVariants} className="relative z-10">
+        <SectionTitle>Also Available</SectionTitle>
+        <Card
+          hover
+          onClick={() => navigate('/coding')}
+          className="!p-5 group border-accent/20 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
+        >
+          <div className="flex items-center gap-4">
+            <div className="text-4xl">💻</div>
+            <div className="flex-1">
+              <div className="font-heading font-bold text-[15px] mb-1">Live Coding Challenge</div>
+              <div className="text-[13px] text-slate-500 mb-2">
+                Solve real DSA problems in our code editor with AI evaluation and hidden test cases.
+              </div>
+              <div className="flex gap-1.5 flex-wrap">
+                <Badge color="purple"><Zap size={10} className="mr-1" />Monaco Editor</Badge>
+                <Badge color="gray">Multi-Language</Badge>
+                <Badge color="gray">AI Evaluation</Badge>
+                <Badge color="gray">Test Cases</Badge>
+              </div>
             </div>
-            <div className="flex gap-1.5 flex-wrap">
-              <Badge color="purple"><Zap size={10} className="mr-1" />Monaco Editor</Badge>
-              <Badge color="gray">Multi-Language</Badge>
-              <Badge color="gray">AI Evaluation</Badge>
-              <Badge color="gray">Test Cases</Badge>
-            </div>
+            <ChevronRight
+              size={18}
+              className="text-slate-300 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
+            />
           </div>
-          <ChevronRight
-            size={18}
-            className="text-slate-300 group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0"
-          />
-        </div>
-      </Card>
+        </Card>
+      </motion.div>
     </motion.div>
   );
 };

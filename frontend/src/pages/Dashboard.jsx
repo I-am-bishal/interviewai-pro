@@ -36,6 +36,72 @@ const STATS = [
   { label: 'Badges Earned',   value: '12',  change: '2 new unlocked', icon: Award, up: true },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 280,
+      damping: 24
+    }
+  }
+};
+
+const AnimatedCounter = ({ value, duration = 1200 }) => {
+  const [displayVal, setDisplayVal] = React.useState('');
+
+  React.useEffect(() => {
+    const numericStr = value.replace(/[^0-9]/g, '');
+    const numeric = parseInt(numericStr, 10);
+    
+    if (isNaN(numeric)) {
+      setDisplayVal(value);
+      return;
+    }
+
+    const suffix = value.replace(/[0-9]/g, '');
+    const isStreak = value.includes('🔥');
+    const cleanSuffix = suffix.replace('🔥', '').trim();
+    
+    let startTime = null;
+    let animFrame;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+      const current = Math.floor(eased * numeric);
+      
+      const formatted = isStreak 
+        ? `🔥 ${current}${cleanSuffix}` 
+        : `${current}${cleanSuffix}`;
+        
+      setDisplayVal(formatted);
+
+      if (progress < 1) {
+        animFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animFrame);
+  }, [value, duration]);
+
+  return <>{displayVal || value}</>;
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
@@ -46,50 +112,70 @@ const Dashboard = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-6 max-w-6xl mx-auto"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="p-6 max-w-6xl mx-auto relative min-h-full dot-grid overflow-hidden"
     >
+      {/* Background Ambient Glow Lights */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10" />
+      <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" style={{ animationDuration: '8s' }} />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <motion.div variants={itemVariants} className="flex items-center justify-between mb-6 relative z-10">
         <div>
-          <h1 className="font-heading text-2xl font-bold">
-            Welcome back, {user?.name?.split(' ')[0] || 'there'} 👋
+          <h1 className="font-heading text-2xl font-bold flex items-center gap-2">
+            Welcome back, {user?.name?.split(' ')[0] || 'there'}{' '}
+            <motion.span
+              className="inline-block origin-[70%_70%]"
+              animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
+              transition={{
+                duration: 2.5,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatDelay: 1.5
+              }}
+            >
+              👋
+            </motion.span>
           </h1>
           <p className="text-slate-400 text-sm mt-0.5">Ready for today's interview practice?</p>
         </div>
         <Button onClick={() => navigate('/interview')} iconRight={<ArrowRight size={15} />}>
           New Interview
         </Button>
-      </div>
+      </motion.div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 relative z-10">
         {STATS.map(({ label, value, change, icon: Icon, up }) => (
-          <Card key={label} className="!p-4">
-            <div className="flex items-start justify-between mb-2">
-              <div className="text-[11px] font-semibold tracking-wider uppercase text-slate-400">{label}</div>
-              <Icon size={15} className="text-slate-300" />
-            </div>
-            <div className="font-heading text-2xl font-extrabold mb-1">{value}</div>
-            <div className={`text-xs font-medium ${up ? 'text-success' : 'text-danger'}`}>{change}</div>
-          </Card>
+          <motion.div key={label} variants={itemVariants}>
+            <Card className="!p-4 hover:shadow-xl hover:shadow-accent/5 hover:-translate-y-0.5 transition-all duration-300">
+              <div className="flex items-start justify-between mb-2">
+                <div className="text-[11px] font-semibold tracking-wider uppercase text-slate-400">{label}</div>
+                <Icon size={15} className="text-slate-300" />
+              </div>
+              <div className="font-heading text-2xl font-extrabold mb-1">
+                <AnimatedCounter value={value} />
+              </div>
+              <div className={`text-xs font-medium ${up ? 'text-success' : 'text-danger'}`}>{change}</div>
+            </Card>
+          </motion.div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
         {/* Interview Modes */}
         <div className="lg:col-span-2">
           <SectionTitle>Start New Interview</SectionTitle>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {INTERVIEW_MODES.map((mode, i) => (
+            {INTERVIEW_MODES.map((mode) => (
               <motion.div
                 key={mode.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 }}
+                variants={itemVariants}
               >
-                <Card hover onClick={() => startInterview(mode.id)} className="!p-5 group">
+                <Card hover onClick={() => startInterview(mode.id)} className="!p-5 group hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300">
                   <div className="text-3xl mb-3">{mode.emoji}</div>
                   <div className="font-heading font-bold text-[15px] mb-1.5">{mode.label}</div>
                   <div className="text-[12.5px] text-slate-500 mb-3 leading-relaxed">{mode.desc}</div>
@@ -110,9 +196,9 @@ const Dashboard = () => {
         {/* Right panel */}
         <div className="space-y-4">
           {/* Daily Challenge */}
-          <div>
+          <motion.div variants={itemVariants}>
             <SectionTitle>Daily Challenge</SectionTitle>
-            <Card className="border-accent/40">
+            <Card className="animated-border bg-transparent border-transparent">
               <div className="flex items-center gap-2 mb-3">
                 <Badge color="purple">Today</Badge>
                 <Badge color="amber">Medium</Badge>
@@ -123,12 +209,12 @@ const Dashboard = () => {
                 Start Challenge →
               </Button>
             </Card>
-          </div>
+          </motion.div>
 
           {/* Recent interviews */}
-          <div>
+          <motion.div variants={itemVariants}>
             <SectionTitle>Recent Sessions</SectionTitle>
-            <Card className="!p-4 space-y-3">
+            <Card className="!p-4 space-y-3 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300">
               {[
                 { type: 'System Design', topic: 'API Gateway', score: 88, color: 'amber' },
                 { type: 'DSA Round', topic: 'Binary Trees', score: 76, color: 'green' },
@@ -150,7 +236,7 @@ const Dashboard = () => {
                 View all →
               </button>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
