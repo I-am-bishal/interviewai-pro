@@ -1,38 +1,72 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 /**
- * Circular SVG score ring
- * @param {number} score      0-100
- * @param {string} label      e.g. "Overall"
- * @param {number} size       SVG size in px
- * @param {string} color      Tailwind color hex
+ * Premium Score Ring with gradient stroke and glow effect
  */
-const ScoreRing = ({ score = 0, label = '', size = 100, color = '#7c6dfa' }) => {
-  const radius = (size - 12) / 2;
+const ScoreRing = ({ score = 0, label = '', size = 90, color = '#7c5bf0' }) => {
+  const strokeWidth = 6;
+  const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
+  const center = size / 2;
+
+  // Generate a secondary color for gradient
+  const gradientId = `scoreGrad-${label.replace(/\s/g, '')}`;
 
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-        {/* Track */}
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#22222f" strokeWidth={6} />
-        {/* Progress */}
-        <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none" stroke={color} strokeWidth={6}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 1s ease' }}
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="relative" style={{ width: size, height: size }}>
+        {/* Glow effect behind */}
+        <div
+          className="absolute inset-2 rounded-full opacity-15 blur-xl"
+          style={{ background: color }}
         />
-      </svg>
-      <div className="absolute text-center">
-        <div className="font-heading font-extrabold leading-none" style={{ fontSize: size * 0.22, color }}>
-          {score}
+        <svg width={size} height={size} className="relative z-10">
+          <defs>
+            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={color} />
+              <stop offset="100%" stopColor={color} stopOpacity="0.4" />
+            </linearGradient>
+          </defs>
+          {/* Track */}
+          <circle
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={strokeWidth}
+            className="text-bg-3 opacity-40"
+          />
+          {/* Progress arc */}
+          <motion.circle
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="none"
+            stroke={`url(#${gradientId})`}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset: offset }}
+            transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+        </svg>
+        {/* Center text */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <span className="font-heading font-extrabold text-slate-900" style={{ fontSize: size * 0.22 }}>
+            {score}
+          </span>
         </div>
-        {label && <div className="text-slate-400 leading-tight" style={{ fontSize: size * 0.1 }}>{label}</div>}
       </div>
+      {label && (
+        <span className="text-[11px] font-medium text-slate-500 tracking-wide">
+          {label}
+        </span>
+      )}
     </div>
   );
 };

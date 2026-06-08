@@ -29,8 +29,8 @@ const Register = () => {
   return (
     <div>
       <div className="mb-7">
-        <h1 className="font-heading text-2xl font-bold mb-1">Create your account</h1>
-        <p className="text-slate-400 text-sm">Start your AI-powered interview prep</p>
+        <h1 className="font-heading text-2xl font-extrabold mb-1 tracking-tight">Create your account</h1>
+        <p className="text-slate-500 text-sm">Start your AI-powered interview prep</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
@@ -65,9 +65,9 @@ const Register = () => {
         />
 
         <div>
-          <label className="block text-xs text-slate-400 mb-1.5 font-medium">Experience Level</label>
+          <label className="block text-xs text-slate-500 mb-1.5 font-medium tracking-wide">Experience Level</label>
           <select
-            className="w-full bg-bg-3 border border-border rounded-lg px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-accent focus:ring-1 focus:ring-accent/25 transition-all"
+            className="w-full bg-bg-3/60 backdrop-blur-sm border border-border/60 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all duration-300"
             {...register('experienceLevel')}
           >
             <option value="entry">Entry Level (&lt; 2 years)</option>
@@ -82,14 +82,14 @@ const Register = () => {
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-slate-400">
+      <p className="mt-4 text-center text-sm text-slate-500">
         Already have an account?{' '}
-        <Link to="/login" className="text-accent hover:text-accent-2 font-medium transition-colors">
+        <Link to="/login" className="text-accent hover:text-accent-2 font-semibold transition-colors">
           Sign in
         </Link>
       </p>
 
-      <p className="mt-4 text-center text-xs text-slate-300">
+      <p className="mt-4 text-center text-xs text-slate-400">
         By signing up you agree to our Terms of Service and Privacy Policy
       </p>
     </div>

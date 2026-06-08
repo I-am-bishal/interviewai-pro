@@ -11,24 +11,28 @@ const MODES = [
     desc: 'Culture fit, motivation, career goals, and soft-skill assessment.',
     tags: ['Communication', 'Values', 'Leadership'],
     color: 'blue', duration: '30-45 min', difficulty: 'Medium',
+    gradient: 'from-blue-500/10 to-cyan-500/5',
   },
   {
     id: 'dsa', emoji: '🧮', label: 'DSA Round',
     desc: 'Algorithm design, data structures, complexity and problem-solving.',
     tags: ['Arrays', 'Trees', 'Dynamic Programming', 'Graphs'],
     color: 'green', duration: '45-60 min', difficulty: 'Hard',
+    gradient: 'from-emerald-500/10 to-teal-500/5',
   },
   {
     id: 'system-design', emoji: '🏗️', label: 'System Design',
     desc: 'Design scalable distributed systems and discuss architecture trade-offs.',
     tags: ['Scalability', 'Databases', 'APIs', 'Caching'],
     color: 'amber', duration: '45-60 min', difficulty: 'Hard',
+    gradient: 'from-amber-500/10 to-orange-500/5',
   },
   {
     id: 'behavioral', emoji: '💬', label: 'Behavioral (STAR)',
     desc: 'Competency-based questions using the Situation-Task-Action-Result framework.',
     tags: ['Teamwork', 'Conflict', 'Leadership', 'Initiative'],
     color: 'pink', duration: '25-35 min', difficulty: 'Medium',
+    gradient: 'from-cyan-500/10 to-blue-500/5',
   },
 ];
 
@@ -41,25 +45,12 @@ const LEVELS = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06
-    }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.06 } }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 280,
-      damping: 24
-    }
-  }
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 280, damping: 24 } }
 };
 
 const InterviewSelect = () => {
@@ -75,20 +66,20 @@ const InterviewSelect = () => {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="p-6 max-w-2xl mx-auto relative min-h-full dot-grid overflow-hidden"
+      className="p-6 max-w-2xl mx-auto relative min-h-full overflow-hidden"
     >
-      {/* Background Ambient Glow Lights */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+      {/* Ambient orbs */}
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/4" />
+      <div className="ambient-orb ambient-orb-2 absolute bottom-10 -right-20" />
 
       <motion.div variants={itemVariants} className="mb-7 relative z-10">
-        <h1 className="font-heading text-2xl font-bold mb-1">Choose Interview Mode</h1>
-        <p className="text-slate-400 text-sm">
+        <h1 className="font-heading text-2xl font-extrabold mb-1 tracking-tight">Choose Interview Mode</h1>
+        <p className="text-slate-500 text-sm">
           Select a category and our AI will generate tailored questions for your session.
         </p>
       </motion.div>
 
-      {/* Experience Level Selector Section */}
+      {/* Experience Level Selector */}
       <motion.div variants={itemVariants} className="mb-8 relative z-10">
         <SectionTitle>Select Target Difficulty</SectionTitle>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
@@ -101,29 +92,33 @@ const InterviewSelect = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedLevel(lvl.id)}
-                className={`relative p-3.5 rounded-2xl border transition-all cursor-pointer select-none overflow-hidden ${
+                className={`relative p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none overflow-hidden ${
                   isSelected
-                    ? 'border-accent shadow-lg shadow-accent/5'
-                    : 'bg-bg-3 border-border hover:border-slate-400 hover:bg-bg-2'
+                    ? 'border-accent/30 shadow-glow-sm'
+                    : 'bg-bg-2/60 backdrop-blur-xl border-border/40 hover:border-accent/15 hover:bg-bg-2/80'
                 }`}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="activeDifficulty"
-                    className="absolute inset-0 bg-accent/15 -z-10"
+                    className="absolute inset-0 -z-10"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%)',
+                    }}
                     transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                   />
                 )}
-                {/* Active indicator dot/glow */}
                 {isSelected && (
-                  <div className="absolute top-0 right-0 w-8 h-8 bg-accent/25 rounded-bl-3xl flex items-center justify-center">
+                  <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-3xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.2), rgba(59, 130, 246, 0.15))' }}
+                  >
                     <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                   </div>
                 )}
                 <div className="flex flex-col h-full justify-between relative z-10">
                   <div>
                     <span className="text-xl mb-1.5 block">{lvl.emoji}</span>
-                    <h3 className={`font-bold text-[12.5px] ${isSelected ? 'text-accent' : 'text-slate-800'}`}>
+                    <h3 className={`font-bold text-[12.5px] ${isSelected ? 'text-accent' : 'text-slate-700'}`}>
                       {lvl.label}
                     </h3>
                   </div>
@@ -139,19 +134,14 @@ const InterviewSelect = () => {
 
       <div className="space-y-3 mb-6 relative z-10">
         {MODES.map((mode) => (
-          <motion.div
-            key={mode.id}
-            variants={itemVariants}
-          >
-            <Card
-              hover
-              onClick={() => start(mode.id)}
-              className="!p-5 group hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
-            >
+          <motion.div key={mode.id} variants={itemVariants}>
+            <Card hover onClick={() => start(mode.id)} className="!p-5 group transition-all duration-300">
               <div className="flex items-center gap-4">
-                <div className="text-4xl flex-shrink-0">{mode.emoji}</div>
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${mode.gradient} border border-border/30 flex items-center justify-center text-2xl flex-shrink-0`}>
+                  {mode.emoji}
+                </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-heading font-bold text-[15px] mb-1">{mode.label}</div>
+                  <div className="font-heading font-bold text-[15px] mb-1 tracking-tight">{mode.label}</div>
                   <div className="text-[13px] text-slate-500 mb-2.5 leading-relaxed">{mode.desc}</div>
                   <div className="flex flex-wrap gap-1.5">
                     {mode.tags.map((t) => (
@@ -179,15 +169,13 @@ const InterviewSelect = () => {
       {/* Coding Round shortcut */}
       <motion.div variants={itemVariants} className="relative z-10">
         <SectionTitle>Also Available</SectionTitle>
-        <Card
-          hover
-          onClick={() => navigate('/coding')}
-          className="!p-5 group border-accent/20 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300"
-        >
+        <Card hover onClick={() => navigate('/coding')} className="!p-5 group border-accent/10 transition-all duration-300">
           <div className="flex items-center gap-4">
-            <div className="text-4xl">💻</div>
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/10 to-blue-500/5 border border-border/30 flex items-center justify-center text-2xl flex-shrink-0">
+              💻
+            </div>
             <div className="flex-1">
-              <div className="font-heading font-bold text-[15px] mb-1">Live Coding Challenge</div>
+              <div className="font-heading font-bold text-[15px] mb-1 tracking-tight">Live Coding Challenge</div>
               <div className="text-[13px] text-slate-500 mb-2">
                 Solve real DSA problems in our code editor with AI evaluation and hidden test cases.
               </div>

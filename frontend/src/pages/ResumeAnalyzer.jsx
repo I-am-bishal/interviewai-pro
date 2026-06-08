@@ -19,7 +19,6 @@ const ResumeAnalyzer = () => {
   const [dragOver, setDragOver]     = useState(false);
   const [activeTab, setActiveTab]   = useState('analysis');
 
-  // Load existing resume on mount
   useEffect(() => {
     resumeApi.getLatest()
       .then((r) => setResume(r))
@@ -64,10 +63,12 @@ const ResumeAnalyzer = () => {
   );
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto">
-      <div className="mb-6">
-        <h1 className="font-heading text-2xl font-bold mb-1">Resume AI Analyzer</h1>
-        <p className="text-slate-400 text-sm">Upload your resume for deep AI analysis, ATS scoring, and tailored interview prep.</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto relative overflow-hidden">
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/3" />
+
+      <div className="mb-7 relative z-10">
+        <h1 className="font-heading text-2xl font-extrabold mb-1 tracking-tight">Resume AI Analyzer</h1>
+        <p className="text-slate-500 text-sm">Upload your resume for deep AI analysis, ATS scoring, and tailored interview prep.</p>
       </div>
 
       {/* Upload Zone */}
@@ -78,18 +79,23 @@ const ResumeAnalyzer = () => {
           onDragLeave={() => setDragOver(false)}
           onDrop={onDrop}
           onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-16 text-center cursor-pointer transition-all mb-6 ${
+          className={`border-2 border-dashed rounded-2xl p-16 text-center cursor-pointer transition-all duration-300 mb-6 relative z-10 backdrop-blur-sm ${
             dragOver
-              ? 'border-accent bg-accent/8 scale-[1.01]'
-              : 'border-border-2 hover:border-accent hover:bg-accent/5'
+              ? 'border-accent/40 scale-[1.01] shadow-glow-md'
+              : 'border-border/40 hover:border-accent/30 hover:shadow-glow-sm'
           }`}
+          style={dragOver ? {
+            background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.06), rgba(59, 130, 246, 0.04))',
+          } : {
+            background: 'rgba(var(--bg-2), 0.5)',
+          }}
         >
           <input ref={fileRef} type="file" accept=".pdf,.docx" className="hidden" onChange={onFileInput} />
           <div className="text-5xl mb-4">📄</div>
-          <div className="font-heading font-bold text-lg mb-2">
+          <div className="font-heading font-bold text-lg mb-2 tracking-tight">
             {uploading ? 'Analysing your resume...' : 'Drop your resume here'}
           </div>
-          <div className="text-slate-400 text-sm mb-5">Supports PDF, DOCX — Max 5 MB</div>
+          <div className="text-slate-500 text-sm mb-5">Supports PDF, DOCX — Max 5 MB</div>
           <Button loading={uploading} size="lg">
             {uploading ? 'Processing...' : 'Choose File'}
           </Button>
@@ -99,91 +105,85 @@ const ResumeAnalyzer = () => {
       {/* Resume Analysis Results */}
       {resume && (
         <AnimatePresence mode="wait">
-          <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {/* File header */}
+          <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-success/15 flex items-center justify-center">
+                <div className="icon-container icon-container-md"
+                  style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.15)' }}
+                >
                   <FileText size={18} className="text-success" />
                 </div>
                 <div>
                   <div className="font-medium text-sm">{resume.fileName || 'resume.pdf'}</div>
-                  <div className="text-xs text-success flex items-center gap-1">
+                  <div className="text-xs text-success flex items-center gap-1 font-medium">
                     <CheckCircle2 size={11} /> Analysed successfully
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant="ghost" size="sm"
-                  icon={<Trash2 size={13} />}
+                <Button variant="ghost" size="sm" icon={<Trash2 size={13} />}
                   onClick={() => { setResume(null); toast('Upload a new resume'); }}
-                >
-                  Remove
-                </Button>
-                <Button
-                  size="sm"
-                  icon={<ArrowRight size={13} />}
+                >Remove</Button>
+                <Button size="sm" icon={<ArrowRight size={13} />}
                   onClick={() => navigate('/interview/room', { state: { mode: 'hr' } })}
-                >
-                  Practice Interview
-                </Button>
+                >Practice Interview</Button>
               </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-1 mb-5 bg-bg-2 border border-border p-1 rounded-xl w-fit">
+            <div className="flex gap-1 mb-5 bg-bg-2/60 backdrop-blur-xl border border-border/40 p-1 rounded-xl w-fit">
               {['analysis', 'skills', 'questions'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 capitalize ${
                     activeTab === tab
-                      ? 'bg-accent text-white shadow-sm'
-                      : 'text-slate-500 hover:text-slate-900'
+                      ? 'text-white shadow-glow-sm'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
+                  style={activeTab === tab ? {
+                    background: 'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+                  } : undefined}
                 >
                   {tab === 'analysis' ? '📊 Analysis' : tab === 'skills' ? '🛠 Skills' : '❓ Questions'}
                 </button>
               ))}
             </div>
 
-            {/* ── Analysis Tab ── */}
+            {/* Analysis Tab */}
             {activeTab === 'analysis' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                {/* Score overview */}
                 <Card>
                   <SectionTitle>ATS & Quality Scores</SectionTitle>
                   <div className="flex flex-wrap justify-around gap-4 py-2">
                     {[
-                      ['ATS Score',    resume.analysis?.atsScore,           '#22c984'],
-                      ['Impact',       resume.analysis?.impactScore,        '#7c6dfa'],
-                      ['Keywords',     resume.analysis?.keywordScore,       '#4da6ff'],
-                      ['Formatting',   resume.analysis?.formattingScore,    '#f5a623'],
+                      ['ATS Score',    resume.analysis?.atsScore,           '#10b981'],
+                      ['Impact',       resume.analysis?.impactScore,        '#7c5bf0'],
+                      ['Keywords',     resume.analysis?.keywordScore,       '#3b82f6'],
+                      ['Formatting',   resume.analysis?.formattingScore,    '#f59e0b'],
                     ].map(([label, score = 0, color]) => (
                       <ScoreRing key={label} score={score} label={label} size={95} color={color} />
                     ))}
                   </div>
                   {resume.analysis?.summary && (
-                    <p className="mt-4 text-[13.5px] text-slate-600 leading-relaxed border-t border-border pt-4">
+                    <p className="mt-4 text-[13.5px] text-slate-600 leading-relaxed border-t border-border/30 pt-4">
                       {resume.analysis.summary}
                     </p>
                   )}
                 </Card>
 
-                {/* Recommendations */}
                 <Card>
                   <SectionTitle>AI Recommendations ⚡</SectionTitle>
                   <div className="space-y-3">
                     {(resume.analysis?.recommendations || []).map((rec, i) => (
-                      <div key={i} className="flex gap-3 py-2.5 border-b border-border last:border-0">
+                      <div key={i} className="flex gap-3 py-2.5 border-b border-border/30 last:border-0">
                         <AlertCircle size={15} className="text-warning flex-shrink-0 mt-0.5" />
-                        <span className="text-[13.5px] text-slate-700">{rec}</span>
+                        <span className="text-[13.5px] text-slate-600">{rec}</span>
                       </div>
                     ))}
                     {resume.analysis?.missingKeywords?.length > 0 && (
                       <div className="pt-2">
-                        <div className="text-xs text-slate-400 mb-2">Missing Keywords</div>
+                        <div className="text-xs text-slate-400 mb-2 font-medium">Missing Keywords</div>
                         <div className="flex flex-wrap gap-1.5">
                           {resume.analysis.missingKeywords.map((kw) => (
                             <Badge key={kw} color="red">{kw}</Badge>
@@ -194,7 +194,6 @@ const ResumeAnalyzer = () => {
                   </div>
                 </Card>
 
-                {/* Score bars */}
                 <Card>
                   <SectionTitle>Detailed Breakdown</SectionTitle>
                   <div className="space-y-3">
@@ -208,7 +207,7 @@ const ResumeAnalyzer = () => {
                     ].map(([label, val = 0]) => (
                       <div key={label}>
                         <div className="flex justify-between text-[13px] mb-1">
-                          <span className="text-slate-600">{label}</span>
+                          <span className="text-slate-500">{label}</span>
                           <span className="font-semibold text-accent">{val}%</span>
                         </div>
                         <ProgressBar value={val} />
@@ -219,7 +218,7 @@ const ResumeAnalyzer = () => {
               </motion.div>
             )}
 
-            {/* ── Skills Tab ── */}
+            {/* Skills Tab */}
             {activeTab === 'skills' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                 <Card>
@@ -228,7 +227,7 @@ const ResumeAnalyzer = () => {
                     {(resume.skills || []).map(({ name, level }) => (
                       <div
                         key={name}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-3 border border-border rounded-lg text-sm hover:border-accent transition-colors cursor-default"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-bg-3/50 backdrop-blur-sm border border-border/40 rounded-xl text-sm hover:border-accent/25 transition-colors cursor-default"
                       >
                         <span className={`w-1.5 h-1.5 rounded-full bg-${
                           level === 'advanced' ? 'success' : level === 'intermediate' ? 'warning' : 'danger'
@@ -238,19 +237,18 @@ const ResumeAnalyzer = () => {
                       </div>
                     ))}
                     {!resume.skills?.length && (
-                      <p className="text-slate-400 text-sm">No skills extracted. Ensure your resume has a skills section.</p>
+                      <p className="text-slate-500 text-sm">No skills extracted. Ensure your resume has a skills section.</p>
                     )}
                   </div>
 
-                  {/* Experience */}
                   {resume.experience?.length > 0 && (
                     <>
                       <SectionTitle>Work Experience</SectionTitle>
                       <div className="space-y-4">
                         {resume.experience.map((exp, i) => (
-                          <div key={i} className="border-l-2 border-accent/30 pl-4">
-                            <div className="font-medium text-sm">{exp.role}</div>
-                            <div className="text-xs text-accent mb-1">{exp.company} · {exp.duration}</div>
+                          <div key={i} className="border-l-2 pl-4" style={{ borderColor: 'rgba(124, 91, 240, 0.25)' }}>
+                            <div className="font-semibold text-sm">{exp.role}</div>
+                            <div className="text-xs text-accent mb-1 font-medium">{exp.company} · {exp.duration}</div>
                             {exp.description && (
                               <div className="text-[12.5px] text-slate-500">{exp.description}</div>
                             )}
@@ -260,16 +258,17 @@ const ResumeAnalyzer = () => {
                     </>
                   )}
 
-                  {/* Education */}
                   {resume.education?.length > 0 && (
                     <>
                       <SectionTitle className="mt-5">Education</SectionTitle>
                       <div className="space-y-3">
                         {resume.education.map((edu, i) => (
                           <div key={i} className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center text-sm flex-shrink-0">🎓</div>
+                            <div className="icon-container icon-container-sm">
+                              <span className="text-sm">🎓</span>
+                            </div>
                             <div>
-                              <div className="font-medium text-sm">{edu.degree}</div>
+                              <div className="font-semibold text-sm">{edu.degree}</div>
                               <div className="text-xs text-slate-500">{edu.institution} · {edu.year}</div>
                             </div>
                           </div>
@@ -281,22 +280,24 @@ const ResumeAnalyzer = () => {
               </motion.div>
             )}
 
-            {/* ── Questions Tab ── */}
+            {/* Questions Tab */}
             {activeTab === 'questions' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <Card>
                   <SectionTitle>AI-Generated Interview Questions</SectionTitle>
-                  <p className="text-[13px] text-slate-400 mb-4">
+                  <p className="text-[13px] text-slate-500 mb-4">
                     Based on your resume content, expect these questions in your next interview:
                   </p>
                   <div className="space-y-3">
                     {(resume.generatedQuestions || []).map((q, i) => (
-                      <div key={i} className="flex gap-3 py-3 border-b border-border last:border-0">
-                        <div className="w-6 h-6 rounded-full bg-accent/15 flex items-center justify-center text-xs font-bold text-accent flex-shrink-0 mt-0.5">
+                      <div key={i} className="flex gap-3 py-3 border-b border-border/30 last:border-0">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-accent flex-shrink-0 mt-0.5"
+                          style={{ background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.12), rgba(59, 130, 246, 0.08))' }}
+                        >
                           {i + 1}
                         </div>
                         <div className="flex-1">
-                          <p className="text-[13.5px] text-slate-800 leading-relaxed">{q}</p>
+                          <p className="text-[13.5px] text-slate-700 leading-relaxed">{q}</p>
                         </div>
                         <button
                           onClick={() => navigate('/interview/room', { state: { mode: 'hr', focusQuestion: q } })}
@@ -307,7 +308,7 @@ const ResumeAnalyzer = () => {
                       </div>
                     ))}
                     {!resume.generatedQuestions?.length && (
-                      <p className="text-slate-400 text-sm text-center py-4">No questions generated yet.</p>
+                      <p className="text-slate-500 text-sm text-center py-4">No questions generated yet.</p>
                     )}
                   </div>
 

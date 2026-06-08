@@ -299,24 +299,31 @@ const Profile = () => {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 max-w-5xl mx-auto space-y-6"
+      className="p-6 max-w-5xl mx-auto space-y-6 relative overflow-hidden"
     >
+      {/* Ambient orbs */}
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/4" />
+      <div className="ambient-orb ambient-orb-2 absolute bottom-20 -right-20" />
       {/* 1. PROFILE INFO CARD */}
-      <Card className="relative overflow-hidden border border-border bg-bg-2/80 backdrop-blur-md">
+      <Card className="relative overflow-hidden !bg-bg-2/80 backdrop-blur-xl z-10">
         {/* Decorative backdrop gradients */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-44 h-44 rounded-full bg-accent/15 blur-2xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-44 h-44 rounded-full bg-cyan-400/10 blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-44 h-44 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(124, 91, 240, 0.12)' }} />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-44 h-44 rounded-full blur-3xl pointer-events-none" style={{ background: 'rgba(6, 214, 160, 0.08)' }} />
 
         <div className="flex flex-col md:flex-row gap-6 items-center md:items-start relative z-10">
           {/* Large Avatar container */}
           <div className="relative group">
             <motion.div
               whileHover={{ rotate: 10, scale: 1.05 }}
-              className="w-24 h-24 rounded-full bg-gradient-to-br from-accent via-purple-500 to-cyan-400 flex items-center justify-center text-white text-3xl font-heading font-extrabold shadow-lg shadow-accent/20 cursor-pointer relative"
+              className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-heading font-extrabold cursor-pointer relative"
+              style={{
+                background: 'linear-gradient(135deg, #7c5bf0, #3b82f6, #06d6a0)',
+                boxShadow: '0 4px 24px -4px rgba(124, 91, 240, 0.35)',
+              }}
             >
               {initials}
               {/* Spinning glow accent border */}
-              <div className="absolute -inset-1.5 rounded-full border border-accent/30 group-hover:border-cyan-400/80 transition-colors animate-pulse" />
+              <div className="absolute -inset-1.5 rounded-full border border-accent/20 group-hover:border-accent/40 transition-colors animate-pulse" />
             </motion.div>
             <Badge color="purple" className="absolute -bottom-2 left-1/2 -translate-x-1/2 font-bold tracking-wide uppercase px-2 shadow-md">
               {user?.plan || 'Free'}
@@ -335,7 +342,7 @@ const Profile = () => {
                         type="text"
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
-                        className="w-full bg-bg-3 border border-border focus:border-accent text-slate-800 text-sm px-3 py-2 rounded-lg outline-none transition-all"
+                        className="w-full bg-bg-3/60 backdrop-blur-sm border border-border/60 focus:border-accent/50 focus:ring-2 focus:ring-accent/10 text-slate-800 text-sm px-3 py-2.5 rounded-xl outline-none transition-all duration-300"
                         placeholder="Your full name"
                       />
                     </div>
@@ -345,7 +352,7 @@ const Profile = () => {
                       <select
                         value={editRole}
                         onChange={(e) => setEditRole(e.target.value)}
-                        className="w-full bg-bg-3 border border-border focus:border-accent text-slate-800 text-sm px-3 py-2 rounded-lg outline-none transition-all"
+                        className="w-full bg-bg-3/60 backdrop-blur-sm border border-border/60 focus:border-accent/50 focus:ring-2 focus:ring-accent/10 text-slate-800 text-sm px-3 py-2.5 rounded-xl outline-none transition-all duration-300"
                       >
                         <option value="">Select Target Role</option>
                         {ROLE_OPTIONS.map(r => (
@@ -359,7 +366,7 @@ const Profile = () => {
                       <select
                         value={editExp}
                         onChange={(e) => setEditExp(e.target.value)}
-                        className="w-full bg-bg-3 border border-border focus:border-accent text-slate-800 text-sm px-3 py-2 rounded-lg outline-none transition-all"
+                        className="w-full bg-bg-3/60 backdrop-blur-sm border border-border/60 focus:border-accent/50 focus:ring-2 focus:ring-accent/10 text-slate-800 text-sm px-3 py-2.5 rounded-xl outline-none transition-all duration-300"
                       >
                         {EXP_OPTIONS.map(o => (
                           <option key={o.value} value={o.value}>{o.label}</option>
@@ -404,7 +411,7 @@ const Profile = () => {
                   </div>
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="ghost"
                     icon={<Edit2 size={13} />}
                     onClick={() => setEditMode(true)}
                     className="hover-glow"
@@ -417,19 +424,19 @@ const Profile = () => {
 
             {!editMode && (
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-slate-600 pt-2 border-t border-border/50">
-                <div className="flex items-center gap-1.5 text-xs bg-bg-3/50 px-3 py-1.5 rounded-lg border border-border/40">
+                <div className="flex items-center gap-1.5 text-xs bg-bg-3/40 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-border/30">
                   <Briefcase size={13} className="text-slate-400" />
                   <span className="text-slate-400">Target Role:</span>
                   <span className="font-bold text-accent">{user?.targetRole || 'Not Set'}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs bg-bg-3/50 px-3 py-1.5 rounded-lg border border-border/40">
+                <div className="flex items-center gap-1.5 text-xs bg-bg-3/40 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-border/30">
                   <Calendar size={13} className="text-slate-400" />
                   <span className="text-slate-400">Experience:</span>
                   <span className="font-bold text-cyan-400">
                     {EXP_OPTIONS.find(o => o.value === user?.experienceLevel)?.label || 'Mid Level'}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs bg-bg-3/50 px-3 py-1.5 rounded-lg border border-border/40">
+                <div className="flex items-center gap-1.5 text-xs bg-bg-3/40 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-border/30">
                   <Lock size={13} className="text-slate-400" />
                   <span className="text-slate-400">Account:</span>
                   <span className="font-bold text-success capitalize">{user?.role || 'User'}</span>
@@ -441,14 +448,14 @@ const Profile = () => {
       </Card>
 
       {/* 2. QUICK STATS CARDS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
         {[
           { label: 'Total Experience XP', value: totalXP.toLocaleString(), change: 'Global Rank: Top 4%', icon: Award, color: 'text-warning', bg: 'hover:border-warning/30' },
           { label: 'Active Streak', value: `🔥 ${currentStreak}d`, change: `Personal Best: ${longestStreak}d`, icon: Zap, color: 'text-accent', bg: 'hover:border-accent/30' },
           { label: 'Code Accept Rate', value: `${passPercent}%`, change: `${codeAcceptedCount}/${codeTotalCount} Solved`, icon: Code2, color: 'text-success', bg: 'hover:border-success/30' },
           { label: 'AI Interviews Done', value: totalInterviewsCount, change: '100% evaluated', icon: MessageSquare, color: 'text-info', bg: 'hover:border-info/30' }
         ].map(({ label, value, change, icon: Icon, color, bg }) => (
-          <Card key={label} hover className={`!p-4 bg-bg-2/50 border border-border transition-all ${bg}`}>
+          <Card key={label} hover className={`!p-4 transition-all ${bg}`}>
             <div className="flex items-start justify-between mb-2">
               <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400">{label}</span>
               <Icon size={16} className={`${color} opacity-80`} />
@@ -460,7 +467,7 @@ const Profile = () => {
       </div>
 
       {/* 3. ACTIVITY CALENDAR (HEATMAP) */}
-      <Card className="bg-bg-2/60 border border-border">
+      <Card className="relative z-10">
         <div className="flex items-center justify-between mb-4">
           <SectionTitle className="!mb-0 flex items-center gap-1.5">
             <Activity size={12} className="text-accent" /> 30-Day Contribution Heatmap
@@ -525,7 +532,7 @@ const Profile = () => {
           </SectionTitle>
 
           {/* Activity Filters */}
-          <div className="flex flex-wrap gap-1 bg-bg-3/50 p-1 rounded-xl border border-border/50">
+          <div className="flex flex-wrap gap-1 bg-bg-2/60 backdrop-blur-xl p-1 rounded-xl border border-border/40">
             {[
               { id: 'all', label: 'All Activities' },
               { id: 'interview', label: 'Interviews' },
@@ -535,11 +542,14 @@ const Profile = () => {
               <button
                 key={f.id}
                 onClick={() => setActiveFilter(f.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 ${
                   activeFilter === f.id
-                    ? 'bg-accent text-white shadow'
+                    ? 'text-white shadow-glow-sm'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
+                style={activeFilter === f.id ? {
+                  background: 'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+                } : undefined}
               >
                 {f.label}
               </button>
@@ -548,7 +558,7 @@ const Profile = () => {
         </div>
 
         {/* Timeline Items */}
-        <div className="space-y-4 relative pl-4 border-l border-border/80 ml-2 py-1">
+        <div className="space-y-4 relative pl-4 ml-2 py-1" style={{ borderLeft: '2px solid rgba(124, 91, 240, 0.12)' }}>
           <AnimatePresence initial={false}>
             {filteredActivities.length === 0 ? (
               <motion.div
@@ -580,13 +590,13 @@ const Profile = () => {
                     className="relative group"
                   >
                     {/* Circle Bullet Icon */}
-                    <div className="absolute -left-[27px] top-4 w-5 h-5 rounded-full bg-bg border-2 border-border flex items-center justify-center group-hover:border-accent transition-colors z-10">
+                    <div className="absolute -left-[27px] top-4 w-5 h-5 rounded-full bg-bg border-2 border-border/50 flex items-center justify-center group-hover:border-accent transition-colors z-10">
                       {act.type === 'interview' && <MessageSquare size={10} className="text-indigo-400" />}
                       {act.type === 'coding' && <Code2 size={10} className="text-success" />}
                       {act.type === 'resume' && <FileText size={10} className="text-warning" />}
                     </div>
 
-                    <Card hover className="!p-4 bg-bg-2/50 border border-border group-hover:border-border-2 transition-all">
+                    <Card hover className="!p-4 transition-all">
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         {/* Item Left Details */}
                         <div className="space-y-1">
@@ -624,7 +634,7 @@ const Profile = () => {
                               {act.raw?._id && !act.id.startsWith('mock') && (
                                 <Button
                                   size="xs"
-                                  variant="outline"
+                                  variant="ghost"
                                   onClick={() => navigate(`/interview/feedback/${act.raw._id}`)}
                                   iconRight={<ChevronRight size={12} />}
                                 >
@@ -646,7 +656,7 @@ const Profile = () => {
                               </div>
                               <Button
                                 size="xs"
-                                variant="outline"
+                                variant="ghost"
                                 icon={<Eye size={12} />}
                                 onClick={() => setSelectedSubmission(act.raw)}
                               >
@@ -665,7 +675,7 @@ const Profile = () => {
                               </div>
                               <Button
                                 size="xs"
-                                variant="outline"
+                                variant="ghost"
                                 onClick={() => navigate('/resume')}
                                 iconRight={<ExternalLink size={11} />}
                               >
@@ -702,7 +712,7 @@ const Profile = () => {
               initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              className="relative bg-bg-2 border border-border w-full max-w-lg rounded-2xl p-6 shadow-2xl z-10 max-h-[85vh] overflow-y-auto space-y-4"
+              className="relative bg-bg-2/95 backdrop-blur-2xl border border-border/50 w-full max-w-lg rounded-2xl p-6 shadow-elevated z-10 max-h-[85vh] overflow-y-auto space-y-4"
             >
               {/* Close button */}
               <button

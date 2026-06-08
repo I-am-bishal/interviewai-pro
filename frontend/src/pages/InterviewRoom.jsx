@@ -38,7 +38,6 @@ const InterviewRoom = () => {
     },
   });
 
-  // Start session on mount
   useEffect(() => {
     if (!currentInterview) {
       startSession(mode, null, level).catch(() => {
@@ -55,7 +54,6 @@ const InterviewRoom = () => {
 
   const { displayed: typedQuestion } = useTypewriter(currentQ, 28);
 
-  // Auto-speak question
   useEffect(() => {
     if (currentQ && !isAiTyping) speak(currentQ);
   }, [currentQ]);
@@ -65,7 +63,6 @@ const InterviewRoom = () => {
     stopListening();
 
     if (currentQuestionIndex >= totalQ - 1) {
-      // Last question — complete the interview
       try {
         const interview = await completeSession({ fillerWordCount: 0 });
         toast.success('Interview complete! Generating feedback...');
@@ -94,7 +91,7 @@ const InterviewRoom = () => {
     return (
       <div className="h-screen flex items-center justify-center flex-col gap-4">
         <LoadingSpinner />
-        <p className="text-slate-400 text-sm">Starting your {meta.label}...</p>
+        <p className="text-slate-500 text-sm font-medium">Starting your {meta.label}...</p>
       </div>
     );
   }
@@ -104,19 +101,23 @@ const InterviewRoom = () => {
       {/* ── Main Interview Area ── */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-bg-2 flex-shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border/30 bg-bg-2/60 backdrop-blur-xl flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="text-2xl">{meta.emoji}</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+              style={{ background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.12), rgba(59, 130, 246, 0.08))' }}
+            >
+              {meta.emoji}
+            </div>
             <div>
-              <div className="font-heading font-bold text-sm">{meta.label}</div>
+              <div className="font-heading font-bold text-sm tracking-tight">{meta.label}</div>
               <div className="flex items-center gap-2 mt-0.5">
                 <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                <span className="text-xs text-success">Live Session</span>
+                <span className="text-xs text-success font-medium">Live Session</span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="font-mono text-sm text-slate-500 bg-bg-3 px-3 py-1.5 rounded-lg border border-border">
+            <div className="font-mono text-sm text-slate-500 bg-bg-3/60 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-border/40">
               {currentQuestionIndex + 1} / {totalQ}
             </div>
             <Button variant="danger" size="sm" onClick={() => { completeSession({}); navigate('/dashboard'); }}>
@@ -129,22 +130,29 @@ const InterviewRoom = () => {
         <ProgressBar value={progress} className="h-0.5 rounded-none" />
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 relative">
+          <div className="ambient-orb ambient-orb-1 absolute -top-40 left-1/3 !opacity-[0.05]" />
+
           {/* AI Avatar + Question */}
-          <div className="flex items-start gap-4 mb-6">
+          <div className="flex items-start gap-4 mb-6 relative z-10">
             <div className="relative flex-shrink-0">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-accent to-cyan-400 flex items-center justify-center text-2xl">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+                style={{
+                  background: 'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+                  boxShadow: '0 4px 20px -4px rgba(124, 91, 240, 0.35)',
+                }}
+              >
                 🤖
               </div>
               {isAiTyping && (
-                <div className="absolute inset-0 rounded-full border-2 border-accent animate-pulse-ring" />
+                <div className="absolute inset-0 rounded-2xl border-2 border-accent animate-pulse-ring" />
               )}
             </div>
             <div className="flex-1">
-              <div className="text-xs text-accent font-medium mb-2 tracking-wider uppercase">
+              <div className="text-xs font-semibold mb-2 tracking-widest uppercase gradient-text-accent">
                 Question {currentQuestionIndex + 1}
               </div>
-              <div className="bg-bg-3 border border-border rounded-2xl p-5">
+              <div className="bg-bg-3/50 backdrop-blur-sm border border-border/30 rounded-2xl p-5">
                 {isAiTyping ? (
                   <div className="flex items-center gap-2 text-slate-500">
                     <span className="text-sm">AI is thinking</span>
@@ -166,7 +174,11 @@ const InterviewRoom = () => {
           <AnimatePresence>
             {showHint && (
               <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-                className="mb-4 p-4 bg-warning/10 border border-warning/30 rounded-xl flex gap-3"
+                className="mb-4 p-4 rounded-xl flex gap-3 border relative z-10"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.02))',
+                  borderColor: 'rgba(245, 158, 11, 0.2)',
+                }}
               >
                 <Lightbulb size={16} className="text-warning flex-shrink-0 mt-0.5" />
                 <div>
@@ -183,19 +195,22 @@ const InterviewRoom = () => {
           </AnimatePresence>
 
           {/* Answer Area */}
-          <div className="space-y-3">
+          <div className="space-y-3 relative z-10">
             <div className="flex items-center justify-between">
-              <div className="text-xs text-slate-400 font-medium">Your Answer</div>
+              <div className="text-xs text-slate-400 font-semibold tracking-wide">Your Answer</div>
               <div className="flex items-center gap-2">
                 <VoiceVisualizer isRecording={isRecording} bars={8} />
                 {isSupported && (
                   <button
                     onClick={toggleMic}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all border ${
                       isRecording
-                        ? 'bg-accent/20 border-accent text-accent-2'
-                        : 'bg-bg-3 border-border text-slate-500 hover:text-slate-900'
+                        ? 'border-accent/40 text-accent shadow-glow-sm'
+                        : 'bg-bg-3/60 backdrop-blur-sm border-border/40 text-slate-500 hover:text-slate-900 hover:border-accent/20'
                     }`}
+                    style={isRecording ? {
+                      background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.1), rgba(59, 130, 246, 0.06))',
+                    } : undefined}
                   >
                     {isRecording ? <><Mic size={12} /> Recording</> : <><MicOff size={12} /> Voice</>}
                   </button>
@@ -209,7 +224,7 @@ const InterviewRoom = () => {
               onChange={(e) => setUserAnswer(e.target.value)}
               placeholder="Type your answer here, or click Voice to speak your response..."
               rows={6}
-              className="w-full bg-bg-3 border border-border rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-white/25 outline-none focus:border-accent focus:ring-1 focus:ring-accent/25 resize-none transition-all"
+              className="w-full bg-bg-3/40 backdrop-blur-sm border border-border/40 rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400/50 outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 resize-none transition-all duration-300 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]"
             />
 
             <div className="flex items-center justify-between">
@@ -235,7 +250,7 @@ const InterviewRoom = () => {
       </div>
 
       {/* ── Side Panel ── */}
-      <div className="hidden lg:flex flex-col w-72 bg-bg-2 border-l border-border overflow-y-auto flex-shrink-0 p-4 gap-5">
+      <div className="hidden lg:flex flex-col w-72 bg-bg-2/60 backdrop-blur-2xl border-l border-border/30 overflow-y-auto flex-shrink-0 p-4 gap-5">
         <div>
           <SectionTitle>Session Stats</SectionTitle>
           <div className="space-y-2.5">
@@ -245,8 +260,8 @@ const InterviewRoom = () => {
               ['Avg Response', '1m 24s'],
             ].map(([label, val]) => (
               <div key={label} className="flex justify-between text-[13px]">
-                <span className="text-slate-400">{label}</span>
-                <span className="font-medium text-slate-800">{val}</span>
+                <span className="text-slate-500">{label}</span>
+                <span className="font-semibold text-slate-800">{val}</span>
               </div>
             ))}
           </div>
@@ -258,8 +273,8 @@ const InterviewRoom = () => {
             {[['Clarity', 82], ['Speaking Pace', 74], ['Confidence', 78], ['Depth', 65]].map(([label, val]) => (
               <div key={label}>
                 <div className="flex justify-between text-[12px] mb-1">
-                  <span className="text-slate-400">{label}</span>
-                  <span className="text-slate-600">{val}%</span>
+                  <span className="text-slate-500">{label}</span>
+                  <span className="text-slate-600 font-medium">{val}%</span>
                 </div>
                 <ProgressBar value={val} />
               </div>
@@ -269,8 +284,8 @@ const InterviewRoom = () => {
 
         <div>
           <SectionTitle>Live Transcript</SectionTitle>
-          <div className="bg-bg-3 border border-border rounded-xl p-3 min-h-[80px] text-[12.5px] text-slate-500 font-mono leading-relaxed">
-            {transcript || <span className="text-slate-300">Voice transcript will appear here...</span>}
+          <div className="bg-bg-3/40 backdrop-blur-sm border border-border/30 rounded-xl p-3 min-h-[80px] text-[12.5px] text-slate-500 font-mono leading-relaxed">
+            {transcript || <span className="text-slate-400/60">Voice transcript will appear here...</span>}
           </div>
         </div>
       </div>

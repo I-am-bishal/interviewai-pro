@@ -47,7 +47,6 @@ const CodingRound = () => {
 
   const problem = problems[selectedIdx];
 
-  // Update starter code when problem or language changes
   useEffect(() => {
     if (problem) setCode(problem.starterCode[language] || '// Write your solution here\n');
   }, [selectedIdx, language]);
@@ -55,13 +54,12 @@ const CodingRound = () => {
   const handleRun = async () => {
     setRunning(true);
     setOutput(null);
-    // Simulate test case execution
     await new Promise((r) => setTimeout(r, 1200));
     setOutput({
       results: problem.testCases.map((tc) => ({
         input: tc.input,
         expected: tc.expectedOutput,
-        actual: tc.expectedOutput,   // simulation
+        actual: tc.expectedOutput,
         passed: true,
         timeMs: Math.floor(Math.random() * 60) + 5,
       })),
@@ -99,23 +97,24 @@ const CodingRound = () => {
   );
 
   if (!problem) return (
-    <div className="p-6 text-center text-slate-400">No problems available</div>
+    <div className="p-6 text-center text-slate-500">No problems available</div>
   );
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Topbar */}
-      <div className="flex items-center justify-between px-5 py-3 bg-bg-2 border-b border-border flex-shrink-0">
+      <div className="flex items-center justify-between px-5 py-3 bg-bg-2/60 backdrop-blur-xl border-b border-border/30 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <span className="text-xl">💻</span>
-          <span className="font-heading font-bold text-sm">Coding Round</span>
+          <div className="icon-container icon-container-md">
+            <span className="text-lg">💻</span>
+          </div>
+          <span className="font-heading font-bold text-sm tracking-tight">Coding Round</span>
           <Badge color={DIFFICULTY_COLOR[problem.difficulty]}>
             {problem.difficulty.charAt(0).toUpperCase() + problem.difficulty.slice(1)}
           </Badge>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Problem navigator */}
           <div className="flex items-center gap-1">
             <button
               onClick={() => setSelectedIdx((i) => Math.max(0, i - 1))}
@@ -136,13 +135,12 @@ const CodingRound = () => {
             </button>
           </div>
 
-          {/* Timer */}
-          <div className={`font-mono text-sm px-3 py-1.5 rounded-lg border ${
+          <div className={`font-mono text-sm px-3 py-1.5 rounded-xl border backdrop-blur-sm ${
             isDanger
-              ? 'text-danger border-danger bg-danger/10'
+              ? 'text-danger border-danger/40 bg-danger/8'
               : isWarning
-              ? 'text-warning border-warning bg-warning/10'
-              : 'text-slate-500 border-border bg-bg-3'
+              ? 'text-warning border-warning/40 bg-warning/8'
+              : 'text-slate-500 border-border/40 bg-bg-3/60'
           }`}>
             {formatted}
           </div>
@@ -151,30 +149,28 @@ const CodingRound = () => {
 
       {/* Main split view */}
       <div className="flex-1 flex overflow-hidden">
-        {/* ── Left: Problem Statement ── */}
-        <div className="w-[42%] border-r border-border overflow-y-auto flex-shrink-0">
+        {/* Left: Problem Statement */}
+        <div className="w-[42%] border-r border-border/30 overflow-y-auto flex-shrink-0">
           <div className="p-5">
-            <h2 className="font-heading text-lg font-bold mb-1">{problem.title}</h2>
+            <h2 className="font-heading text-lg font-extrabold mb-1 tracking-tight">{problem.title}</h2>
             <div className="flex gap-2 mb-4">
               {problem.tags.map((t) => <Badge key={t} color="gray">{t}</Badge>)}
             </div>
 
-            <p className="text-[13.5px] text-slate-700 leading-relaxed mb-5">{problem.description}</p>
+            <p className="text-[13.5px] text-slate-600 leading-relaxed mb-5">{problem.description}</p>
 
-            {/* Examples */}
             <SectionTitle>Examples</SectionTitle>
             <div className="space-y-3 mb-5">
               {problem.examples.map((ex, i) => (
-                <div key={i} className="bg-bg-3 rounded-xl p-3 font-mono text-[12.5px]">
-                  <div className="text-slate-400 mb-1">Input:</div>
+                <div key={i} className="bg-bg-3/50 backdrop-blur-sm rounded-xl p-3 font-mono text-[12.5px] border border-border/30">
+                  <div className="text-slate-500 mb-1">Input:</div>
                   <div className="text-slate-900 mb-2">{ex.input}</div>
-                  <div className="text-slate-400 mb-1">Output:</div>
-                  <div className="text-success">{ex.output}</div>
+                  <div className="text-slate-500 mb-1">Output:</div>
+                  <div className="text-success font-medium">{ex.output}</div>
                 </div>
               ))}
             </div>
 
-            {/* Constraints */}
             <SectionTitle>Constraints</SectionTitle>
             <ul className="space-y-1 mb-5">
               {problem.constraints.map((c, i) => (
@@ -184,12 +180,11 @@ const CodingRound = () => {
               ))}
             </ul>
 
-            {/* Hints toggle */}
             {problem.hints?.length > 0 && (
               <div>
                 <button
                   onClick={() => setShowHints(!showHints)}
-                  className="flex items-center gap-2 text-[12.5px] text-warning/70 hover:text-warning transition-colors"
+                  className="flex items-center gap-2 text-[12.5px] text-warning/70 hover:text-warning transition-colors font-medium"
                 >
                   <Lightbulb size={13} />
                   {showHints ? 'Hide Hints' : 'Show Hints (-10 XP)'}
@@ -204,7 +199,12 @@ const CodingRound = () => {
                     >
                       <div className="mt-3 space-y-2">
                         {problem.hints.map((h, i) => (
-                          <div key={i} className="bg-warning/8 border border-warning/20 rounded-lg px-3 py-2 text-[12.5px] text-slate-600">
+                          <div key={i} className="rounded-xl px-3 py-2 text-[12.5px] text-slate-600 border"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(245, 158, 11, 0.02))',
+                              borderColor: 'rgba(245, 158, 11, 0.15)',
+                            }}
+                          >
                             💡 {h}
                           </div>
                         ))}
@@ -215,7 +215,6 @@ const CodingRound = () => {
               </div>
             )}
 
-            {/* Test case results */}
             {output && (
               <div className="mt-5">
                 <SectionTitle>Test Results</SectionTitle>
@@ -223,11 +222,16 @@ const CodingRound = () => {
                   {output.results.map((r, i) => (
                     <div
                       key={i}
-                      className={`rounded-xl p-3 font-mono text-[12px] border ${
-                        r.passed
-                          ? 'bg-success/8 border-success/30 text-success'
-                          : 'bg-danger/8 border-danger/30 text-danger'
-                      }`}
+                      className="rounded-xl p-3 font-mono text-[12px] border"
+                      style={r.passed ? {
+                        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(6, 214, 160, 0.03))',
+                        borderColor: 'rgba(16, 185, 129, 0.2)',
+                        color: '#10b981',
+                      } : {
+                        background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(239, 68, 68, 0.03))',
+                        borderColor: 'rgba(239, 68, 68, 0.2)',
+                        color: '#ef4444',
+                      }}
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-semibold">{r.passed ? '✓ Passed' : '✗ Failed'}</span>
@@ -244,10 +248,9 @@ const CodingRound = () => {
           </div>
         </div>
 
-        {/* ── Right: Code Editor ── */}
+        {/* Right: Code Editor */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Editor toolbar */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-bg-2 border-b border-border flex-shrink-0">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-bg-2/60 backdrop-blur-xl border-b border-border/30 flex-shrink-0">
             <div className="flex items-center gap-2">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
@@ -259,7 +262,7 @@ const CodingRound = () => {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="bg-bg-3 border border-border text-slate-900 text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-accent transition-colors cursor-pointer"
+              className="bg-bg-3/60 backdrop-blur-sm border border-border/40 text-slate-900 text-xs px-2.5 py-1.5 rounded-xl outline-none focus:border-accent/40 transition-colors cursor-pointer"
             >
               {LANGUAGES.map((l) => (
                 <option key={l.id} value={l.id}>{l.label}</option>
@@ -267,7 +270,6 @@ const CodingRound = () => {
             </select>
           </div>
 
-          {/* Monaco */}
           <div className="flex-1 overflow-hidden">
             <Editor
               value={code}
@@ -289,23 +291,11 @@ const CodingRound = () => {
             />
           </div>
 
-          {/* Action bar */}
-          <div className="flex items-center justify-between px-4 py-3 bg-bg-2 border-t border-border flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleRun}
-              loading={running}
-              icon={<Play size={13} />}
-            >
+          <div className="flex items-center justify-between px-4 py-3 bg-bg-2/60 backdrop-blur-xl border-t border-border/30 flex-shrink-0">
+            <Button variant="ghost" size="sm" onClick={handleRun} loading={running} icon={<Play size={13} />}>
               Run Code
             </Button>
-            <Button
-              size="sm"
-              onClick={handleSubmit}
-              loading={submitting}
-              icon={<Send size={13} />}
-            >
+            <Button size="sm" onClick={handleSubmit} loading={submitting} icon={<Send size={13} />}>
               Submit Solution
             </Button>
           </div>
@@ -319,31 +309,37 @@ const CodingRound = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="border-t border-border bg-bg-2 overflow-hidden flex-shrink-0"
+            className="border-t border-border/30 bg-bg-2/60 backdrop-blur-xl overflow-hidden flex-shrink-0"
           >
             <div className="p-4">
               <div className="flex items-center gap-6 flex-wrap">
                 <div className="flex items-center gap-3">
-                  <ScoreRing score={aiEval.correctnessScore || 0} label="Correct" size={70} color="#22c984" />
-                  <ScoreRing score={aiEval.codeQualityScore || 0} label="Quality" size={70} color="#7c6dfa" />
+                  <ScoreRing score={aiEval.correctnessScore || 0} label="Correct" size={70} color="#10b981" />
+                  <ScoreRing score={aiEval.codeQualityScore || 0} label="Quality" size={70} color="#7c5bf0" />
                 </div>
                 <div className="flex gap-4 text-sm">
                   <div>
-                    <div className="text-slate-400 text-xs mb-1">Time Complexity</div>
+                    <div className="text-slate-400 text-xs mb-1 font-medium">Time Complexity</div>
                     <div className="font-mono font-semibold text-info">{aiEval.timeComplexity}</div>
                   </div>
                   <div>
-                    <div className="text-slate-400 text-xs mb-1">Space Complexity</div>
+                    <div className="text-slate-400 text-xs mb-1 font-medium">Space Complexity</div>
                     <div className="font-mono font-semibold text-info">{aiEval.spaceComplexity}</div>
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs text-slate-400 mb-1">AI Summary</div>
-                  <div className="text-[13px] text-slate-700 leading-relaxed">{aiEval.summary}</div>
+                  <div className="text-xs text-slate-400 mb-1 font-medium">AI Summary</div>
+                  <div className="text-[13px] text-slate-600 leading-relaxed">{aiEval.summary}</div>
                   {aiEval.suggestions?.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
                       {aiEval.suggestions.map((s, i) => (
-                        <div key={i} className="text-[11px] bg-accent/10 text-accent-2 px-2 py-1 rounded-md">
+                        <div key={i} className="text-[11px] px-2 py-1 rounded-lg border"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.08), rgba(59, 130, 246, 0.05))',
+                            borderColor: 'rgba(124, 91, 240, 0.15)',
+                            color: '#a78bfa',
+                          }}
+                        >
                           💡 {s}
                         </div>
                       ))}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, BookOpen, Layers, Award, Sparkles, 
@@ -160,7 +160,6 @@ const Preparation = () => {
     return stored ? JSON.parse(stored) : {};
   });
 
-  // Save checklist state to localStorage
   const handleCheck = (id) => {
     setCheckedItems((prev) => {
       const next = { ...prev, [id]: !prev[id] };
@@ -169,7 +168,6 @@ const Preparation = () => {
     });
   };
 
-  // Calculate progress for the active tab
   const activeChecklist = CHECKLISTS[activeTab] || [];
   const checkedInActiveTab = activeChecklist.filter(item => checkedItems[item.id]).length;
   const progressPercent = activeChecklist.length > 0 
@@ -183,24 +181,23 @@ const Preparation = () => {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="p-6 max-w-5xl mx-auto relative min-h-full dot-grid overflow-hidden"
+      className="p-6 max-w-5xl mx-auto relative min-h-full overflow-hidden"
     >
-      {/* Background Ambient Glow Lights */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/8 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2 -z-10" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/4" />
+      <div className="ambient-orb ambient-orb-2 absolute bottom-10 -right-20" />
 
       {/* Header */}
       <motion.div variants={itemVariants} className="mb-7 relative z-10">
-        <h1 className="font-heading text-2xl font-bold flex items-center gap-2">
+        <h1 className="font-heading text-2xl font-extrabold flex items-center gap-2 tracking-tight">
           Interview Preparation Hub <Sparkles size={20} className="text-accent animate-pulse" />
         </h1>
-        <p className="text-slate-400 text-sm mt-0.5">
+        <p className="text-slate-500 text-sm mt-1">
           Master core technical patterns, structural behavioral templates, and track your prep checklists.
         </p>
       </motion.div>
 
       {/* Navigation Tabs */}
-      <motion.div variants={itemVariants} className="flex gap-2.5 mb-7 bg-bg-2 border border-border p-1.5 rounded-2xl relative z-10 w-fit">
+      <motion.div variants={itemVariants} className="flex gap-2 mb-7 bg-bg-2/60 backdrop-blur-xl border border-border/40 p-1.5 rounded-2xl relative z-10 w-fit">
         {SECTIONS.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -210,14 +207,18 @@ const Preparation = () => {
                 setActiveTab(tab.id);
                 setExpandedSheet(null);
               }}
-              className={`relative px-4 py-2.5 rounded-xl text-[13.5px] font-semibold transition-all flex items-center gap-2 cursor-pointer outline-none ${
-                isActive ? 'text-accent-2' : 'text-slate-500 hover:text-slate-800'
+              className={`relative px-4 py-2.5 rounded-xl text-[13px] font-semibold transition-all flex items-center gap-2 cursor-pointer outline-none ${
+                isActive ? 'text-white' : 'text-slate-500 hover:text-slate-800'
               }`}
             >
               {isActive && (
                 <motion.div
                   layoutId="activePrepTab"
-                  className="absolute inset-0 bg-accent/15 rounded-xl -z-10"
+                  className="absolute inset-0 rounded-xl -z-10"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.2), rgba(59, 130, 246, 0.12))',
+                    border: '1px solid rgba(124, 91, 240, 0.15)',
+                  }}
                   transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                 />
               )}
@@ -229,9 +230,9 @@ const Preparation = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 items-start">
-        {/* Left Column: Progress Card & Checklist */}
+        {/* Left Column */}
         <motion.div variants={itemVariants} className="lg:col-span-5 space-y-4">
-          <Card className="!p-5 hover:shadow-xl hover:shadow-accent/5 transition-all duration-350">
+          <Card className="!p-5">
             <div className="flex items-center justify-between mb-3">
               <SectionTitle className="!mb-0">Progress Tracker</SectionTitle>
               <Badge color={currentTabMeta.color}>{progressPercent}% Done</Badge>
@@ -247,7 +248,7 @@ const Preparation = () => {
             </p>
           </Card>
 
-          <Card className="!p-5 hover:shadow-xl hover:shadow-accent/5 transition-all duration-350">
+          <Card className="!p-5">
             <SectionTitle>Preparation Checklist</SectionTitle>
             <div className="space-y-3 mt-4">
               {activeChecklist.map((item) => {
@@ -258,15 +259,19 @@ const Preparation = () => {
                     onClick={() => handleCheck(item.id)}
                     className="flex items-start gap-3 cursor-pointer group select-none"
                   >
-                    <div className={`mt-0.5 w-4.5 h-4.5 rounded border flex items-center justify-center transition-all ${
+                    <div className={`mt-0.5 w-4.5 h-4.5 rounded border flex items-center justify-center transition-all duration-200 ${
                       isChecked 
-                        ? 'bg-accent border-accent text-white' 
-                        : 'border-border group-hover:border-slate-400 bg-bg-3'
-                    }`}>
+                        ? 'text-white border-transparent' 
+                        : 'border-border/60 group-hover:border-accent/40 bg-bg-3/60'
+                    }`}
+                      style={isChecked ? {
+                        background: 'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+                      } : undefined}
+                    >
                       {isChecked && <Check size={11} strokeWidth={3} />}
                     </div>
                     <span className={`text-[12.5px] leading-relaxed transition-colors ${
-                      isChecked ? 'text-slate-400 line-through' : 'text-slate-700'
+                      isChecked ? 'text-slate-400 line-through' : 'text-slate-600'
                     }`}>
                       {item.label}
                     </span>
@@ -277,7 +282,7 @@ const Preparation = () => {
           </Card>
         </motion.div>
 
-        {/* Right Column: Cheat Sheets / Expandable Cards */}
+        {/* Right Column: Cheat Sheets */}
         <motion.div variants={itemVariants} className="lg:col-span-7 space-y-4">
           <SectionTitle>Interactive Cheat Sheets</SectionTitle>
           <div className="space-y-3">
@@ -288,22 +293,22 @@ const Preparation = () => {
                   key={sheet.id}
                   layout="position"
                   onClick={() => setExpandedSheet(isExpanded ? null : sheet.id)}
-                  className={`bg-bg-2 border rounded-2xl cursor-pointer select-none transition-all duration-300 overflow-hidden ${
+                  className={`bg-bg-2/80 backdrop-blur-xl border rounded-2xl cursor-pointer select-none transition-all duration-300 overflow-hidden ${
                     isExpanded 
-                      ? 'border-accent/40 shadow-xl shadow-accent/5 p-6' 
-                      : 'border-border hover:border-slate-400 hover:bg-bg-3/40 p-5'
+                      ? 'border-accent/25 shadow-glow-sm p-6' 
+                      : 'border-border/40 hover:border-accent/15 hover:bg-bg-2 p-5'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mt-0.5 flex-shrink-0">
-                        <BookOpenCheck size={16} />
+                      <div className="icon-container icon-container-md mt-0.5">
+                        <BookOpenCheck size={16} className="text-accent" />
                       </div>
                       <div>
-                        <h3 className="font-heading font-bold text-[14.5px] text-slate-800">
+                        <h3 className="font-heading font-bold text-[14.5px] text-slate-800 tracking-tight">
                           {sheet.title}
                         </h3>
-                        <p className="text-[12px] text-slate-400 mt-0.5">
+                        <p className="text-[12px] text-slate-500 mt-0.5">
                           {sheet.desc}
                         </p>
                       </div>
@@ -318,7 +323,7 @@ const Preparation = () => {
                   </div>
 
                   {!isExpanded && (
-                    <div className="mt-3 text-[12px] text-slate-500 bg-bg-3/50 px-3 py-2 rounded-lg border border-border/50">
+                    <div className="mt-3 text-[12px] text-slate-500 bg-bg-3/40 px-3 py-2 rounded-xl border border-border/30">
                       {sheet.summary}
                     </div>
                   )}
@@ -330,18 +335,21 @@ const Preparation = () => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.25 }}
-                        className="mt-5 border-t border-border pt-4 text-[13px] text-slate-650 leading-relaxed font-normal"
-                        onClick={(e) => e.stopPropagation()} // stop toggle on clicking detail text
+                        className="mt-5 border-t border-border/30 pt-4 text-[13px] text-slate-600 leading-relaxed font-normal"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="whitespace-pre-wrap font-sans text-slate-700 bg-bg-3/60 p-4 rounded-xl border border-border/80 shadow-inner">
+                        <div className="whitespace-pre-wrap font-sans text-slate-600 bg-bg-3/40 p-4 rounded-xl border border-border/30">
                           {sheet.details.includes('```') ? (
-                            // Render code chunks cleanly
                             sheet.details.split('```').map((chunk, index) => {
                               if (index % 2 === 1) {
-                                // Code block chunk
                                 const lines = chunk.replace('javascript', '').trim();
                                 return (
-                                  <pre key={index} className="bg-slate-950 p-4 rounded-xl text-xs font-mono text-indigo-300 border border-zinc-800/80 overflow-x-auto my-3.5 shadow-md">
+                                  <pre key={index} className="p-4 rounded-xl text-xs font-mono text-violet-300 border overflow-x-auto my-3.5 shadow-md"
+                                    style={{
+                                      background: 'rgba(7, 10, 18, 0.9)',
+                                      borderColor: 'rgba(124, 91, 240, 0.15)',
+                                    }}
+                                  >
                                     {lines}
                                   </pre>
                                 );

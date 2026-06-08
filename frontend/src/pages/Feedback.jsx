@@ -30,14 +30,20 @@ const Feedback = () => {
   const scores = fb?.scores || {};
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 max-w-3xl mx-auto">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 max-w-3xl mx-auto relative overflow-hidden">
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/3" />
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-7 relative z-10">
         <div className="flex items-center gap-3">
-          <span className="text-3xl">🎯</span>
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+            style={{ background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.12), rgba(16, 185, 129, 0.08))' }}
+          >
+            🎯
+          </div>
           <div>
-            <h1 className="font-heading text-xl font-bold">Interview Complete!</h1>
-            <p className="text-slate-400 text-sm">Here's your AI-generated feedback</p>
+            <h1 className="font-heading text-xl font-extrabold tracking-tight">Interview Complete!</h1>
+            <p className="text-slate-500 text-sm">Here's your AI-generated feedback</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -49,17 +55,17 @@ const Feedback = () => {
       </div>
 
       {/* Score rings */}
-      <Card className="mb-4">
+      <Card className="mb-4 relative z-10">
         <div className="flex flex-wrap items-center justify-around gap-4 py-2">
-          <ScoreRing score={scores.overall || 0} label="Overall" size={110} color="#7c6dfa" />
-          <ScoreRing score={scores.technical || 0} label="Technical" size={100} color="#4da6ff" />
-          <ScoreRing score={scores.communication || 0} label="Communication" size={100} color="#22c984" />
-          <ScoreRing score={scores.confidence || 0} label="Confidence" size={100} color="#f5a623" />
+          <ScoreRing score={scores.overall || 0} label="Overall" size={110} color="#7c5bf0" />
+          <ScoreRing score={scores.technical || 0} label="Technical" size={100} color="#3b82f6" />
+          <ScoreRing score={scores.communication || 0} label="Communication" size={100} color="#10b981" />
+          <ScoreRing score={scores.confidence || 0} label="Confidence" size={100} color="#f59e0b" />
         </div>
       </Card>
 
       {/* Detailed scores */}
-      <Card className="mb-4">
+      <Card className="mb-4 relative z-10">
         <SectionTitle>Score Breakdown</SectionTitle>
         <div className="space-y-3">
           {[
@@ -72,7 +78,7 @@ const Feedback = () => {
           ].map(([label, val = 0]) => (
             <div key={label}>
               <div className="flex justify-between text-[13px] mb-1">
-                <span className="text-slate-600">{label}</span>
+                <span className="text-slate-500">{label}</span>
                 <span className="font-semibold text-accent">{val}%</span>
               </div>
               <ProgressBar value={val} />
@@ -82,14 +88,14 @@ const Feedback = () => {
       </Card>
 
       {/* Strengths + Weaknesses */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 relative z-10">
         <Card>
           <SectionTitle>Strengths ✅</SectionTitle>
           <div className="space-y-2">
             {(fb?.strengths || ['Good participation', 'Showed effort']).map((s, i) => (
               <div key={i} className="flex items-start gap-2 text-[13.5px]">
                 <CheckCircle2 size={14} className="text-success flex-shrink-0 mt-0.5" />
-                <span className="text-slate-700">{s}</span>
+                <span className="text-slate-600">{s}</span>
               </div>
             ))}
           </div>
@@ -100,7 +106,7 @@ const Feedback = () => {
             {(fb?.weaknesses || ['Keep practicing!']).map((w, i) => (
               <div key={i} className="flex items-start gap-2 text-[13.5px]">
                 <AlertCircle size={14} className="text-warning flex-shrink-0 mt-0.5" />
-                <span className="text-slate-700">{w}</span>
+                <span className="text-slate-600">{w}</span>
               </div>
             ))}
           </div>
@@ -109,14 +115,14 @@ const Feedback = () => {
 
       {/* Improvement Roadmap */}
       {fb?.roadmap?.length > 0 && (
-        <Card className="mb-4">
+        <Card className="mb-4 relative z-10">
           <SectionTitle>AI Improvement Roadmap 🗺️</SectionTitle>
           <div className="space-y-3">
             {fb.roadmap.map(({ period, title, description }, i) => (
-              <div key={i} className="flex gap-3 py-2 border-b border-border last:border-0">
+              <div key={i} className="flex gap-3 py-2 border-b border-border/30 last:border-0">
                 <Badge color="purple" className="flex-shrink-0 mt-0.5">{period}</Badge>
                 <div>
-                  <div className="font-medium text-[13.5px] mb-0.5">{title}</div>
+                  <div className="font-semibold text-[13.5px] mb-0.5">{title}</div>
                   <div className="text-[12.5px] text-slate-500">{description}</div>
                 </div>
               </div>
@@ -127,14 +133,14 @@ const Feedback = () => {
 
       {/* Summary */}
       {fb?.summary && (
-        <Card className="mb-6 border-accent/30">
+        <Card className="mb-6 border-accent/15 relative z-10">
           <SectionTitle>Overall Assessment</SectionTitle>
-          <p className="text-[13.5px] text-slate-700 leading-relaxed">{fb.summary}</p>
+          <p className="text-[13.5px] text-slate-600 leading-relaxed">{fb.summary}</p>
         </Card>
       )}
 
       {/* Actions */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 relative z-10">
         <Button className="flex-1" onClick={() => navigate('/interview')}>
           🔄 Practice Again
         </Button>

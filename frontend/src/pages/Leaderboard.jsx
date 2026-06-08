@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Trophy, Medal } from 'lucide-react';
+import { Zap, Trophy } from 'lucide-react';
 import { analyticsApi } from '../api/index.js';
 import { Card, Badge, SectionTitle, Skeleton } from '../components/ui/index.jsx';
 import { useAuthStore } from '../store/authStore';
 
 const AVATARS_BG = [
-  '#7c6dfa','#22c984','#4da6ff','#f5a623',
-  '#ff6eb3','#9d8fff','#5dcaa5','#7f77dd',
+  'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+  'linear-gradient(135deg, #10b981, #06d6a0)',
+  'linear-gradient(135deg, #38bdf8, #7c5bf0)',
+  'linear-gradient(135deg, #f59e0b, #ef4444)',
+  'linear-gradient(135deg, #ec4899, #7c5bf0)',
+  'linear-gradient(135deg, #a78bfa, #3b82f6)',
+  'linear-gradient(135deg, #06d6a0, #38bdf8)',
+  'linear-gradient(135deg, #7c5bf0, #06d6a0)',
 ];
 
 const MOCK_LEADERS = [
@@ -55,24 +61,32 @@ const Leaderboard = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto">
-      <div className="mb-6">
-        <h1 className="font-heading text-2xl font-bold mb-1">Leaderboard</h1>
-        <p className="text-slate-400 text-sm">Compete with engineers worldwide and track your rank</p>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="p-6 max-w-4xl mx-auto relative overflow-hidden">
+      <div className="ambient-orb ambient-orb-1 absolute -top-48 left-1/3" />
+      <div className="ambient-orb ambient-orb-2 absolute bottom-10 -right-20" />
+
+      <div className="mb-7 relative z-10">
+        <h1 className="font-heading text-2xl font-extrabold mb-1 tracking-tight">Leaderboard</h1>
+        <p className="text-slate-500 text-sm">Compete with engineers worldwide and track your rank</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 relative z-10">
         {/* Main leaderboard */}
         <div className="lg:col-span-2">
           {/* Period toggle */}
-          <div className="flex gap-1.5 mb-4">
+          <div className="flex gap-1.5 mb-4 bg-bg-2/60 backdrop-blur-xl border border-border/40 p-1 rounded-xl w-fit">
             {PERIODS.map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  period === p ? 'bg-accent text-white' : 'bg-bg-2 border border-border text-slate-500 hover:text-slate-900'
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  period === p
+                    ? 'text-white shadow-glow-sm'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
+                style={period === p ? {
+                  background: 'linear-gradient(135deg, #7c5bf0, #3b82f6)',
+                } : undefined}
               >
                 {p}
               </button>
@@ -98,40 +112,39 @@ const Leaderboard = () => {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.04 }}
-                      className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                        isMe ? 'bg-accent/10 border border-accent/30' : 'hover:bg-bg-3'
+                      className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+                        isMe ? 'border border-accent/20 shadow-glow-sm' : 'hover:bg-bg-3/40'
                       }`}
+                      style={isMe ? {
+                        background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.08), rgba(59, 130, 246, 0.05))',
+                      } : undefined}
                     >
-                      {/* Rank */}
                       <div className={`w-7 text-center text-sm ${cls}`}>
                         {emoji || rank}
                       </div>
 
-                      {/* Avatar */}
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-slate-900 text-xs font-bold flex-shrink-0"
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
                         style={{ background: AVATARS_BG[idx % AVATARS_BG.length] }}
                       >
                         {initials}
                       </div>
 
-                      {/* Name */}
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium flex items-center gap-2">
                           {leader.name}
                           {isMe && <Badge color="purple" className="!text-[9px]">You</Badge>}
                         </div>
-                        <div className="text-[11px] text-warning flex items-center gap-1">
+                        <div className="text-[11px] text-amber-500 flex items-center gap-1 font-medium">
                           🔥 {leader.currentStreak || 0} day streak
                         </div>
                       </div>
 
-                      {/* XP */}
                       <div className="text-right">
                         <div className="font-heading font-bold text-accent text-sm">
                           {(leader.xp || 0).toLocaleString()}
                         </div>
-                        <div className="text-[10px] text-slate-400">XP</div>
+                        <div className="text-[10px] text-slate-400 font-medium">XP</div>
                       </div>
                     </motion.div>
                   );
@@ -143,14 +156,17 @@ const Leaderboard = () => {
 
         {/* Right panel */}
         <div className="space-y-4">
-          {/* Your rank */}
           <Card className="text-center !p-5">
-            <Trophy size={24} className="text-accent mx-auto mb-2" />
-            <SectionTitle className="text-center">Your Rank</SectionTitle>
-            <div className="font-heading text-5xl font-extrabold text-accent mb-1">
+            <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, rgba(124, 91, 240, 0.12), rgba(59, 130, 246, 0.08))' }}
+            >
+              <Trophy size={22} className="text-accent" />
+            </div>
+            <SectionTitle className="!text-center !justify-center">Your Rank</SectionTitle>
+            <div className="font-heading text-5xl font-extrabold gradient-text-accent mb-1">
               #{myRank || '—'}
             </div>
-            <div className="text-slate-400 text-xs mb-3">
+            <div className="text-slate-500 text-xs mb-3 font-medium">
               of {leaders.length.toLocaleString()}+ users
             </div>
             <Badge color="purple" className="!text-xs">
@@ -158,7 +174,6 @@ const Leaderboard = () => {
             </Badge>
           </Card>
 
-          {/* Your stats */}
           <Card className="!p-4">
             <SectionTitle>Your Stats</SectionTitle>
             <div className="space-y-2.5">
@@ -169,22 +184,23 @@ const Leaderboard = () => {
                 ['Avg Score',    '82%'],
               ].map(([label, val]) => (
                 <div key={label} className="flex justify-between text-[13px]">
-                  <span className="text-slate-400">{label}</span>
-                  <span className="font-medium">{val}</span>
+                  <span className="text-slate-500">{label}</span>
+                  <span className="font-semibold">{val}</span>
                 </div>
               ))}
             </div>
           </Card>
 
-          {/* Achievements */}
           <Card className="!p-4">
             <SectionTitle>Achievements</SectionTitle>
             <div className="space-y-2">
               {ACHIEVEMENTS.map(({ icon, title, desc }) => (
-                <div key={title} className="flex items-center gap-2.5 py-2 border-b border-border last:border-0">
-                  <div className="text-lg flex-shrink-0">{icon}</div>
+                <div key={title} className="flex items-center gap-2.5 py-2 border-b border-border/30 last:border-0">
+                  <div className="icon-container icon-container-sm">
+                    <span className="text-sm">{icon}</span>
+                  </div>
                   <div>
-                    <div className="text-[13px] font-medium">{title}</div>
+                    <div className="text-[13px] font-semibold">{title}</div>
                     <div className="text-[11px] text-slate-400">{desc}</div>
                   </div>
                 </div>

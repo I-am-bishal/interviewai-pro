@@ -22,8 +22,8 @@ import { Logo } from '../components/ui';
 
 /* ─── Data ────────────────────────────────────────────────────────────── */
 const FEATURES = [
-  { icon: Mic, title: 'Voice AI Interviewer', desc: 'Real voice interaction with instant transcription and confidence analysis.', color: 'from-indigo-500 to-purple-600' },
-  { icon: Brain, title: 'Adaptive Question Engine', desc: 'GPT-4o generates questions tailored to your resume and experience level.', color: 'from-indigo-600 to-cyan-500' },
+  { icon: Mic, title: 'Voice AI Interviewer', desc: 'Real voice interaction with instant transcription and confidence analysis.', color: 'from-violet-500 to-blue-600' },
+  { icon: Brain, title: 'Adaptive Question Engine', desc: 'GPT-4o generates questions tailored to your resume and experience level.', color: 'from-violet-600 to-cyan-500' },
   { icon: Code2, title: 'Live Code Editor', desc: 'Monaco-powered editor with multi-language support and hidden test cases.', color: 'from-emerald-500 to-teal-500' },
   { icon: FileText, title: 'Resume AI Analysis', desc: 'Deep ATS scoring, skill extraction, and gap analysis from your resume.', color: 'from-orange-500 to-amber-500' },
   { icon: BarChart3, title: 'Performance Analytics', desc: 'Track progress with detailed charts and AI improvement roadmaps.', color: 'from-cyan-500 to-rose-500' },
@@ -88,7 +88,7 @@ const AnimatedStat = ({ val, label }) => {
   const { ref, display } = useAnimatedCounter(val, 1800);
   return (
     <div ref={ref} className="group cursor-default">
-      <div className="font-heading text-2xl font-black text-white group-hover:text-cyan-300 transition-colors duration-300">
+      <div className="font-heading text-2xl font-black text-white group-hover:text-accent-soft transition-colors duration-300">
         {display}
       </div>
       <div className="text-[11px] text-zinc-400 mt-1 tracking-wide font-medium">{label}</div>
@@ -914,7 +914,7 @@ const Landing = () => {
           <motion.div
             animate={{ scale: [1, 1.2, 1], opacity: [0.25, 0.45, 0.25] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -top-60 -left-60 w-[700px] h-[700px] bg-indigo-600/30 rounded-full blur-[130px]"
+            className="absolute -top-60 -left-60 w-[700px] h-[700px] bg-violet-600/30 rounded-full blur-[130px]"
           />
           <motion.div
             animate={{ scale: [1.15, 1, 1.15], opacity: [0.2, 0.35, 0.2] }}
@@ -959,7 +959,8 @@ const Landing = () => {
           <div className="flex items-center gap-3">
             <Link to="/login" className="text-sm text-white/70 hover:text-white transition-colors px-3 py-2">Sign in</Link>
             <Link to="/register"
-              className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/30 hover:-translate-y-0.5">
+              className="flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-md hover:shadow-accent/30 hover:-translate-y-0.5 btn-shimmer"
+              style={{ background: 'linear-gradient(135deg, #7c5bf0 0%, #3b82f6 100%)', boxShadow: '0 4px 16px -4px rgba(124, 91, 240, 0.3)' }}>
               Get Started <ArrowRight size={14} />
             </Link>
           </div>
@@ -981,7 +982,7 @@ const Landing = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs text-indigo-300 font-bold uppercase tracking-wider mb-8"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs text-accent-soft font-bold uppercase tracking-wider mb-8"
             >
               <Sparkles size={12} className="text-cyan-300" />
               AI-Powered Interview Coach
@@ -995,7 +996,7 @@ const Landing = () => {
               className="font-heading text-4xl md:text-[58px] font-black leading-[1.05] tracking-tight mb-6"
             >
               Ace Every Tech <br />
-              Interview with <span className="relative inline-block bg-gradient-to-r from-cyan-300 via-indigo-300 to-purple-400 bg-clip-text text-transparent animated-gradient-text">AI Practice</span>
+              Interview with <span className="relative inline-block bg-gradient-to-r from-accent-soft via-blue-300 to-teal-300 bg-clip-text text-transparent animated-gradient-text">AI Practice</span>
             </motion.h1>
 
             {/* Body text */}
@@ -1012,7 +1013,8 @@ const Landing = () => {
             {/* CTA action buttons */}
             <div className="flex items-center gap-4 flex-wrap mb-14">
               <Link to="/register"
-                className="btn-shimmer group flex items-center gap-2.5 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-4 rounded-2xl text-[16px] transition-all shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:-translate-y-0.5">
+                className="btn-shimmer group flex items-center gap-2.5 text-white font-bold px-8 py-4 rounded-2xl text-[16px] transition-all hover:-translate-y-0.5"
+                style={{ background: 'linear-gradient(135deg, #7c5bf0 0%, #6343d8 40%, #3b82f6 100%)', boxShadow: '0 8px 30px -6px rgba(124, 91, 240, 0.4)' }}>
                 Start Practicing Free
                 <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
                   <ArrowRight size={18} />
@@ -1040,7 +1042,7 @@ const Landing = () => {
           {/* Right Column: Audio & Dashboard Mockup */}
           <div className="flex-1 w-full relative flex items-center justify-center">
             {/* Soft glowing aura behind the mockup */}
-            <div className="absolute w-72 h-72 bg-indigo-500/25 rounded-full blur-[80px] -z-10 animate-pulse" />
+            <div className="absolute w-72 h-72 bg-accent/25 rounded-full blur-[80px] -z-10 animate-pulse" />
             <VoiceVisualizerMockup />
           </div>
 
@@ -1074,7 +1076,7 @@ const Landing = () => {
               viewport={{ once: false }}
               transition={{ delay: i * 0.06, duration: 0.5 }}
               whileHover={{ y: -6, scale: 1.01 }}
-              className="relative group rounded-2xl p-7 bg-bg-2 border border-border shadow-sm cursor-default transition-all duration-300 hover:border-indigo-200 hover:shadow-md hover:bg-bg-3/50"
+              className="relative group rounded-2xl p-7 bg-bg-2 border border-border shadow-sm cursor-default transition-all duration-300 hover:border-accent/25 hover:shadow-md hover:bg-bg-3/50"
             >
               {/* Card subtle border color sweep on hover */}
               <div className={`absolute -inset-px rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500 blur-xl`} />
@@ -1082,7 +1084,7 @@ const Landing = () => {
               <div className={`relative w-12 h-12 rounded-2xl bg-gradient-to-br ${color} flex items-center justify-center mb-5 shadow-sm text-white`}>
                 <Icon size={20} />
               </div>
-              <div className="relative font-heading font-bold text-[17px] text-slate-800 mb-2 group-hover:text-indigo-650 transition-colors">{title}</div>
+              <div className="relative font-heading font-bold text-[17px] text-slate-800 mb-2 group-hover:text-accent transition-colors">{title}</div>
               <div className="relative text-[14px] text-slate-500 leading-relaxed">{desc}</div>
             </motion.div>
           ))}
@@ -1105,8 +1107,8 @@ const Landing = () => {
                 'Deep complexity scorer & code structure assessment'
               ].map(item => (
                 <div key={item} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0">
-                    <Check size={12} className="text-indigo-600 font-bold" />
+                  <div className="w-5 h-5 rounded-full bg-accent/8 flex items-center justify-center flex-shrink-0">
+                    <Check size={12} className="text-accent font-bold" />
                   </div>
                   <span className="text-[14px] text-slate-650 font-semibold">{item}</span>
                 </div>
@@ -1116,7 +1118,7 @@ const Landing = () => {
 
           <div className="flex-1 relative flex items-center justify-center">
             {/* Glowing gradient background for mockup */}
-            <div className="absolute w-80 h-80 bg-indigo-500/10 rounded-full blur-[80px] -z-10" />
+            <div className="absolute w-80 h-80 bg-accent/10 rounded-full blur-[80px] -z-10" />
             <CodeEditorMockup />
           </div>
         </div>
@@ -1180,15 +1182,15 @@ const Landing = () => {
                   transition: { type: "spring", stiffness: 300, damping: 20 }
                 }}
                 className={`relative rounded-2xl p-8 border bg-bg-2 will-change-transform hover-glow ${highlight
-                  ? 'border-transparent animated-border shadow-xl shadow-indigo-500/10'
+                  ? 'border-transparent animated-border shadow-xl shadow-accent/10'
                   : 'border-border hover:border-border-2 hover:shadow-md'
                   }`}
               >
                 {highlight && (
                   <>
-                    <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 blur-xl -z-10" />
-                    <div className="text-[10px] font-bold tracking-widest text-indigo-600 uppercase mb-4 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse" />
+                    <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-accent/10 to-teal/10 blur-xl -z-10" />
+                    <div className="text-[10px] font-bold tracking-widest text-accent uppercase mb-4 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                       Recommended Plan
                     </div>
                   </>
@@ -1213,8 +1215,8 @@ const Landing = () => {
                       }}
                       className="flex items-center gap-3 text-[13.5px]"
                     >
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-indigo-50' : 'bg-bg-3'}`}>
-                        <Check size={11} className={highlight ? 'text-indigo-600 font-bold' : 'text-slate-400'} />
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${highlight ? 'bg-accent/10' : 'bg-bg-3'}`}>
+                        <Check size={11} className={highlight ? 'text-accent font-bold' : 'text-slate-400'} />
                       </div>
                       <span className="text-slate-650 font-medium">{f}</span>
                     </motion.div>
@@ -1226,9 +1228,12 @@ const Landing = () => {
                   whileTap={{ scale: 0.97 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className={`block w-full text-center py-3.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${highlight
-                    ? 'btn-shimmer bg-indigo-500 hover:bg-indigo-600 text-white font-bold hover:shadow-md'
+                    ? 'btn-shimmer text-white font-bold hover:shadow-md'
                     : 'bg-bg-3 border border-border hover:bg-bg-4 text-slate-700'
                     }`}
+                  style={highlight ? {
+                    background: 'linear-gradient(135deg, #7c5bf0 0%, #3b82f6 100%)',
+                  } : undefined}
                 >
                   {cta}
                 </motion.button>
@@ -1263,7 +1268,7 @@ const Landing = () => {
       ══════════════════════════════════════════════════════════ */}
       <section className="relative z-10 px-8 py-20 max-w-5xl mx-auto mb-24 overflow-hidden rounded-3xl bg-slate-950 border border-slate-800 text-white shadow-2xl">
         {/* Glow bubbles */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-[70px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-accent/10 rounded-full blur-[70px] pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-[70px] pointer-events-none" />
 
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
@@ -1276,7 +1281,7 @@ const Landing = () => {
             <div className="inline-flex items-center gap-2 text-3xl mb-4">🚀</div>
             <h2 className="font-heading text-4xl md:text-5xl font-black mb-4 leading-tight">
               Ready to land your<br />
-              <span className="text-cyan-300 bg-gradient-to-r from-cyan-300 to-indigo-300 bg-clip-text text-transparent">dream career?</span>
+              <span className="bg-gradient-to-r from-accent-soft to-teal-300 bg-clip-text text-transparent">dream career?</span>
             </h2>
             <p className="text-zinc-400 mb-10 text-lg leading-relaxed">Join thousands of developers using InterviewAI Pro to build mock competency and master code reviews.</p>
 
@@ -1285,7 +1290,8 @@ const Landing = () => {
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className="btn-shimmer inline-flex items-center gap-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-10 py-5 rounded-2xl text-[17px] shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40"
+              className="btn-shimmer inline-flex items-center gap-3 text-white font-bold px-10 py-5 rounded-2xl text-[17px]"
+              style={{ background: 'linear-gradient(135deg, #7c5bf0 0%, #3b82f6 100%)', boxShadow: '0 8px 30px -6px rgba(124, 91, 240, 0.4)' }}
             >
               Start Free Practice
               <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>
@@ -1312,7 +1318,7 @@ const Landing = () => {
         <Logo size={28} subtext="Empowered Preparation" textClassName="text-slate-800" />
         <div className="flex gap-8 text-xs text-slate-500">
           {['Privacy Policy', 'Terms of Service', 'Contact Support'].map((item) => (
-            <a key={item} href="#" className="hover:text-indigo-650 font-medium transition-colors">{item}</a>
+            <a key={item} href="#" className="hover:text-accent font-medium transition-colors">{item}</a>
           ))}
         </div>
         <div className="text-xs text-slate-400 font-medium">© 2025 InterviewAI Pro. All rights reserved.</div>
