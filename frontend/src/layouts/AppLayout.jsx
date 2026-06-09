@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import {
   LayoutDashboard, MessageSquare, Code2, FileText,
   BarChart3, Trophy, Settings, LogOut, Zap, Menu, X,
-  BookOpen
+  BookOpen, Activity
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { label: 'Analytics', path: '/analytics', icon: BarChart3 },
   { label: 'Leaderboard', path: '/leaderboard', icon: Trophy },
   { label: 'Settings', path: '/settings', icon: Settings },
+  { label: 'System Status', path: '/status', icon: Activity },
 ];
 
 const AppLayout = () => {

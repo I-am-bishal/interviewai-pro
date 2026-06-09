@@ -12,6 +12,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const os = require('os');
+const mongoose = require('mongoose');
 
 const connectDB = require('./config/database');
 const logger = require('./utils/logger');
@@ -77,7 +79,38 @@ app.use('/api/admin', adminRoutes);
 
 // ── Health Check ───────────────────────────────────────────────────────────
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', env: process.env.NODE_ENV, timestamp: new Date().toISOString() });
+  const dbState = mongoose.connection.readyState;
+  let dbStatus = 'disconnected';
+  if (dbState === 1) dbStatus = 'connected';
+  else if (dbState === 2) dbStatus = 'connecting';
+  else if (dbState === 3) dbStatus = 'disconnecting';
+
+  const healthData = {
+    status: dbState === 1 ? 'healthy' : 'degraded',
+    env: process.env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()),
+    memory: {
+      free: os.freemem(),
+      total: os.totalmem(),
+      usagePercent: Math.round(((os.totalmem() - os.freemem()) / os.totalmem()) * 100),
+    },
+    cpuLoad: os.loadavg(),
+    database: {
+      status: dbStatus,
+      readyState: dbState,
+    },
+    version: require('../package.json').version || '1.0.0',
+  };
+
+  if (dbState === 1) {
+    res.status(200).json(healthData);
+  } else {
+    res.status(500).json({
+      ...healthData,
+      error: 'Database is not connected',
+    });
+  }
 });
 
 // ── Error Handling ─────────────────────────────────────────────────────────
