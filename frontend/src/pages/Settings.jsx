@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
 import { userApi } from '../api/index.js';
-import { Card, Input, SectionTitle, Toggle, Divider } from '../components/ui/index.jsx';
+import { Card, Input, SectionTitle, Toggle, Divider, Badge } from '../components/ui/index.jsx';
 import Button from '../components/ui/Button';
 
 const Settings = () => {
